@@ -9,7 +9,9 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewNote extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+class RsticketsproViewNote extends HtmlView
 {
 	protected $form;
 	protected $item;

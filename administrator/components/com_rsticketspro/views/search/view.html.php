@@ -9,13 +9,19 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewSearch extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewSearch extends HtmlView
 {
 	protected $form;
 	
 	public function display($tpl = null)
 	{
-		JFactory::getApplication()->getInput()->set('hidemainmenu', true);
+		Factory::getApplication()->getInput()->set('hidemainmenu', true);
 
 		$this->addToolbar();
 
@@ -27,11 +33,11 @@ class RsticketsproViewSearch extends JViewLegacy
 	protected function addToolbar()
 	{
 		// set title
-		JToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
+		\Joomla\CMS\Toolbar\ToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
 
 		RSTicketsProToolbarHelper::addToolbar('tickets');
 		
-		JToolbarHelper::custom('search.perform', 'search', 'search', JText::_('RST_SEARCH'), false);
-		JToolbarHelper::cancel('search.cancel');
+		\Joomla\CMS\Toolbar\ToolbarHelper::custom('search.perform', 'search', 'search', Text::_('RST_SEARCH'), false);
+		\Joomla\CMS\Toolbar\ToolbarHelper::cancel('search.cancel');
 	}
 }

@@ -8,6 +8,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
 class RsticketsproControllerCronlog extends JControllerAdmin
 {
 	public function getModel($name = 'Cronlog', $prefix = 'RsticketsproModel', $config = array('ignore_request' => true))
@@ -22,7 +26,7 @@ class RsticketsproControllerCronlog extends JControllerAdmin
 	{
 		$this->checkToken();
 
-		$db		= JFactory::getDbo();
+		$db		= Factory::getDbo();
 		$query 	= $db->getQuery(true);
 
 		$query->delete()
@@ -31,6 +35,6 @@ class RsticketsproControllerCronlog extends JControllerAdmin
 		$db->setQuery($query);
 		$db->execute();
 
-		$this->setRedirect('index.php?option=com_rsticketspro&view=cronlog', JText::_('RST_CRON_LOG_DELETED_ALL'));
+		$this->setRedirect('index.php?option=com_rsticketspro&view=cronlog', Text::_('RST_CRON_LOG_DELETED_ALL'));
 	}
 }

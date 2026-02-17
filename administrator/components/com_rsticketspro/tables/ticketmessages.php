@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\Filesystem\File;
+
 class RsticketsproTableTicketmessages extends JTable
 {
 	public $id;
@@ -65,7 +67,7 @@ class RsticketsproTableTicketmessages extends JTable
 				foreach ($files as $file)
 				{
 					$hash = md5($file->id . ' ' . $file->ticket_message_id);
-					JFile::delete(RST_UPLOAD_FOLDER . '/' . $hash);
+					File::delete(RST_UPLOAD_FOLDER . '/' . $hash);
 				}
 			}
 			// from the database

@@ -9,7 +9,17 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewUsers extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\Uri\Uri;
+
+use Joomla\CMS\Router\Route;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewUsers extends HtmlView
 {
 	protected $items;
 	protected $pagination;
@@ -31,20 +41,20 @@ class RsticketsproViewUsers extends JViewLegacy
 
 	protected function checkPermissions()
 	{
-		$user = JFactory::getUser();
-		$app  = JFactory::getApplication();
+		$user = Factory::getUser();
+		$app  = Factory::getApplication();
 
 		// not logged in?
 		if (!$user->get('id'))
 		{
-			$app->redirect(JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode((string) JUri::getInstance()), false));
+			$app->redirect(Route::_('index.php?option=com_users&view=login&return=' . base64_encode((string) Uri::getInstance()), false));
 		}
 
 		// check permissions
 		$permissions = RSTicketsProHelper::getCurrentPermissions();
 		if (!RSTicketsProHelper::isStaff() || !$permissions || (!$permissions->add_ticket_customers && !$permissions->add_ticket_staff))
 		{
-			throw new Exception(JText::_('RST_STAFF_CANNOT_VIEW_USERS'), 403);
+			throw new Exception(Text::_('RST_STAFF_CANNOT_VIEW_USERS'), 403);
 		}
 	}
 }

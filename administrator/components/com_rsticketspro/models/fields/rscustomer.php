@@ -24,11 +24,11 @@ class JFormFieldRSCustomer extends JFormFieldUser
 	{
 		$this->readonly = false;
 
-		if (JFactory::getApplication()->isClient('site'))
+		if (Factory::getApplication()->isClient('site'))
 		{
 			$replacements = array(
-				'"index.php?option=com_users' => '"' . JUri::root(true) . '/index.php?option=com_rsticketspro',
-				'&quot;index.php?option=com_users' => '&quot;' . JUri::root(true) . '/index.php?option=com_rsticketspro',
+				'"index.php?option=com_users' => '"' . Uri::root(true) . '/index.php?option=com_rsticketspro',
+				'&quot;index.php?option=com_users' => '&quot;' . Uri::root(true) . '/index.php?option=com_rsticketspro',
 			);
 		}
 		else

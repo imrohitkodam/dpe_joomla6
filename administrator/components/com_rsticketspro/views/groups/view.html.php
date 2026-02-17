@@ -9,7 +9,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewGroups extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewGroups extends HtmlView
 {
 	protected $items;
 	protected $pagination;
@@ -31,23 +35,23 @@ class RsticketsproViewGroups extends JViewLegacy
 	protected function addToolbar()
 	{
 		// set title
-		JToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
+		\Joomla\CMS\Toolbar\ToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
 
 		RSTicketsProToolbarHelper::addToolbar('groups');
 
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		if ($user->authorise('group.create', 'com_rsticketspro'))
 		{
-			JToolbarHelper::addNew('group.add');
+			\Joomla\CMS\Toolbar\ToolbarHelper::addNew('group.add');
 		}
 		if ($user->authorise('group.edit', 'com_rsticketspro'))
 		{
-			JToolbarHelper::editList('group.edit');
+			\Joomla\CMS\Toolbar\ToolbarHelper::editList('group.edit');
 		}
 		if ($user->authorise('group.delete', 'com_rsticketspro'))
 		{
-			JToolbarHelper::deleteList('RST_CONFIRM_DELETE', 'groups.delete');
+			\Joomla\CMS\Toolbar\ToolbarHelper::deleteList('RST_CONFIRM_DELETE', 'groups.delete');
 		}
 	}
 }

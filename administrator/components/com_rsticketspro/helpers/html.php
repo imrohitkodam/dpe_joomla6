@@ -9,6 +9,12 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\HTML\HTMLHelper;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
 	
 class JHtmlRSTicketsProIcon
 {	
@@ -23,7 +29,7 @@ class JHtmlRSTicketsProIcon
 			$interval = 86400;
 		}
 		
-		$date = JFactory::getDate();
+		$date = Factory::getDate();
 		$date = $date->toUnix();
 		$date = RSTicketsProHelper::getCurrentDate($date);
 		
@@ -35,9 +41,9 @@ class JHtmlRSTicketsProIcon
 		$overdue = floor(($date - $last_reply_interval) / 86400);
 		
 		$url = RSTicketsProHelper::route('index.php?option=com_rsticketspro&task=ticket.notify&cid='.$ticket->id);
-		$img = JHtml::image('com_rsticketspro/notify.gif', JText::_('RST_TICKET_NOTIFY'),  'class="rst_notify_ticket"', true);
+		$img = HTMLHelper::image('com_rsticketspro/notify.gif', Text::_('RST_TICKET_NOTIFY'),  'class="rst_notify_ticket"', true);
 		
-		$return = '<span class="'.RSTicketsProHelper::tooltipClass().'" title="'.RSTicketsProHelper::tooltipText(JText::sprintf('RST_TICKET_NOTIFY_DESC', $overdue)).'" '.$attribs.'><a href="'.$url.'">'.$img.'</a></span>';
+		$return = '<span class="'.RSTicketsProHelper::tooltipClass().'" title="'.RSTicketsProHelper::tooltipText(Text::sprintf('RST_TICKET_NOTIFY_DESC', $overdue)).'" '.$attribs.'><a href="'.$url.'">'.$img.'</a></span>';
 		
 		return $return;
 	}
@@ -51,6 +57,6 @@ class JHtmlRSTicketsProCalendar
 			'showTime' => $show_time ? 'true' : '0'
 		);
 		
-		return JHtml::_('calendar', $value, $name, $id, $format, $params);
+		return HTMLHelper::_('calendar', $value, $name, $id, $format, $params);
 	}
 }

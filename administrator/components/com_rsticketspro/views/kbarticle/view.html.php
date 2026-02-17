@@ -9,7 +9,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewKbarticle extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewKbarticle extends HtmlView
 {
 	protected $form;
 	protected $item;
@@ -17,7 +21,7 @@ class RsticketsproViewKbarticle extends JViewLegacy
 	
 	public function display($tpl = null)
 	{
-		JFactory::getApplication()->getInput()->set('hidemainmenu', true);
+		Factory::getApplication()->getInput()->set('hidemainmenu', true);
 
 		$this->addToolbar();
 		
@@ -31,14 +35,14 @@ class RsticketsproViewKbarticle extends JViewLegacy
 	protected function addToolbar()
 	{
 		// set title
-		JToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
+		\Joomla\CMS\Toolbar\ToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
 
 		RSTicketsProToolbarHelper::addToolbar('kbarticles');
 		
-		JToolbarHelper::apply('kbarticle.apply');
-		JToolbarHelper::save('kbarticle.save');
-		JToolbarHelper::save2new('kbarticle.save2new');
-		JToolbarHelper::save2copy('kbarticle.save2copy');
-		JToolbarHelper::cancel('kbarticle.cancel');
+		\Joomla\CMS\Toolbar\ToolbarHelper::apply('kbarticle.apply');
+		\Joomla\CMS\Toolbar\ToolbarHelper::save('kbarticle.save');
+		\Joomla\CMS\Toolbar\ToolbarHelper::save2new('kbarticle.save2new');
+		\Joomla\CMS\Toolbar\ToolbarHelper::save2copy('kbarticle.save2copy');
+		\Joomla\CMS\Toolbar\ToolbarHelper::cancel('kbarticle.cancel');
 	}
 }

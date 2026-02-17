@@ -8,10 +8,12 @@
  */
 
 defined('_JEXEC') or die;
+
+use Joomla\CMS\Language\Text;
 ?>
 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-dismiss="modal">
-	<?php echo JText::_('JCANCEL'); ?>
+	<?php echo Text::_('JCANCEL'); ?>
 </button>
 <button type="button" class="btn btn-success" onclick="Joomla.submitbutton('ticket.bulkupdate');">
-	<?php echo JText::_('RST_UPDATE'); ?>
+	<?php echo Text::_('RST_UPDATE'); ?>
 </button>

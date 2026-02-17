@@ -9,12 +9,13 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Language\Text;
 
 $lang = Factory::getLanguage();
 $lang->load('com_rsticketspro', JPATH_SITE);
 
-class RsticketsproModelSubmit extends JModelAdmin
+class RsticketsproModelSubmit extends \Joomla\CMS\MVC\Model\AdminModel
 {
 	protected $fields = array();
 
@@ -99,7 +100,7 @@ class RsticketsproModelSubmit extends JModelAdmin
             {
                 $default['message'] = $message;
             }
-			if ($department_id = $app->input->getInt('department_id'))
+			if ($department_id = $app->getInput()->getInt('department_id'))
 			{
 				$default['department_id'] = $department_id;
 			}
@@ -824,7 +825,7 @@ class RsticketsproModelSubmit extends JModelAdmin
 		}
 
 		// DPE HAck to get ticket id in logs
-		$session = Factory::getApplication()->getSession();
+		$session = Factory::getSession();
 		$session->clear('ticketIdForUCMLog'); 
         $session->set('ticketIdForUCMLog', $ticket->ticket_id);
 

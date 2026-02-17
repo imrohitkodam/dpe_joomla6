@@ -9,7 +9,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewCustomfields extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewCustomfields extends HtmlView
 {
 	protected $items;
 	protected $pagination;
@@ -31,28 +35,28 @@ class RsticketsproViewCustomfields extends JViewLegacy
 	protected function addToolbar()
 	{
 		// set title
-		JToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
+		\Joomla\CMS\Toolbar\ToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
 
 		RSTicketsProToolbarHelper::addToolbar('customfields');
 
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		if ($user->authorise('customfield.create', 'com_rsticketspro'))
 		{
-			JToolbarHelper::addNew('customfield.add');
+			\Joomla\CMS\Toolbar\ToolbarHelper::addNew('customfield.add');
 		}
 		if ($user->authorise('customfield.edit', 'com_rsticketspro'))
 		{
-			JToolbarHelper::editList('customfield.edit');
+			\Joomla\CMS\Toolbar\ToolbarHelper::editList('customfield.edit');
 		}
 		if ($user->authorise('customfield.edit.state', 'com_rsticketspro'))
 		{
-			JToolbarHelper::publish('customfields.publish', 'JTOOLBAR_PUBLISH', true);
-			JToolbarHelper::unpublish('customfields.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+			\Joomla\CMS\Toolbar\ToolbarHelper::publish('customfields.publish', 'JTOOLBAR_PUBLISH', true);
+			\Joomla\CMS\Toolbar\ToolbarHelper::unpublish('customfields.unpublish', 'JTOOLBAR_UNPUBLISH', true);
 		}
 		if ($user->authorise('customfield.delete', 'com_rsticketspro'))
 		{
-			JToolbarHelper::deleteList('RST_CONFIRM_DELETE', 'customfields.delete');
+			\Joomla\CMS\Toolbar\ToolbarHelper::deleteList('RST_CONFIRM_DELETE', 'customfields.delete');
 		}
 	}
 }

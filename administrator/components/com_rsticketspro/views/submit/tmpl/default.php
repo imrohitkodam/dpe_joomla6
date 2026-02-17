@@ -9,11 +9,19 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::_('behavior.keepalive');
+use Joomla\CMS\Router\Route;
 
-JText::script('RST_MAX_UPLOAD_FILES_REACHED');
-JText::script('RST_TICKET_ATTACHMENTS');
-JText::script('RST_TICKET_ATTACHMENTS_REQUIRED');
+use Joomla\CMS\HTML\HTMLHelper;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
+HTMLHelper::_('behavior.keepalive');
+
+Text::script('RST_MAX_UPLOAD_FILES_REACHED');
+Text::script('RST_TICKET_ATTACHMENTS');
+Text::script('RST_TICKET_ATTACHMENTS_REQUIRED');
 
 $script = '';
 foreach ($this->departments as $department)
@@ -39,7 +47,7 @@ foreach ($this->departments as $department)
 }
 $script .= "window.addEventListener('DOMContentLoaded', function() { RSTicketsPro.changeDepartment() });";
 
-JFactory::getDocument()->addScriptDeclaration($script);
+Factory::getDocument()->addScriptDeclaration($script);
 
 if ($this->globalMessage && $this->globalMessagePosition === 'top')
 {
@@ -59,7 +67,7 @@ if ($this->submitMessage && $this->submitMessagePosition === 'top')
 	<?php
 }
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_rsticketspro&view=submit'); ?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data" class="form-horizontal">
+<form action="<?php echo Route::_('index.php?option=com_rsticketspro&view=submit'); ?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data" class="form-horizontal">
 <?php
 // only staff members with enough permissions
 // can select existing users from the database
@@ -126,10 +134,10 @@ if ($this->submitMessage && $this->submitMessagePosition === 'bottom')
 }
 ?>
 	<div>
-		<button type="button" class="btn btn-success" onclick="Joomla.submitbutton('submit.save');"><?php echo JText::_('RST_SUBMIT'); ?></button>
-		<button type="button" class="btn btn-secondary" onclick="Joomla.submitbutton('submit.cancel');"><?php echo JText::_('JCANCEL'); ?></button>
+		<button type="button" class="btn btn-success" onclick="Joomla.submitbutton('submit.save');"><?php echo Text::_('RST_SUBMIT'); ?></button>
+		<button type="button" class="btn btn-secondary" onclick="Joomla.submitbutton('submit.cancel');"><?php echo Text::_('JCANCEL'); ?></button>
 	</div>
 
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo HTMLHelper::_('form.token'); ?>
 	<input type="hidden" name="task" value="" />
 </form>

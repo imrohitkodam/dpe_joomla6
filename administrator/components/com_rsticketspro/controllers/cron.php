@@ -8,10 +8,12 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 class RsticketsproControllerCron extends JControllerForm
 {
 	public function preview()
 	{
-		JFactory::getApplication()->triggerEvent('onCronTestConnection');
+		Factory::getApplication()->triggerEvent('onCronTestConnection');
 	}
 }

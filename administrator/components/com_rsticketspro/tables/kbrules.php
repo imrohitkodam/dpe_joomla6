@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
 class RsticketsproTableKbrules extends JTable
 {
 	public $id = null;
@@ -68,29 +70,29 @@ class RsticketsproTableKbrules extends JTable
 
 				if (empty($conditions))
 				{
-					throw new Exception(JText::_('RST_KB_RULE_NO_CONDITION_ERROR'));
+					throw new Exception(Text::_('RST_KB_RULE_NO_CONDITION_ERROR'));
 				}
 
 				foreach ($conditions as $condition)
 				{
 					if (empty($condition->type))
 					{
-						throw new Exception(JText::_('RST_KB_RULE_SELECT_TYPE_ERROR'));
+						throw new Exception(Text::_('RST_KB_RULE_SELECT_TYPE_ERROR'));
 					}
 
 					if (empty($condition->condition))
 					{
-						throw new Exception(JText::_('RST_KB_RULE_SELECT_CONDITION_ERROR'));
+						throw new Exception(Text::_('RST_KB_RULE_SELECT_CONDITION_ERROR'));
 					}
 
 					if (empty($condition->value))
 					{
-						throw new Exception(JText::_('RST_KB_RULE_SELECT_VALUE_ERROR'));
+						throw new Exception(Text::_('RST_KB_RULE_SELECT_VALUE_ERROR'));
 					}
 
 					if ($condition->type === 'custom_field' && empty($condition->custom_field))
 					{
-						throw new Exception(JText::_('RST_KB_RULE_SELECT_CUSTOM_FIELD_ERROR'));
+						throw new Exception(Text::_('RST_KB_RULE_SELECT_CUSTOM_FIELD_ERROR'));
 					}
 				}
 			}

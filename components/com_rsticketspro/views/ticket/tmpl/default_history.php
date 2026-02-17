@@ -9,16 +9,22 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Router\Route;
+
+use Joomla\CMS\HTML\HTMLHelper;
+
+use Joomla\CMS\Language\Text;
+
 if ($this->otherTickets)
 {
 	?>
 	<table class="table table-striped">
 		<thead>
 		<tr>
-			<th><?php echo JText::_('RST_TICKET_CODE'); ?> <?php echo JText::_('RST_TICKET_SUBJECT'); ?></th>
-			<th><?php echo JText::_('RST_TICKET_STATUS'); ?></th>
-			<th><?php echo JText::_('RST_TICKET_REPLIES'); ?></th>
-			<th><?php echo JText::_('RST_TICKET_DATE'); ?></th>
+			<th><?php echo Text::_('RST_TICKET_CODE'); ?> <?php echo Text::_('RST_TICKET_SUBJECT'); ?></th>
+			<th><?php echo Text::_('RST_TICKET_STATUS'); ?></th>
+			<th><?php echo Text::_('RST_TICKET_REPLIES'); ?></th>
+			<th><?php echo Text::_('RST_TICKET_DATE'); ?></th>
 		</tr>
 		</thead>
 		<tbody>
@@ -27,10 +33,10 @@ if ($this->otherTickets)
 		{
 			?>
 			<tr>
-				<td><a href="<?php echo JRoute::_('index.php?option=com_rsticketspro&view=ticket&id=' . $ticket->id); ?>" title="<?php echo $this->escape($ticket->subject); ?>">[<?php echo $this->escape($ticket->code); ?>] <?php echo $this->escape($ticket->subject); ?></a></td>
-				<td><?php echo JText::_($ticket->status_name); ?></td>
-				<td><?php echo JText::sprintf('RST_TICKET_REPLIES_NUM', $ticket->replies); ?></td>
-				<td><?php echo JHtml::_('date', $ticket->date, $this->dateFormat); ?></td>
+				<td><a href="<?php echo Route::_('index.php?option=com_rsticketspro&view=ticket&id=' . $ticket->id); ?>" title="<?php echo $this->escape($ticket->subject); ?>">[<?php echo $this->escape($ticket->code); ?>] <?php echo $this->escape($ticket->subject); ?></a></td>
+				<td><?php echo Text::_($ticket->status_name); ?></td>
+				<td><?php echo Text::sprintf('RST_TICKET_REPLIES_NUM', $ticket->replies); ?></td>
+				<td><?php echo HTMLHelper::_('date', $ticket->date, $this->dateFormat); ?></td>
 			</tr>
 			<?php
 		}
@@ -42,6 +48,6 @@ if ($this->otherTickets)
 else
 {
 	?>
-	<p><?php echo JText::_('RST_NO_TICKET_HISTORY'); ?></p>
+	<p><?php echo Text::_('RST_NO_TICKET_HISTORY'); ?></p>
 	<?php
 }

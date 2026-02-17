@@ -27,7 +27,7 @@ if (!RSTicketsProHelper::getConfig('allow_predefined_subjects')) {
 
 		protected function getOptions() {
 			$options = array();
-			$db 	= JFactory::getDbo();
+			$db 	= Factory::getDbo();
 
 			$query 	= $db->getQuery(true);
 			$query->select($db->qn('id'))
@@ -38,10 +38,10 @@ if (!RSTicketsProHelper::getConfig('allow_predefined_subjects')) {
 			$db->setQuery($query);
 			$departments = $db->loadObjectList();
 
-			$doc = JFactory::getDocument();
+			$doc = Factory::getDocument();
 			$script  = "RSTicketsPro.showPredefinedSubjects = function(department) {\n";
 			$script .= "var subjects = {};\n";
-			$script .= "subjects[0] = {'':'".JText::_('RST_PLEASE_SELECT_SUBJECT', true)."'};\n";
+			$script .= "subjects[0] = {'':'".Text::_('RST_PLEASE_SELECT_SUBJECT', true)."'};\n";
 			foreach ($departments as $department) {
 				$subjects 	= RSTicketsProHelper::getJSSubjects($department->predefined_subjects);
 

@@ -9,6 +9,12 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Router\Route;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
 class RsticketsproControllerSignature extends JControllerForm
 {
 	protected $view_item = 'signature';
@@ -18,14 +24,14 @@ class RsticketsproControllerSignature extends JControllerForm
 	{
 		$this->checkToken();
 
-		$this->setRedirect(JRoute::_('index.php?option=com_rsticketspro&view=tickets', false));
+		$this->setRedirect(Route::_('index.php?option=com_rsticketspro&view=tickets', false));
 	}
 
 	public function save($key = null, $urlVar = null)
 	{
 		$this->checkToken();
 		
-		$input = JFactory::getApplication()->input;
+		$input = Factory::getApplication()->input;
 		$data  = $input->get('jform', array(), 'array');
 		$model = $this->getModel('signature');
 		
@@ -35,9 +41,9 @@ class RsticketsproControllerSignature extends JControllerForm
 		}
 		else
 		{
-			$this->setMessage(JText::_('RST_CONFIGURATION_OK'));
+			$this->setMessage(Text::_('RST_CONFIGURATION_OK'));
 		}
 		
-		$this->setRedirect(JRoute::_('index.php?option=com_rsticketspro&view=signature', false));
+		$this->setRedirect(Route::_('index.php?option=com_rsticketspro&view=signature', false));
 	}
 }

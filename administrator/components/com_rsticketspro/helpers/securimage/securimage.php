@@ -8,6 +8,8 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 /**
  * Project:     Securimage: A PHP class for creating and managing form CAPTCHA images<br />
  * File:        securimage.php<br />
@@ -1060,7 +1062,7 @@ class JSecurImage {
 	 */
 	function saveData()
 	{
-		$session = JFactory::getApplication()->getSession();
+		$session = Factory::getSession();
 		
 		$session->set('com_rsticketspro.securimage.value', $this->code);
 		$session->set('com_rsticketspro.securimage.ctime', time());
@@ -1076,7 +1078,7 @@ class JSecurImage {
 	{
 		// retrieve code from session
 		
-		$session = JFactory::getApplication()->getSession();
+		$session = Factory::getSession();
 		
 		$code = $this->getCode();
 		if ($code != '' && $this->isCodeExpired())
@@ -1108,7 +1110,7 @@ class JSecurImage {
 	 */
 	function getCode()
 	{
-		$session = JFactory::getApplication()->getSession();
+		$session = Factory::getSession();
 		return $session->get('com_rsticketspro.securimage.value', '');
 	}
 
@@ -1304,7 +1306,7 @@ class JSecurImage {
 	 */
 	function isCodeExpired()
 	{
-		$session = JFactory::getApplication()->getSession();
+		$session = Factory::getSession();
 		$creation_time = $session->get('com_rsticketspro.securimage.ctime', 0);
 		$expired = true;
 		

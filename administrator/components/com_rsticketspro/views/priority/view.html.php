@@ -9,14 +9,18 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewPriority extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewPriority extends HtmlView
 {
 	protected $form;
 	protected $item;
 	
 	public function display($tpl = null)
 	{
-		JFactory::getApplication()->getInput()->set('hidemainmenu', true);
+		Factory::getApplication()->getInput()->set('hidemainmenu', true);
 
 		$this->addToolbar();
 		
@@ -29,14 +33,14 @@ class RsticketsproViewPriority extends JViewLegacy
 	protected function addToolbar()
 	{
 		// set title
-		JToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
+		\Joomla\CMS\Toolbar\ToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
 
 		RSTicketsProToolbarHelper::addToolbar('priorities');
 		
-		JToolbarHelper::apply('priority.apply');
-		JToolbarHelper::save('priority.save');
-		JToolbarHelper::save2new('priority.save2new');
-		JToolbarHelper::save2copy('priority.save2copy');
-		JToolbarHelper::cancel('priority.cancel');
+		\Joomla\CMS\Toolbar\ToolbarHelper::apply('priority.apply');
+		\Joomla\CMS\Toolbar\ToolbarHelper::save('priority.save');
+		\Joomla\CMS\Toolbar\ToolbarHelper::save2new('priority.save2new');
+		\Joomla\CMS\Toolbar\ToolbarHelper::save2copy('priority.save2copy');
+		\Joomla\CMS\Toolbar\ToolbarHelper::cancel('priority.cancel');
 	}
 }

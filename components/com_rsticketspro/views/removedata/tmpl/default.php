@@ -8,7 +8,13 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-JHtml::_('behavior.keepalive');
+
+use Joomla\CMS\Router\Route;
+
+use Joomla\CMS\HTML\HTMLHelper;
+
+use Joomla\CMS\Language\Text;
+HTMLHelper::_('behavior.keepalive');
 ?>
 
 <?php if ($this->params->get('show_page_heading', 1)) { ?>
@@ -25,20 +31,20 @@ if ($this->globalMessage && $this->globalMessagePosition === 'top')
 }
 ?>
 
-<form id="rsticketspro_removedata_form" action="<?php echo JRoute::_('index.php?option=com_rsticketspro&view=removedata'); ?>" method="post" name="removeDataForm">
+<form id="rsticketspro_removedata_form" action="<?php echo Route::_('index.php?option=com_rsticketspro&view=removedata'); ?>" method="post" name="removeDataForm">
 	<div id="rsticketspro_remove_data_and_close_account">
 		<div class="alert alert-warning">
 			<?php if ($this->anonymise_joomla_data) { ?>
-			<p><?php echo JText::_('COM_RSTICKETSPRO_REMOVE_DATA_AND_CLOSE_ACCOUNT_SURE_NO_LOGIN'); ?></p>
+			<p><?php echo Text::_('COM_RSTICKETSPRO_REMOVE_DATA_AND_CLOSE_ACCOUNT_SURE_NO_LOGIN'); ?></p>
 			<?php } else { ?>
-			<p><?php echo JText::_('COM_RSTICKETSPRO_REMOVE_DATA_AND_CLOSE_ACCOUNT_SURE'); ?></p>
+			<p><?php echo Text::_('COM_RSTICKETSPRO_REMOVE_DATA_AND_CLOSE_ACCOUNT_SURE'); ?></p>
 			<?php } ?>
-			<p><strong><?php echo JText::_('COM_RSTICKETSPRO_REMOVE_DATA_AND_CLOSE_ACCOUNT_SURE_CONT'); ?></strong></p>
-			<p><button type="button" onclick="RSTicketsPro.requestRemoveData(this);" class="btn btn-danger"><?php echo JText::sprintf('COM_RSTICKETSPRO_YES_SEND_ME_A_LINK', $this->email); ?></button></>
+			<p><strong><?php echo Text::_('COM_RSTICKETSPRO_REMOVE_DATA_AND_CLOSE_ACCOUNT_SURE_CONT'); ?></strong></p>
+			<p><button type="button" onclick="RSTicketsPro.requestRemoveData(this);" class="btn btn-danger"><?php echo Text::sprintf('COM_RSTICKETSPRO_YES_SEND_ME_A_LINK', $this->email); ?></button></>
 		</div>
 	</div>
 	<div class="text-center">
-	<button type="button" class="btn btn-danger" onclick="RSTicketsPro.removeData(this);"><?php echo JText::_('COM_RSTICKETSPRO_REMOVE_DATA_AND_CLOSE_ACCOUNT'); ?></button>
+	<button type="button" class="btn btn-danger" onclick="RSTicketsPro.removeData(this);"><?php echo Text::_('COM_RSTICKETSPRO_REMOVE_DATA_AND_CLOSE_ACCOUNT'); ?></button>
 	</div>
 
 <?php

@@ -20,7 +20,7 @@ class JFormFieldComments extends JFormFieldList
 		// Initialize variables.
 		$options = array();
 		
-		$db 	= JFactory::getDbo();
+		$db 	= Factory::getDbo();
 		$query 	= $db->getQuery(true);
 
 		$components = array(
@@ -35,13 +35,13 @@ class JFormFieldComments extends JFormFieldList
 			->where($db->qn('element').' IN (' . implode(',', $db->q($components)) . ')');
 		$available = $db->setQuery($query)->loadColumn();
 		
-		$options[] = JHtml::_('select.option', '0', JText::_('RST_KB_COMMENTS_DISABLED'));
-		$options[] = JHtml::_('select.option', 'facebook', JText::_('RST_FACEBOOK_COMMENTS'));
+		$options[] = HTMLHelper::_('select.option', '0', Text::_('RST_KB_COMMENTS_DISABLED'));
+		$options[] = HTMLHelper::_('select.option', 'facebook', Text::_('RST_FACEBOOK_COMMENTS'));
 		
 		foreach ($components as $name => $component)
 		{
 			$disabled = !in_array($component, $available);
-			$options[] = JHtml::_('select.option', $component, $name, 'value', 'text', $disabled);
+			$options[] = HTMLHelper::_('select.option', $component, $name, 'value', 'text', $disabled);
 		}
 		
 		reset($options);

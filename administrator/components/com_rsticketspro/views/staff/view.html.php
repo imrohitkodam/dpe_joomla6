@@ -9,7 +9,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewStaff extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewStaff extends HtmlView
 {
 	protected $form;
 	protected $item;
@@ -17,7 +21,7 @@ class RsticketsproViewStaff extends JViewLegacy
 	
 	public function display($tpl = null)
 	{
-		JFactory::getApplication()->getInput()->set('hidemainmenu', true);
+		Factory::getApplication()->getInput()->set('hidemainmenu', true);
 
 		$this->addToolbar();
 		
@@ -30,13 +34,13 @@ class RsticketsproViewStaff extends JViewLegacy
 	protected function addToolbar()
 	{
 		// set title
-		JToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
+		\Joomla\CMS\Toolbar\ToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
 
 		RSTicketsProToolbarHelper::addToolbar('staffs');
 		
-		JToolbarHelper::apply('staff.apply');
-		JToolbarHelper::save('staff.save');
-		JToolbarHelper::save2new('staff.save2new');
-		JToolbarHelper::cancel('staff.cancel');
+		\Joomla\CMS\Toolbar\ToolbarHelper::apply('staff.apply');
+		\Joomla\CMS\Toolbar\ToolbarHelper::save('staff.save');
+		\Joomla\CMS\Toolbar\ToolbarHelper::save2new('staff.save2new');
+		\Joomla\CMS\Toolbar\ToolbarHelper::cancel('staff.cancel');
 	}
 }

@@ -22,9 +22,9 @@ class JFormFieldRSTags extends JFormFieldTag
 		require_once JPATH_ADMINISTRATOR.'/components/com_rsticketspro/helpers/rsticketspro.php';
 		
 		if (version_compare(JVERSION, '4.0', '>=')) {
-			JFactory::getDocument()->getWebAssetManager()->usePreset('choicesjs')->useScript('webcomponent.field-fancy-select');
+			Factory::getDocument()->getWebAssetManager()->usePreset('choicesjs')->useScript('webcomponent.field-fancy-select');
 		} else {
-			JHtml::_('formbehavior.chosen', '.rst-tags', null, array('placeholder_text_multiple' => JText::_('JGLOBAL_TYPE_OR_SELECT_SOME_TAGS')));
+			HTMLHelper::_('formbehavior.chosen', '.rst-tags', null, array('placeholder_text_multiple' => Text::_('JGLOBAL_TYPE_OR_SELECT_SOME_TAGS')));
 		}
 	}
 	
@@ -43,7 +43,7 @@ class JFormFieldRSTags extends JFormFieldTag
 			$select_attr .= $this->element['multiple'] ? ' multiple' : '';
 			
 			$fancy_attr .= !empty($this->element['class']) ? ' class="' . $this->element['class'] . '"' : '';
-			$fancy_attr .= ' placeholder="' . JText::_('JGLOBAL_TYPE_OR_SELECT_SOME_TAGS',true) . '" ';
+			$fancy_attr .= ' placeholder="' . Text::_('JGLOBAL_TYPE_OR_SELECT_SOME_TAGS',true) . '" ';
 			$fancy_attr .= ' allow-custom';
 			
 			foreach ($all_options as $option) {
@@ -57,7 +57,7 @@ class JFormFieldRSTags extends JFormFieldTag
 			
 			return implode($html);
 		} else {
-			\JHtml::_('tag.ajaxfield', '#jform' . $this->element['name'], true);
+			\HTMLHelper::_('tag.ajaxfield', '#jform' . $this->element['name'], true);
 			
 			$select_attr	= '';
 			
@@ -77,14 +77,14 @@ class JFormFieldRSTags extends JFormFieldTag
 	
 	protected function getOptions($slected = false)
 	{
-		$db 	= JFactory::getDbo();
+		$db 	= Factory::getDbo();
 		$query	= $db->getQuery(true);
 
 		$query	->select('DISTINCT(' . $db->qn('tag') . ')')
 				->from($db->qn('#__rsticketspro_kb_content_tags'));
 		
 		if ($slected) {
-			$id = JFactory::getApplication()->input->getInt('id', 0);
+			$id = Factory::getApplication()->getInput()->getInt('id', 0);
 			$query->where($db->qn('article_id') . '=' . $db->q($id));
 		}
 		

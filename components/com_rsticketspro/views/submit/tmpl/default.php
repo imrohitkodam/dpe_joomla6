@@ -9,11 +9,19 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::_('behavior.keepalive');
+use Joomla\CMS\Router\Route;
 
-JText::script('RST_MAX_UPLOAD_FILES_REACHED');
-JText::script('RST_TICKET_ATTACHMENTS');
-JText::script('RST_TICKET_ATTACHMENTS_REQUIRED');
+use Joomla\CMS\HTML\HTMLHelper;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
+HTMLHelper::_('behavior.keepalive');
+
+Text::script('RST_MAX_UPLOAD_FILES_REACHED');
+Text::script('RST_TICKET_ATTACHMENTS');
+Text::script('RST_TICKET_ATTACHMENTS_REQUIRED');
 
 $script = '';
 foreach ($this->departments as $department)
@@ -39,7 +47,7 @@ foreach ($this->departments as $department)
 }
 $script .= "window.addEventListener('DOMContentLoaded', function() { RSTicketsPro.changeDepartment() });";
 
-JFactory::getDocument()->addScriptDeclaration($script);
+Factory::getDocument()->addScriptDeclaration($script);
 
 if ($this->params->get('show_page_heading'))
 {
@@ -62,14 +70,14 @@ if ($this->params->get('show_page_heading'))
 	</div>
 	<?php } ?>
 	
-	<form action="<?php echo JRoute::_('index.php?option=com_rsticketspro&view=submit'); ?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data" class="form-horizontal">
+	<form action="<?php echo Route::_('index.php?option=com_rsticketspro&view=submit'); ?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data" class="form-horizontal">
 	
 		<div class="rst-form-section">
 			<?php
 			
 			if ($this->showFormHeadings) {
 			?>
-			<h3 class="rst-form-heading"><?php echo JText::_('RST_YOUR_INFORMATION_HEADING'); ?></h3>
+			<h3 class="rst-form-heading"><?php echo Text::_('RST_YOUR_INFORMATION_HEADING'); ?></h3>
 			<?php
 			}
 			
@@ -101,7 +109,7 @@ if ($this->params->get('show_page_heading'))
 			// department
 			if ($this->showFormHeadings) {
 			?>
-			<h3 class="rst-form-heading"><?php echo JText::_('RST_TECHNICAL_INFORMATION_HEADING'); ?></h3>
+			<h3 class="rst-form-heading"><?php echo Text::_('RST_TECHNICAL_INFORMATION_HEADING'); ?></h3>
 			<?php
 			}
 			
@@ -117,7 +125,7 @@ if ($this->params->get('show_page_heading'))
 		
 		<div class="rst-form-section">
 			<?php if ($this->showFormHeadings) { ?>
-			<h3 class="rst-form-heading"><?php echo JText::_('RST_ISSUE_DETAILS_HEADING'); ?></h3>
+			<h3 class="rst-form-heading"><?php echo Text::_('RST_ISSUE_DETAILS_HEADING'); ?></h3>
 			<?php
 			}
 			
@@ -134,7 +142,7 @@ if ($this->params->get('show_page_heading'))
 		
 		<div class="rst-form-section">
 			<?php if ($this->showFormHeadings) { ?>
-			<h3 class="rst-form-heading" id="rst_files_message_heading"><?php echo JText::_('RST_FILE_ATTACHMENTS_HEADING'); ?></h3>
+			<h3 class="rst-form-heading" id="rst_files_message_heading"><?php echo Text::_('RST_FILE_ATTACHMENTS_HEADING'); ?></h3>
 			<?php } ?>
 			<!-- Prepend the upload message -->
 			<div id="rst_files_message_container"></div>
@@ -152,7 +160,7 @@ if ($this->params->get('show_page_heading'))
 		?>
 		<div class="rst-form-section">
 			<?php if ($this->showFormHeadings) { ?>
-			<h3 class="rst-form-heading"><?php echo JText::_('RST_SPAM_PROTECTION_HEADING'); ?></h3>
+			<h3 class="rst-form-heading"><?php echo Text::_('RST_SPAM_PROTECTION_HEADING'); ?></h3>
 			<?php
 			}
 			
@@ -168,7 +176,7 @@ if ($this->params->get('show_page_heading'))
 		?>
 		<div class="rst-form-section">
 			<?php if ($this->showFormHeadings) { ?>
-			<h3 class="rst-form-heading"><?php echo JText::_('RST_PRIVACY_AGREEMENT_HEADING'); ?></h3>
+			<h3 class="rst-form-heading"><?php echo Text::_('RST_PRIVACY_AGREEMENT_HEADING'); ?></h3>
 			<?php
 			}
 			
@@ -193,7 +201,7 @@ if ($this->params->get('show_page_heading'))
 		</div>
 		<?php } ?>
 	
-		<div class="rst-form-section"><button type="button" class="btn btn-success" onclick="Joomla.submitbutton('submit.save'); this.disabled = true;"><?php echo JText::_('RST_SUBMIT'); ?></button></div><?php echo JHtml::_('form.token'); ?>
+		<div class="rst-form-section"><button type="button" class="btn btn-success" onclick="Joomla.submitbutton('submit.save'); this.disabled = true;"><?php echo Text::_('RST_SUBMIT'); ?></button></div><?php echo HTMLHelper::_('form.token'); ?>
 		<input type="hidden" name="task" value="" />
 	</form>
 </div>

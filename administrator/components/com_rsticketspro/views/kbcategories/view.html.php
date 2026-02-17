@@ -9,7 +9,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewKbcategories extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewKbcategories extends HtmlView
 {
 	protected $items;
 	protected $pagination;
@@ -31,28 +35,28 @@ class RsticketsproViewKbcategories extends JViewLegacy
 	protected function addToolbar()
 	{
 		// set title
-		JToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
+		\Joomla\CMS\Toolbar\ToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
 
 		RSTicketsProToolbarHelper::addToolbar('kbcategories');
 
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		if ($user->authorise('kbcategory.create', 'com_rsticketspro'))
 		{
-			JToolbarHelper::addNew('kbcategory.add');
+			\Joomla\CMS\Toolbar\ToolbarHelper::addNew('kbcategory.add');
 		}
 		if ($user->authorise('kbcategory.edit', 'com_rsticketspro'))
 		{
-			JToolbarHelper::editList('kbcategory.edit');
+			\Joomla\CMS\Toolbar\ToolbarHelper::editList('kbcategory.edit');
 		}
 		if ($user->authorise('kbcategory.edit.state', 'com_rsticketspro'))
 		{
-			JToolbarHelper::publish('kbcategories.publish', 'JTOOLBAR_PUBLISH', true);
-			JToolbarHelper::unpublish('kbcategories.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+			\Joomla\CMS\Toolbar\ToolbarHelper::publish('kbcategories.publish', 'JTOOLBAR_PUBLISH', true);
+			\Joomla\CMS\Toolbar\ToolbarHelper::unpublish('kbcategories.unpublish', 'JTOOLBAR_UNPUBLISH', true);
 		}
 		if ($user->authorise('kbcategory.delete', 'com_rsticketspro'))
 		{
-			JToolbarHelper::deleteList('RST_CONFIRM_DELETE', 'kbcategories.delete');
+			\Joomla\CMS\Toolbar\ToolbarHelper::deleteList('RST_CONFIRM_DELETE', 'kbcategories.delete');
 		}
 	}
 }

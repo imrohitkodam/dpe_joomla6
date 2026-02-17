@@ -24,13 +24,13 @@ class JFormFieldDepartments extends JFormFieldList
 		$is_staff			= RSTicketsProHelper::isStaff();
 		$force_departments	= RSTicketsProHelper::getConfig('staff_force_departments');
 		$departments		= RSTicketsProHelper::getCurrentDepartments();
-		$view				= JFactory::getApplication()->getInput()->get('view');
-		$db 				= JFactory::getDbo();
-		$user_groups		= !$is_staff ? JAccess::getGroupsByUser(JFactory::getUser()->id, false) : array();
+		$view				= Factory::getApplication()->getInput()->get('view');
+		$db 				= Factory::getDbo();
+		$user_groups		= !$is_staff ? JAccess::getGroupsByUser(Factory::getUser()->id, false) : array();
 
 		if (isset($this->element['please']) && $this->element['please'] == 'true')
 		{
-			$options[] = JHtml::_('select.option', '', JText::_('RST_PLEASE_SELECT_DEPARTMENT'));
+			$options[] = HTMLHelper::_('select.option', '', Text::_('RST_PLEASE_SELECT_DEPARTMENT'));
 		}
 
 		$query 	= $db->getQuery(true);
@@ -73,7 +73,7 @@ class JFormFieldDepartments extends JFormFieldList
 					}
 				}
 
-				$tmp = JHtml::_('select.option', $result->id, JText::_($result->name));
+				$tmp = HTMLHelper::_('select.option', $result->id, Text::_($result->name));
 
 				// Add the option object to the result set.
 				$options[] = $tmp;

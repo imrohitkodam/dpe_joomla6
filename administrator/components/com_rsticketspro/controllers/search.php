@@ -9,13 +9,19 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproControllerSearch extends JControllerLegacy
+use Joomla\CMS\MVC\Controller\BaseController;
+
+use Joomla\CMS\Router\Route;
+
+use Joomla\CMS\Language\Text;
+
+class RsticketsproControllerSearch extends BaseController
 {
 	public function cancel()
 	{
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 		
-		$this->setRedirect(JRoute::_('index.php?option=com_rsticketspro&view=tickets', false));
+		$this->setRedirect(Route::_('index.php?option=com_rsticketspro&view=tickets', false));
 	}
 	
 	public function reset()
@@ -23,11 +29,11 @@ class RsticketsproControllerSearch extends JControllerLegacy
 		$model = $this->getModel('tickets');
 		$model->resetSearch();
 		
-		$this->setRedirect(JRoute::_('index.php?option=com_rsticketspro&view=tickets', false));
+		$this->setRedirect(Route::_('index.php?option=com_rsticketspro&view=tickets', false));
 	}
 
 	public function advanced()
 	{
-		$this->setRedirect(JRoute::_('index.php?option=com_rsticketspro&view=search', false));
+		$this->setRedirect(Route::_('index.php?option=com_rsticketspro&view=search', false));
 	}
 }

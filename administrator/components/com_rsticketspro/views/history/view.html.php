@@ -9,7 +9,17 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewHistory extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+
+use Joomla\CMS\HTML\HTMLHelper;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewHistory extends HtmlView
 {
 	protected $id;
 	protected $items;
@@ -22,7 +32,7 @@ class RsticketsproViewHistory extends JViewLegacy
 	{
 		if (!$this->hasPermission())
 		{
-			throw new Exception(JText::_('RST_CANNOT_VIEW_HISTORY'), 403);
+			throw new Exception(Text::_('RST_CANNOT_VIEW_HISTORY'), 403);
 		}
 		
 		$this->id 			= $this->get('Id');
@@ -37,7 +47,7 @@ class RsticketsproViewHistory extends JViewLegacy
 	
 	protected function showDate($date)
 	{
-		return JHtml::_('date', $date, $this->dateFormat);
+		return HTMLHelper::_('date', $date, $this->dateFormat);
 	}
 	
 	protected function showUser($user_id)
@@ -46,7 +56,7 @@ class RsticketsproViewHistory extends JViewLegacy
 
 		if (!isset($cache[$user_id]))
 		{
-			$cache[$user_id] = $user_id ? JFactory::getUser($user_id)->{$this->userField} : '-';
+			$cache[$user_id] = $user_id ? Factory::getUser($user_id)->{$this->userField} : '-';
 		}
 
 		return $cache[$user_id];
@@ -57,7 +67,7 @@ class RsticketsproViewHistory extends JViewLegacy
 		// get id
 		$id = $this->get('Id');
 		// get model
-		$model = JModelLegacy::getInstance('Ticket', 'RsticketsproModel', array(
+		$model = BaseDatabaseModel::getInstance('Ticket', 'RsticketsproModel', array(
 			'option' => 'com_rsticketspro',
 			'table_path' => JPATH_ADMINISTRATOR.'/components/com_rsticketspro/tables'
 		));

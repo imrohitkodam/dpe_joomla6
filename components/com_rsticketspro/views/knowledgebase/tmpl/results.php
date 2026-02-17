@@ -8,17 +8,21 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\HTML\HTMLHelper;
+
+use Joomla\CMS\Language\Text;
 ?>
 
-<h1 class="rst-heading"><?php echo JText::sprintf('RST_KB_RESULTS_FOR', $this->escape($this->word)); ?></h1>
+<h1 class="rst-heading"><?php echo Text::sprintf('RST_KB_RESULTS_FOR', $this->escape($this->word)); ?></h1>
 
 <?php
 if (empty($this->items))
 {
 	?>
 	<div class="alert alert-info">
-		<span class="fa fa-info-circle" aria-hidden="true"></span><span class="sr-only"><?php echo JText::_('INFO'); ?></span>
-		<?php echo JText::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
+		<span class="fa fa-info-circle" aria-hidden="true"></span><span class="sr-only"><?php echo Text::_('INFO'); ?></span>
+		<?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
 	</div>
 	<?php
 }
@@ -32,9 +36,9 @@ else
 		?>
 		<thead>
 			<tr>
-				<th nowrap="nowrap" style="width: 1%;"><?php echo JText::_('#'); ?></th>
-				<th><?php echo JText::_('RST_KB_ARTICLE_NAME'); ?></th>
-				<th><?php echo JText::_('RST_KB_CATEGORY_NAME'); ?></th>
+				<th nowrap="nowrap" style="width: 1%;"><?php echo Text::_('#'); ?></th>
+				<th><?php echo Text::_('RST_KB_ARTICLE_NAME'); ?></th>
+				<th><?php echo Text::_('RST_KB_CATEGORY_NAME'); ?></th>
 			</tr>
 		</thead>
 		<?php
@@ -53,14 +57,14 @@ else
 			<? } ?>
 				<td>
 					<a href="<?php echo RSTicketsProHelper::route('index.php?option=com_rsticketspro&view=article&cid='.RSTicketsProHelper::KbSEF($item)); ?>">
-						<?php echo ($this->show_thumbs && $item->thumb) != '' ? JHtml::_('image', 'components/com_rsticketspro/assets/thumbs/articles/' . $item->thumb, '', array('class' => 'rst-kb-article-thumb'), false) : ''; ?>
-						<?php echo $item->name != '' ? $item->name : JText::_('RST_NO_TITLE'); ?>
+						<?php echo ($this->show_thumbs && $item->thumb) != '' ? HTMLHelper::_('image', 'components/com_rsticketspro/assets/thumbs/articles/' . $item->thumb, '', array('class' => 'rst-kb-article-thumb'), false) : ''; ?>
+						<?php echo $item->name != '' ? $item->name : Text::_('RST_NO_TITLE'); ?>
 					</a>
 					<?php
 					if ($this->isHot($item->hits))
 					{
 						?>
-						<em class="rst-hot"><?php echo JText::_('RST_HOT'); ?></em>
+						<em class="rst-hot"><?php echo Text::_('RST_HOT'); ?></em>
 						<?php
 					}
 					?>
@@ -76,7 +80,7 @@ else
 					}
 					else
 					{
-						echo JText::_('RST_KB_NO_CATEGORY');
+						echo Text::_('RST_KB_NO_CATEGORY');
 					}
 					?>
 				</td>

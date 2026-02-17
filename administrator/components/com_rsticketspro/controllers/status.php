@@ -9,17 +9,19 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 class RsticketsproControllerStatus extends JControllerForm
 {
 	protected $view_list = 'statuses';
 
 	public function allowAdd($data = array())
 	{
-		return JFactory::getUser()->authorise('status.create', 'com_rsticketspro');
+		return Factory::getUser()->authorise('status.create', 'com_rsticketspro');
 	}
 
 	public function allowEdit($data = array(), $key = 'id')
 	{
-		return JFactory::getUser()->authorise('status.edit', 'com_rsticketspro');
+		return Factory::getUser()->authorise('status.edit', 'com_rsticketspro');
 	}
 }

@@ -8,7 +8,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproModelCrons extends JModelList
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\ListModel;
+
+class RsticketsproModelCrons extends \Joomla\CMS\MVC\Model\ListModel
 {	
 	public function __construct($config = array())
 	{
@@ -23,7 +26,7 @@ class RsticketsproModelCrons extends JModelList
 	}
 	
 	protected function getListQuery() {
-		$db 	= JFactory::getDbo();
+		$db 	= Factory::getDbo();
 		$query 	= $db->getQuery(true);
 		
 		// get filtering states

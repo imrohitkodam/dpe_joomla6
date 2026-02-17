@@ -20,11 +20,11 @@ class JFormFieldRSCaptcha extends JFormField
 		
 		if ($captcha == 1)
 		{
-			$route 	= JRoute::_('index.php?option=com_rsticketspro&task=captcha');
-			$src 	= JRoute::_('index.php?option=com_rsticketspro&task=captcha&sid='.mt_rand());
-			$img = '<img src="'.$src.'" id="submit_captcha_image" alt="'.JText::_('RST_ANTISPAM').'" />';
+			$route 	= Route::_('index.php?option=com_rsticketspro&task=captcha');
+			$src 	= Route::_('index.php?option=com_rsticketspro&task=captcha&sid='.mt_rand());
+			$img = '<img src="'.$src.'" id="submit_captcha_image" alt="'.Text::_('RST_ANTISPAM').'" />';
 			
-			$refresh = '<span class="'.RSTicketsProHelper::tooltipClass().'" title="'.RSTicketsProHelper::tooltipText(JText::_('RST_REFRESH_CAPTCHA_DESC')).'"><a onclick="return RSTicketsPro.refreshCaptcha(\''.addslashes($route).'\');" href="javascript:void(0);" class="btn btn-small"><i class="icon-refresh icon-rsrefresh"></i></a></span>';
+			$refresh = '<span class="'.RSTicketsProHelper::tooltipClass().'" title="'.RSTicketsProHelper::tooltipText(Text::_('RST_REFRESH_CAPTCHA_DESC')).'"><a onclick="return RSTicketsPro.refreshCaptcha(\''.addslashes($route).'\');" href="javascript:void(0);" class="btn btn-small"><i class="icon-refresh icon-rsrefresh"></i></a></span>';
 			
 			$input = '<div class="rst_captcha"><input type="text" id="'.$this->id.'" name="'.$this->name.'" value="" /></div>';
 			
@@ -33,10 +33,10 @@ class JFormFieldRSCaptcha extends JFormField
 		elseif ($captcha > 1 && $captcha < 5)
 		{
 			// reCAPTCHA NoCAPTCHA
-			$doc = JFactory::getDocument();
+			$doc = Factory::getDocument();
 			if ($doc->getType() == 'html')
 			{
-				$doc->addScript('https://www.google.com/recaptcha/api.js?'.($captcha == 4 ? 'render=explicit&' : '').'hl='.urlencode(JFactory::getLanguage()->getTag()),array(), array('async' => 'async', 'defer' => 'defer'));
+				$doc->addScript('https://www.google.com/recaptcha/api.js?'.($captcha == 4 ? 'render=explicit&' : '').'hl='.urlencode(Factory::getLanguage()->getTag()),array(), array('async' => 'async', 'defer' => 'defer'));
 			}
 
 			$sitekey 	= RSTicketsProHelper::getConfig('recaptcha_new_site_key');
@@ -44,12 +44,12 @@ class JFormFieldRSCaptcha extends JFormField
 			
 			if (empty($sitekey))
 			{
-				return JText::_('RST_CAPTCHA_MISSING_SITE_KEY');
+				return Text::_('RST_CAPTCHA_MISSING_SITE_KEY');
 			}
 			
 			if (empty($secretkey))
 			{
-				return JText::_('RST_CAPTCHA_MISSING_SECRET_KEY');
+				return Text::_('RST_CAPTCHA_MISSING_SECRET_KEY');
 			}
 
 			if ($captcha == 3) {
@@ -87,7 +87,7 @@ class JFormFieldRSCaptcha extends JFormField
 				return '<div id="g-recaptcha-rst"></div>';
 			}
 		} else if ($captcha == 5) {
-			$jcaptcha = JFactory::getApplication()->get('captcha');
+			$jcaptcha = Factory::getApplication()->get('captcha');
 			if (!empty($jcaptcha)) {
 				try {
 					$jcaptcha = JCaptcha::getInstance($jcaptcha, array('namespace' => 'rscaptcha'));
@@ -96,10 +96,10 @@ class JFormFieldRSCaptcha extends JFormField
 						return $jcaptcha->display('rscaptcha', 'rscaptcha');
 					}
 				} catch (Exception $e) {
-					JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+					Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 				}
 			} else {
-				JFactory::getApplication()->enqueueMessage(JText::_('RST_CAPTCHA_BUILT_IN_NOT_SELECTED'), 'error');
+				Factory::getApplication()->enqueueMessage(Text::_('RST_CAPTCHA_BUILT_IN_NOT_SELECTED'), 'error');
 			}
 		}
 		

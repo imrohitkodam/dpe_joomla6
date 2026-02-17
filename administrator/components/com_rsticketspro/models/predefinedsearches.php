@@ -9,7 +9,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproModelPredefinedsearches extends JModelList
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\ListModel;
+
+class RsticketsproModelPredefinedsearches extends \Joomla\CMS\MVC\Model\ListModel
 {
 	public function __construct($config = array())
 	{
@@ -25,7 +28,7 @@ class RsticketsproModelPredefinedsearches extends JModelList
 	
 	protected function getListQuery()
 	{
-		$db 	= JFactory::getDbo();
+		$db 	= Factory::getDbo();
 		$query 	= $db->getQuery(true);
 		
 		// get filtering states
@@ -34,7 +37,7 @@ class RsticketsproModelPredefinedsearches extends JModelList
 		
 		$query->select('*')
 			->from('#__rsticketspro_searches')
-			->where($db->qn('user_id') . '=' . $db->q(JFactory::getUser()->get('id')));
+			->where($db->qn('user_id') . '=' . $db->q(Factory::getUser()->get('id')));
 
 		// search
 		if (strlen($search))

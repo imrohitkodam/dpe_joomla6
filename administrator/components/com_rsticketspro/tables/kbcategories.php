@@ -9,6 +9,12 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\Filesystem\File;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
 class RsticketsproTableKbcategories extends JTable
 {
 	public $id = null;
@@ -40,7 +46,7 @@ class RsticketsproTableKbcategories extends JTable
 				// let's see if the current parent is different
 				if ($this->parent_id == $this->id)
 				{
-					throw new Exception(JText::_('RST_KB_CATEGORY_PARENT_SAME_ERROR'));
+					throw new Exception(Text::_('RST_KB_CATEGORY_PARENT_SAME_ERROR'));
 				}
 
 				// let's see if we are trying to use a child as a parent
@@ -61,7 +67,7 @@ class RsticketsproTableKbcategories extends JTable
 
 						if ($id == $this->id)
 						{
-							throw new Exception(JText::_('RST_KB_CATEGORY_PARENT_CHILD_ERROR'));
+							throw new Exception(Text::_('RST_KB_CATEGORY_PARENT_CHILD_ERROR'));
 						}
 					}
 				}
@@ -76,7 +82,7 @@ class RsticketsproTableKbcategories extends JTable
 			$this->alias = JFilterOutput::stringURLSafe($this->alias);
 
 			if (trim(str_replace('-', '', $this->alias)) == '') {
-				$this->alias = JFactory::getDate()->format('Y-m-d-H-i-s');
+				$this->alias = Factory::getDate()->format('Y-m-d-H-i-s');
 			}
 
 			if (!$this->id && !$this->ordering)
@@ -100,7 +106,7 @@ class RsticketsproTableKbcategories extends JTable
 
         if ($table->load(array('alias' => $this->alias, 'parent_id' => (int) $this->parent_id)) && ($table->id != $this->id || $this->id == 0)) {
             // Is the existing category trashed?
-            $this->setError(JText::_('RST_KB_CATEGORY_UNIQUE_ALIAS'));
+            $this->setError(Text::_('RST_KB_CATEGORY_UNIQUE_ALIAS'));
 			
             return false;
         }
@@ -114,11 +120,11 @@ class RsticketsproTableKbcategories extends JTable
 		{
 			if (file_exists(RST_CATEGORY_THUMB_FOLDER.'/'.$this->thumb))
 			{
-				JFile::delete(RST_CATEGORY_THUMB_FOLDER.'/'.$this->thumb);
+				File::delete(RST_CATEGORY_THUMB_FOLDER.'/'.$this->thumb);
 			}
 			if (file_exists(RST_CATEGORY_THUMB_FOLDER.'/small/'.$this->thumb))
 			{
-				JFile::delete(RST_CATEGORY_THUMB_FOLDER.'/small/'.$this->thumb);
+				File::delete(RST_CATEGORY_THUMB_FOLDER.'/small/'.$this->thumb);
 			}
 			
 			return true;

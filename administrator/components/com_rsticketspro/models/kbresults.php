@@ -9,7 +9,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproModelKbresults extends JModelLegacy
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproModelKbresults extends BaseDatabaseModel
 {
 	public function getItems()
 	{
@@ -31,11 +35,11 @@ class RsticketsproModelKbresults extends JModelLegacy
 	
 	protected function getListQuery()
 	{
-		$db 	= JFactory::getDbo();
+		$db 	= Factory::getDbo();
 		$query 	= $db->getQuery(true);
 		
 		// get the search string
-		$value = JFactory::getApplication()->getInput()->get('filter_search', '', 'raw');
+		$value = Factory::getApplication()->getInput()->get('filter_search', '', 'raw');
 		// escape it with extra characters
 		$value = $db->escape($value, true);
 		// just quote it

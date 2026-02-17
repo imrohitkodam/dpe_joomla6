@@ -9,15 +9,17 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 class RsticketsproControllerPriority extends JControllerForm
 {
 	public function allowAdd($data = array())
 	{
-		return JFactory::getUser()->authorise('priority.create', 'com_rsticketspro');
+		return Factory::getUser()->authorise('priority.create', 'com_rsticketspro');
 	}
 
 	public function allowEdit($data = array(), $key = 'id')
 	{
-		return JFactory::getUser()->authorise('priority.edit', 'com_rsticketspro');
+		return Factory::getUser()->authorise('priority.edit', 'com_rsticketspro');
 	}
 }

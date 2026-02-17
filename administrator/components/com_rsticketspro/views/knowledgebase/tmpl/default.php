@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\HTML\HTMLHelper;
+
 RSTicketsProHelper::tooltipLoad();
 ?>
 <form action="index.php" method="post" name="adminForm">
@@ -21,7 +23,7 @@ RSTicketsProHelper::tooltipLoad();
 		</div>
 		<div id="dashboard-right" class="hidden-phone hidden-tablet">
 			<?php echo $this->loadTemplate('version'); ?>
-			<p align="center"><a href="http://www.rsjoomla.com/joomla-components/joomla-security.html?utm_source=rsticketspro&amp;utm_medium=banner_approved&amp;utm_campaign=rsfirewall" target="_blank"><?php echo JHtml::image('com_rsticketspro/admin/rsfirewall-approved.png', 'RSFirewall! Approved', 'align="middle"', true);?></a></p>
+			<p align="center"><a href="http://www.rsjoomla.com/joomla-components/joomla-security.html?utm_source=rsticketspro&amp;utm_medium=banner_approved&amp;utm_campaign=rsfirewall" target="_blank"><?php echo HTMLHelper::image('com_rsticketspro/admin/rsfirewall-approved.png', 'RSFirewall! Approved', 'align="middle"', true);?></a></p>
 		</div>
 	</div>
 	

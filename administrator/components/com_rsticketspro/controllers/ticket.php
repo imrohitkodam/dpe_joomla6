@@ -8,11 +8,19 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\MVC\Controller\BaseController;
+
+use Joomla\CMS\Uri\Uri;
+
+use Joomla\CMS\Router\Route;
+
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Factory;
 
 
-class RsticketsproControllerTicket extends JControllerLegacy
+class RsticketsproControllerTicket extends BaseController
 {
 	protected $option = 'com_rsticketspro';
 	protected $context = 'ticket';
@@ -27,14 +35,14 @@ class RsticketsproControllerTicket extends JControllerLegacy
 
 	protected function getLoginLink()
 	{
-		$link = base64_encode((string) JUri::getInstance());
+		$link = base64_encode((string) Uri::getInstance());
 
 		return RSTicketsProHelper::route('index.php?option=com_users&view=login&return=' . $link, false);
 	}
 
 	protected function getListingLink()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		if ($app->isClient('administrator'))
 		{
 			return RSTicketsProHelper::route('index.php?option=com_rsticketspro&view=tickets', false);
@@ -47,9 +55,9 @@ class RsticketsproControllerTicket extends JControllerLegacy
 
 	public function flag()
 	{
-		$app           = JFactory::getApplication();
-		$cid           = $app->input->getInt('cid');
-		$flagged       = $app->input->getInt('flagged');
+		$app           = Factory::getApplication();
+		$cid           = $app->getInput()->getInt('cid');
+		$flagged       = $app->getInput()->getInt('flagged');
 		$model         = $this->getModel('ticket');
 
 		// logged in?
@@ -81,9 +89,9 @@ class RsticketsproControllerTicket extends JControllerLegacy
 
 	public function rate()
 	{
-		$app         = JFactory::getApplication();
-		$cid         = $app->input->getInt('cid');
-		$rating      = $app->input->getInt('rating');
+		$app         = Factory::getApplication();
+		$cid         = $app->getInput()->getInt('cid');
+		$rating      = $app->getInput()->getInt('rating');
 		$access_code = $app->getInput()->get('access_code');
 
 		$model = $this->getModel('ticket');
@@ -91,28 +99,28 @@ class RsticketsproControllerTicket extends JControllerLegacy
 		if (strlen($access_code))
 		{
 			$ticket   = $model->getTicket($cid);
-			$customer = JFactory::getUser($ticket->customer_id);
+			$customer = Factory::getUser($ticket->customer_id);
 
 			if ((int) $ticket->feedback != 0)
 			{
-				$app->redirect(JUri::root(), JText::_('RST_EMAIL_ALREADY_RATED'));
+				$app->redirect(Uri::root(), Text::_('RST_EMAIL_ALREADY_RATED'));
 			}
 
 			if ($access_code !== md5($ticket->id . ' | ' . $customer->email))
 			{
-				throw new Exception(JText::_('RST_EMAIL_ACCESS_CODE_INCORRECT'), 403);
+				throw new Exception(Text::_('RST_EMAIL_ACCESS_CODE_INCORRECT'), 403);
 			}
 
 			$model->setRating($cid, $rating);
 
-			$app->redirect(JUri::root(), JText::_('RST_FEEDBACK_RECEIVED_FROM_EMAIL'));
+			$app->redirect(Uri::root(), Text::_('RST_FEEDBACK_RECEIVED_FROM_EMAIL'));
 		}
 		else
 		{
-			// logged in?JText::_('RST_YOU_HAVE_TO_BE_LOGGED_IN')
+			// logged in?Text::_('RST_YOU_HAVE_TO_BE_LOGGED_IN')
 			if ($model->isGuest())
 			{
-				throw new Exception(JText::_('RST_YOU_HAVE_TO_BE_LOGGED_IN'), 403);
+				throw new Exception(Text::_('RST_YOU_HAVE_TO_BE_LOGGED_IN'), 403);
 			}
 			// no point in trying to rate when config doesn't allow it
 			if (!RSTicketsProHelper::getConfig('show_ticket_voting'))
@@ -141,8 +149,8 @@ class RsticketsproControllerTicket extends JControllerLegacy
 
 	public function delete()
 	{
-		$app = JFactory::getApplication();
-		$cid = $app->input->getInt('cid');
+		$app = Factory::getApplication();
+		$cid = $app->getInput()->getInt('cid');
 
 		$model = $this->getModel('ticket');
 		// logged in?
@@ -153,7 +161,7 @@ class RsticketsproControllerTicket extends JControllerLegacy
 		// only staff members can call this
 		if (!$model->isStaff())
 		{
-			throw new Exception(JText::_('RST_CANNOT_DELETE_TICKETS'), 403);
+			throw new Exception(Text::_('RST_CANNOT_DELETE_TICKETS'), 403);
 		}
 		if (!$model->hasPermission($cid))
 		{
@@ -165,11 +173,11 @@ class RsticketsproControllerTicket extends JControllerLegacy
 		if ($permissions->delete_ticket)
 		{
 			$model->delete($cid);
-			$this->setMessage(JText::_('RST_TICKET_DELETED_OK'));
+			$this->setMessage(Text::_('RST_TICKET_DELETED_OK'));
 		}
 		else
 		{
-			$this->setMessage(JText::sprintf('RST_TICKET_NOT_DELETED', $cid), 'error');
+			$this->setMessage(Text::sprintf('RST_TICKET_NOT_DELETED', $cid), 'error');
 		}
 		$this->setRedirect($this->getListingLink());
 	}
@@ -181,8 +189,8 @@ class RsticketsproControllerTicket extends JControllerLegacy
 		{
 			return $this->setRedirect($this->getListingLink());
 		}
-		$app = JFactory::getApplication();
-		$cid = $app->input->getInt('cid');
+		$app = Factory::getApplication();
+		$cid = $app->getInput()->getInt('cid');
 
 		$model = $this->getModel('ticket');
 		// logged in?
@@ -193,7 +201,7 @@ class RsticketsproControllerTicket extends JControllerLegacy
 		// only staff members can call this
 		if (!$model->isStaff())
 		{
-			throw new Exception(JText::_('RST_CANNOT_NOTIFY_TICKETS'), 403);
+			throw new Exception(Text::_('RST_CANNOT_NOTIFY_TICKETS'), 403);
 		}
 		if (!$model->hasPermission($cid))
 		{
@@ -203,13 +211,13 @@ class RsticketsproControllerTicket extends JControllerLegacy
 		}
 
 		$model->notify($cid);
-		$this->setMessage(JText::_('RST_TICKET_NOTIFIED_OK'));
+		$this->setMessage(Text::_('RST_TICKET_NOTIFIED_OK'));
 		$this->setRedirect($this->getListingLink());
 	}
 
 	public function bulkUpdate()
 	{
-		$app  = JFactory::getApplication();
+		$app  = Factory::getApplication();
 		$cids = $app->getInput()->get('cid', array(), 'array');
 
 		$model = $this->getModel('ticket');
@@ -221,14 +229,14 @@ class RsticketsproControllerTicket extends JControllerLegacy
 		// only staff members can call this
 		if (!$model->isStaff())
 		{
-			throw new Exception(JText::_('RST_CANNOT_UPDATE_TICKETS'), 403);
+			throw new Exception(Text::_('RST_CANNOT_UPDATE_TICKETS'), 403);
 		}
 
-		$staff_id    = $app->input->getInt('bulk_staff_id', -1);
-		$priority_id = $app->input->getInt('bulk_priority_id');
-		$status_id   = $app->input->getInt('bulk_status_id');
-		$notify      = $app->input->getInt('bulk_notify');
-		$delete      = $app->input->getInt('bulk_delete');
+		$staff_id    = $app->getInput()->getInt('bulk_staff_id', -1);
+		$priority_id = $app->getInput()->getInt('bulk_priority_id');
+		$status_id   = $app->getInput()->getInt('bulk_status_id');
+		$notify      = $app->getInput()->getInt('bulk_notify');
+		$delete      = $app->getInput()->getInt('bulk_delete');
 
 		// no point notifying if autoclose is disabled
 		if (!RSTicketsProHelper::getConfig('autoclose_enabled'))
@@ -250,7 +258,7 @@ class RsticketsproControllerTicket extends JControllerLegacy
 					// check for delete permission & if ticket has been deleted
 					if (!$permissions->delete_ticket || !$model->delete($cid))
 					{
-						$app->enqueueMessage(JText::sprintf('RST_TICKET_NOT_DELETED', $cid), 'error');
+						$app->enqueueMessage(Text::sprintf('RST_TICKET_NOT_DELETED', $cid), 'error');
 					}
 				}
 				else
@@ -292,14 +300,14 @@ class RsticketsproControllerTicket extends JControllerLegacy
 
 		if ($delete)
 		{
-			$this->setMessage(JText::_('RST_TICKETS_DELETED_OK'));
+			$this->setMessage(Text::_('RST_TICKETS_DELETED_OK'));
 		}
 		else
 		{
-			$this->setMessage(JText::_('RST_TICKETS_UPDATED_OK'));
+			$this->setMessage(Text::_('RST_TICKETS_UPDATED_OK'));
 			if ($notify)
 			{
-				$this->setMessage(JText::_('RST_TICKET_NOTIFIED_OK'));
+				$this->setMessage(Text::_('RST_TICKET_NOTIFIED_OK'));
 			}
 		}
 
@@ -309,11 +317,11 @@ class RsticketsproControllerTicket extends JControllerLegacy
 	// used to update custom fields
 	public function updateFields()
 	{
-		$app   = JFactory::getApplication();
-		$cid   = $app->input->getInt('cid');
+		$app   = Factory::getApplication();
+		$cid   = $app->getInput()->getInt('cid');
 		$data  = $app->getInput()->get('rst_custom_fields', array(), 'array');
 		$model = $this->getModel('ticket');
-		$url   = JRoute::_('index.php?option=com_rsticketspro&view=ticket&id=' . RSTicketsProHelper::sef($cid), false);
+		$url   = Route::_('index.php?option=com_rsticketspro&view=ticket&id=' . RSTicketsProHelper::sef($cid), false);
 
 		// logged in?
 		if ($model->isGuest())
@@ -323,7 +331,7 @@ class RsticketsproControllerTicket extends JControllerLegacy
 		// only staff members can call this
 		if (!$model->isStaff())
 		{
-			throw new Exception(JText::_('RST_CANNOT_UPDATE_TICKET'), 403);
+			throw new Exception(Text::_('RST_CANNOT_UPDATE_TICKET'), 403);
 		}
 		if (!$model->hasPermission($cid))
 		{
@@ -334,32 +342,32 @@ class RsticketsproControllerTicket extends JControllerLegacy
 		$permissions = $model->getStaffPermissions();
 		if (!$permissions->update_ticket_custom_fields)
 		{
-            $app->enqueueMessage(JText::_('RST_CANNOT_UPDATE_TICKET'), 'warning');
+            $app->enqueueMessage(Text::_('RST_CANNOT_UPDATE_TICKET'), 'warning');
 
 			return $this->setRedirect($url);
 		}
 
 		$model->updateFields($cid, $data);
 
-		$this->setMessage(JText::_('RST_TICKET_UPDATED_OK'));
+		$this->setMessage(Text::_('RST_TICKET_UPDATED_OK'));
 		$this->setRedirect($url);
 	}
 
 	// used to update ticket information
 	public function updateInfo()
 	{
-		$app   = JFactory::getApplication();
-		$cid   = $app->input->getInt('cid');
+		$app   = Factory::getApplication();
+		$cid   = $app->getInput()->getInt('cid');
 		$data  = $app->getInput()->get('ticket', array(), 'array');
 		$model = $this->getModel('ticket');
-		$url   = JRoute::_('index.php?option=com_rsticketspro&view=ticket&id=' . RSTicketsProHelper::sef($cid), false);
+		$url   = Route::_('index.php?option=com_rsticketspro&view=ticket&id=' . RSTicketsProHelper::sef($cid), false);
 
 		// Hack start DPE: Get jfrom data
 		$data  = array_merge($data, $app->getInput()->get('jform', array(), 'array'));
 
 		if (!$data['customer_id'])
 		{
-			$app->enqueueMessage(JText::_('RST_PLEASE_SELECT_CUSTOMER_TICKET'), 'error');
+			$app->enqueueMessage(Text::_('RST_PLEASE_SELECT_CUSTOMER_TICKET'), 'error');
 			$app->redirect($url);
 		}
 
@@ -373,7 +381,7 @@ class RsticketsproControllerTicket extends JControllerLegacy
 		// only staff members can call this
 		if (!$model->isStaff())
 		{
-			throw new Exception(JText::_('RST_CANNOT_UPDATE_TICKET'), 403);
+			throw new Exception(Text::_('RST_CANNOT_UPDATE_TICKET'), 403);
 		}
 		if (!$model->hasPermission($cid))
 		{
@@ -418,8 +426,8 @@ class RsticketsproControllerTicket extends JControllerLegacy
 		}
 		else
 		{
-			$user     = JFactory::getUser();
-			$customer = JFactory::getUser($data['customer_id']);
+			$user     = Factory::getUser();
+			$customer = Factory::getUser($data['customer_id']);
 			$is_staff = RSTicketsProHelper::isStaff($customer->get('id'));
 
 			// cannot change to himself...
@@ -448,14 +456,14 @@ class RsticketsproControllerTicket extends JControllerLegacy
 		Factory::getApplication()->triggerEvent('onAfterTicketCreateSaveTimeSave',array($cid,$data));
 
 
-		$this->setMessage(JText::_('RST_TICKET_UPDATED_OK'));
+		$this->setMessage(Text::_('RST_TICKET_UPDATED_OK'));
 		$this->setRedirect($url);
 	}
 
 	public function saveTimeSpent()
 	{
-		$app        = JFactory::getApplication();
-		$cid        = $app->input->getInt('cid');
+		$app        = Factory::getApplication();
+		$cid        = $app->getInput()->getInt('cid');
 		$data       = $app->getInput()->get('ticket', array(), 'array');
 		$time_spent = $data['time_spent'];
 		$model      = $this->getModel('ticket');
@@ -468,12 +476,12 @@ class RsticketsproControllerTicket extends JControllerLegacy
 		// not enabled
 		if (!RSTicketsProHelper::getConfig('enable_time_spent'))
 		{
-			throw new Exception(JText::_('RST_CANNOT_UPDATE_TIME_SPENT'), 403);
+			throw new Exception(Text::_('RST_CANNOT_UPDATE_TIME_SPENT'), 403);
 		}
 		// only staff members can call this
 		if (!$model->isStaff())
 		{
-			throw new Exception(JText::_('RST_CANNOT_UPDATE_TIME_SPENT'), 403);
+			throw new Exception(Text::_('RST_CANNOT_UPDATE_TIME_SPENT'), 403);
 		}
 		if (!$model->hasPermission($cid))
 		{
@@ -489,8 +497,8 @@ class RsticketsproControllerTicket extends JControllerLegacy
 			'time_spent' => $time_spent
 		));
 
-		$this->setMessage(JText::_('RST_TIME_SPENT_UPDATED_OK'));
-		$this->setRedirect(JRoute::_('index.php?option=com_rsticketspro&view=ticket&id=' . RSTicketsProHelper::sef($cid), false));
+		$this->setMessage(Text::_('RST_TIME_SPENT_UPDATED_OK'));
+		$this->setRedirect(Route::_('index.php?option=com_rsticketspro&view=ticket&id=' . RSTicketsProHelper::sef($cid), false));
 	}
 
 	public function cancel()
@@ -500,9 +508,9 @@ class RsticketsproControllerTicket extends JControllerLegacy
 
 	public function changeTicketStatus()
 	{
-		$app   = JFactory::getApplication();
+		$app   = Factory::getApplication();
 		$model = $this->getModel('ticket');
-		$id    = $app->input->getInt('id');
+		$id    = $app->getInput()->getInt('id');
 		$task  = $app->getInput()->get('task');
 
 		$permissions = $model->getStaffPermissions();
@@ -511,15 +519,15 @@ class RsticketsproControllerTicket extends JControllerLegacy
 		{
 			$canChangeStatus = ($model->isStaff() && $permissions->change_ticket_status) || (!$model->isStaff() && RSTicketsProHelper::getConfig('allow_ticket_reopening'));
 			$status_id       = RST_STATUS_OPEN;
-			$successMsg      = JText::_('RST_TICKET_REOPENED_OK');
-			$errorMsg        = JText::_('RST_CANNOT_REOPEN_TICKET');
+			$successMsg      = Text::_('RST_TICKET_REOPENED_OK');
+			$errorMsg        = Text::_('RST_CANNOT_REOPEN_TICKET');
 		}
 		elseif ($task == 'close')
 		{
 			$canChangeStatus = ($model->isStaff() && $permissions->change_ticket_status) || (!$model->isStaff() && RSTicketsProHelper::getConfig('allow_ticket_closing'));
 			$status_id       = RST_STATUS_CLOSED;
-			$successMsg      = JText::_('RST_TICKET_CLOSED_OK');
-			$errorMsg        = JText::_('RST_CANNOT_CLOSE_TICKET');
+			$successMsg      = Text::_('RST_TICKET_CLOSED_OK');
+			$errorMsg        = Text::_('RST_CANNOT_CLOSE_TICKET');
 		}
 
 		if ($model->hasPermission($id) && $canChangeStatus)
@@ -529,7 +537,7 @@ class RsticketsproControllerTicket extends JControllerLegacy
 			));
 
 			$this->setMessage($successMsg);
-			$this->setRedirect(JRoute::_('index.php?option=com_rsticketspro&view=ticket&id=' . RSTicketsProHelper::sef($id), false));
+			$this->setRedirect(Route::_('index.php?option=com_rsticketspro&view=ticket&id=' . RSTicketsProHelper::sef($id), false));
 		}
 		else
 		{
@@ -540,9 +548,9 @@ class RsticketsproControllerTicket extends JControllerLegacy
 	public function reply()
 	{
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
-		$app     = JFactory::getApplication();
+		$app     = Factory::getApplication();
 		$input   = $app->input;
 		$data    = $input->get('ticket', array(), 'array');
 		$id      = $input->getInt('id');
@@ -553,7 +561,7 @@ class RsticketsproControllerTicket extends JControllerLegacy
 
 		if ($ticket->status_id == RST_STATUS_CLOSED)
 		{
-            $app->enqueueMessage(JText::_('RST_TICKET_REPLIES_CLOSED_ERROR'), 'warning');
+            $app->enqueueMessage(Text::_('RST_TICKET_REPLIES_CLOSED_ERROR'), 'warning');
 
 			return $this->setRedirect($this->getListingLink());
 		}
@@ -566,8 +574,8 @@ class RsticketsproControllerTicket extends JControllerLegacy
 		}
 		// overwrite some options
 		$data['id']        = null;
-		$data['user_id']   = JFactory::getUser()->id;
-		$data['date']      = JFactory::getDate()->toSql();
+		$data['user_id']   = Factory::getUser()->id;
+		$data['date']      = Factory::getDate()->toSql();
 		$data['ticket_id'] = $id;
 
 		if ($app->isClient('administrator'))
@@ -587,15 +595,15 @@ class RsticketsproControllerTicket extends JControllerLegacy
 			// Clear the data in the session
 			$app->setUserState($context . '.data', null);
 
-			$this->setMessage(JText::_('RST_TICKET_SUBMIT_REPLY_OK', 'info'));
+			$this->setMessage(Text::_('RST_TICKET_SUBMIT_REPLY_OK', 'info'));
 		}
 
-		$this->setRedirect(JRoute::_('index.php?option=com_rsticketspro&view=ticket&id=' . RSTicketsProHelper::sef($id), false));
+		$this->setRedirect(Route::_('index.php?option=com_rsticketspro&view=ticket&id=' . RSTicketsProHelper::sef($id), false));
 	}
 
 	public function downloadFile()
 	{
-		$app   = JFactory::getApplication();
+		$app   = Factory::getApplication();
 		$input = $app->input;
 		$id    = $input->getInt('id');
 
@@ -605,35 +613,35 @@ class RsticketsproControllerTicket extends JControllerLegacy
 		// check if file exists
 		if (!$file->load($id) || !$file->id)
 		{
-			throw new Exception(JText::_('RST_CANNOT_DOWNLOAD_FILE_NOT_EXIST'), 500);
+			throw new Exception(Text::_('RST_CANNOT_DOWNLOAD_FILE_NOT_EXIST'), 500);
 		}
 
 		// check if ticket can be opened by the user
 		$ticket = $model->getTicket($file->ticket_id);
 		if (!$ticket || !$ticket->id)
 		{
-			throw new Exception(JText::_('RST_CANNOT_DOWNLOAD_FILE'), 403);
+			throw new Exception(Text::_('RST_CANNOT_DOWNLOAD_FILE'), 403);
 		}
 
-		if ($access_code = JFactory::getApplication()->getInput()->get('access_code', ''))
+		if ($access_code = Factory::getApplication()->getInput()->get('access_code', ''))
 		{
 			if (!$model->hasDownloadPermission($access_code, $file->id, $ticket->id))
 			{
-				throw new Exception(JText::_('RST_CANNOT_DOWNLOAD_FILE'), 403);
+				throw new Exception(Text::_('RST_CANNOT_DOWNLOAD_FILE'), 403);
 			}
 		}
 		else
 		{
 			if (!$model->hasPermission($file->ticket_id))
 			{
-				throw new Exception(JText::_('RST_CANNOT_DOWNLOAD_FILE'), 403);
+				throw new Exception(Text::_('RST_CANNOT_DOWNLOAD_FILE'), 403);
 			}
 		}
 
 		$path = $file->getRealPath();
 		if (!file_exists($path))
 		{
-			throw new Exception(JText::_('RST_CANNOT_DOWNLOAD_FILE_NOT_EXIST'), 500);
+			throw new Exception(Text::_('RST_CANNOT_DOWNLOAD_FILE_NOT_EXIST'), 500);
 		}
 
 		// increment downloads

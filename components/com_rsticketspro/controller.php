@@ -9,7 +9,17 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproController extends JControllerLegacy
+use Joomla\CMS\MVC\Controller\BaseController;
+
+use Joomla\Filesystem\Folder;
+
+use Joomla\Filesystem\File;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproController extends BaseController
 {
 	public function captcha()
 	{
@@ -24,11 +34,11 @@ class RsticketsproController extends JControllerLegacy
 
 			$captcha->getImage();
 
-			JFactory::getApplication()->setHeader('content-type', 'image/jpeg');
-			JFactory::getApplication()->sendHeaders();
+			Factory::getApplication()->setHeader('content-type', 'image/jpeg');
+			Factory::getApplication()->sendHeaders();
 		}
 
-		JFactory::getApplication()->close();
+		Factory::getApplication()->close();
 	}
 	
 	public function resetsearch()
@@ -56,12 +66,12 @@ class RsticketsproController extends JControllerLegacy
 	{
 		try
 		{
-			$db			 = JFactory::getDbo();
+			$db			 = Factory::getDbo();
 			$query		 = $db->getQuery(true);
-			$app		 = JFactory::getApplication();
-			$user		 = JFactory::getUser();
-			$filename	 = $app->input->getString('filename','');
-			$ticket_id	 = $app->input->getInt('cid',0);
+			$app		 = Factory::getApplication();
+			$user		 = Factory::getUser();
+			$filename	 = $app->getInput()->getString('filename','');
+			$ticket_id	 = $app->getInput()->getInt('cid',0);
 			$is_staff	 = RSTicketsProHelper::isStaff();
 			$permissions = RSTicketsProHelper::getCurrentPermissions();
 			$departments = RSTicketsProHelper::getCurrentDepartments();
@@ -76,13 +86,13 @@ class RsticketsproController extends JControllerLegacy
 
 			if (!$ticket)
 			{
-				throw new Exception(JText::_('RST_CUSTOMER_CANNOT_VIEW_TICKET'));
+				throw new Exception(Text::_('RST_CUSTOMER_CANNOT_VIEW_TICKET'));
 			}
 
 			// Check for permissions
 			if (!$is_staff && $ticket->customer_id != $user->get('id'))
 			{
-				throw new Exception(JText::_('RST_CUSTOMER_CANNOT_VIEW_TICKET'));
+				throw new Exception(Text::_('RST_CUSTOMER_CANNOT_VIEW_TICKET'));
 			}
 
 			if ($is_staff)
@@ -90,22 +100,22 @@ class RsticketsproController extends JControllerLegacy
 				// Staff - check if belongs to department only if he is not the customer
 				if ($ticket->customer_id != $user->get('id') && !in_array($ticket->department_id, $departments))
 				{
-					throw new Exception(JText::_('RST_STAFF_CANNOT_VIEW_TICKET'));
+					throw new Exception(Text::_('RST_STAFF_CANNOT_VIEW_TICKET'));
 				}
 
 				if (RSTicketsProHelper::getConfig('staff_force_departments') && !in_array($ticket->department_id, $departments))
 				{
-					throw new Exception(JText::_('RST_STAFF_CANNOT_VIEW_TICKET'));
+					throw new Exception(Text::_('RST_STAFF_CANNOT_VIEW_TICKET'));
 				}
 
 				if (!$permissions->see_unassigned_tickets && $ticket->staff_id == 0)
 				{
-					throw new Exception(JText::_('RST_STAFF_CANNOT_VIEW_TICKET'));
+					throw new Exception(Text::_('RST_STAFF_CANNOT_VIEW_TICKET'));
 				}
 
 				if (!$permissions->see_other_tickets && $ticket->staff_id > 0 && $ticket->staff_id != $user->get('id'))
 				{
-					throw new Exception(JText::_('RST_STAFF_CANNOT_VIEW_TICKET'));
+					throw new Exception(Text::_('RST_STAFF_CANNOT_VIEW_TICKET'));
 				}
 			}
 
@@ -119,7 +129,7 @@ class RsticketsproController extends JControllerLegacy
 
 			if (empty($file))
 			{
-				throw new Exception(JText::_('RST_CANNOT_DOWNLOAD_FILE'));
+				throw new Exception(Text::_('RST_CANNOT_DOWNLOAD_FILE'));
 			}
 
 			$hash = md5($file->id . ' ' . $file->ticket_message_id);
@@ -127,10 +137,10 @@ class RsticketsproController extends JControllerLegacy
 
 			if (!file_exists($path))
 			{
-				throw new Exception(JText::_('RST_CANNOT_DOWNLOAD_FILE_NOT_EXIST'));
+				throw new Exception(Text::_('RST_CANNOT_DOWNLOAD_FILE_NOT_EXIST'));
 			}
 
-			$extension = strtolower(JFile::getExt($file->filename));
+			$extension = strtolower(File::getExt($file->filename));
 			$images    = array('jpg', 'jpeg', 'gif', 'png');
 			if (in_array($extension, $images))
 			{
@@ -168,12 +178,12 @@ class RsticketsproController extends JControllerLegacy
 
 	public function display($cachable = false, $urlparams = array())
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 
 		if ($app->isClient('site'))
 		{
-			$vName	= $app->input->getCmd('view', '');
-			$allowed = JFolder::folders(__DIR__ . '/views');
+			$vName	= $app->getInput()->getCmd('view', '');
+			$allowed = Folder::folders(__DIR__ . '/views');
 
 			if (!in_array($vName, $allowed))
 			{
@@ -188,21 +198,21 @@ class RsticketsproController extends JControllerLegacy
 		$this->checkToken();
 
 		$model	= $this->getModel('article');
-		$app	= JFactory::getApplication();
-		$cid	= $app->input->getInt('cid');
+		$app	= Factory::getApplication();
+		$cid	= $app->getInput()->getInt('cid');
 
 		$data = array(
 			'cid'               => $cid,
-			'user_id'           => JFactory::getUser()->id,
+			'user_id'           => Factory::getUser()->id,
 			'ip'                => \Joomla\Utilities\IpHelper::getIp(),
-			'date_submitted'    => JFactory::getDate()->toSql()
+			'date_submitted'    => Factory::getDate()->toSql()
 		);
 		
 		if (!RSTicketsProHelper::UserPostedFeedback($cid)) {
 			$model->sendfeedback($data);
-			$check = array('valid' => true, 'message' => JText::_('RST_KB_ARTICLE_FEEDBACK_MESSAGE_SUCCESS'));
+			$check = array('valid' => true, 'message' => Text::_('RST_KB_ARTICLE_FEEDBACK_MESSAGE_SUCCESS'));
 		} else {
-			$check = array('valid' => false, 'message' => JText::_('RST_KB_ARTICLE_FEEDBACK_MESSAGE_ALREADY_POSTED_ERROR'));
+			$check = array('valid' => false, 'message' => Text::_('RST_KB_ARTICLE_FEEDBACK_MESSAGE_ALREADY_POSTED_ERROR'));
 		}
 		
 		echo json_encode($check);

@@ -9,15 +9,17 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 class RsticketsproControllerGroup extends JControllerForm
 {
 	public function allowAdd($data = array())
 	{
-		return JFactory::getUser()->authorise('group.create', 'com_rsticketspro');
+		return Factory::getUser()->authorise('group.create', 'com_rsticketspro');
 	}
 
 	public function allowEdit($data = array(), $key = 'id')
 	{
-		return JFactory::getUser()->authorise('group.edit', 'com_rsticketspro');
+		return Factory::getUser()->authorise('group.edit', 'com_rsticketspro');
 	}
 }

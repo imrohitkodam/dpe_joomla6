@@ -9,10 +9,14 @@
 
 defined('_JEXEC') or die('Restricted access'); 
 
-JHtml::_('behavior.keepalive');
-JHtml::_('script', 'com_rsticketspro/predefinedsearches.js', array('relative' => true, 'version' => 'auto'));
+use Joomla\CMS\HTML\HTMLHelper;
 
-JText::script('RST_DELETE_SEARCH_CONFIRM');
+use Joomla\CMS\Language\Text;
+
+HTMLHelper::_('behavior.keepalive');
+HTMLHelper::_('script', 'com_rsticketspro/predefinedsearches.js', array('relative' => true, 'version' => 'auto'));
+
+Text::script('RST_DELETE_SEARCH_CONFIRM');
 
 $listOrder 	= $this->escape($this->state->get('list.ordering'));
 $listDirn 	= $this->escape($this->state->get('list.direction'));
@@ -21,7 +25,7 @@ $saveOrderingUrl = 'index.php?option=com_rsticketspro&task=predefinedsearches.sa
 
 if (!empty($this->items))
 {
-	JHtml::_('sortablelist.sortable', 'articleList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
+	HTMLHelper::_('sortablelist.sortable', 'articleList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
 }
 
 if ($this->params->get('show_page_heading', 1))
@@ -33,7 +37,7 @@ if ($this->params->get('show_page_heading', 1))
 ?>
 <div class="rst-searches">
 	<p>
-		<button type="button" class="btn btn-danger" disabled="disabled" id="rst_delete_btn" onclick="if (confirm(Joomla.JText._('RST_DELETE_SEARCH_CONFIRM'))) Joomla.submitbutton('predefinedsearches.delete');"><?php echo JText::_('RST_DELETE'); ?></button>
+		<button type="button" class="btn btn-danger" disabled="disabled" id="rst_delete_btn" onclick="if (confirm(Joomla.JText._('RST_DELETE_SEARCH_CONFIRM'))) Joomla.submitbutton('predefinedsearches.delete');"><?php echo Text::_('RST_DELETE'); ?></button>
 	</p>
 	<form action="<?php echo RSTicketsProHelper::route('index.php?option=com_rsticketspro&view=predefinedsearches'); ?>" method="post" id="adminForm" name="adminForm">
 		<?php
@@ -41,8 +45,8 @@ if ($this->params->get('show_page_heading', 1))
 		{
 			?>
 			<div class="alert alert-info">
-				<span class="fa fa-info-circle" aria-hidden="true"></span><span class="sr-only"><?php echo JText::_('INFO'); ?></span>
-				<?php echo JText::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
+				<span class="fa fa-info-circle" aria-hidden="true"></span><span class="sr-only"><?php echo Text::_('INFO'); ?></span>
+				<?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
 			</div>
 			<?php
 		}
@@ -52,10 +56,10 @@ if ($this->params->get('show_page_heading', 1))
 			<table class="table table-striped table-bordered table-hover" id="articleList">
 				<thead>
 					<tr>
-						<th width="1%" nowrap="nowrap"><?php echo JHtml::_('grid.checkall'); ?></th>
-						<th><?php echo JText::_('RST_SEARCH_NAME'); ?></th>
-						<th class="text-center" align="center"><?php echo JText::_('RST_DEFAULT_SEARCH_SHORT'); ?></th>
-						<th width="1%" class="nowrap text-center"><?php echo JHtml::_('searchtools.sort', '', 'ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING', 'icon-menu-2'); ?></th>
+						<th width="1%" nowrap="nowrap"><?php echo HTMLHelper::_('grid.checkall'); ?></th>
+						<th><?php echo Text::_('RST_SEARCH_NAME'); ?></th>
+						<th class="text-center" align="center"><?php echo Text::_('RST_DEFAULT_SEARCH_SHORT'); ?></th>
+						<th width="1%" class="nowrap text-center"><?php echo HTMLHelper::_('searchtools.sort', '', 'ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING', 'icon-menu-2'); ?></th>
 					</tr>
 				</thead>
 				<tbody class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($listDirn); ?>" data-nested="false">
@@ -65,14 +69,14 @@ if ($this->params->get('show_page_heading', 1))
 						?>
 						<tr data-draggable-group="1">
 							<td class="text-center" align="center">
-								<?php echo JHtml::_('grid.id', $i, $item->id); ?>
+								<?php echo HTMLHelper::_('grid.id', $i, $item->id); ?>
 							</td>
 							<td>
 								<a href="<?php echo RSTicketsProHelper::route('index.php?option=com_rsticketspro&task=predefinedsearch.edit&id='.$item->id); ?>">
-									<?php echo !empty($item->name) ? $this->escape($item->name) : '<em>'.JText::_('RST_NO_TITLE').'</em>'; ?>
+									<?php echo !empty($item->name) ? $this->escape($item->name) : '<em>'.Text::_('RST_NO_TITLE').'</em>'; ?>
 								</a>
 							</td>
-							<td class="text-center" align="center" style="width: 1%" nowrap="nowrap"><?php echo $item->default ? JText::_('JYES') : JText::_('JNO'); ?></td>
+							<td class="text-center" align="center" style="width: 1%" nowrap="nowrap"><?php echo $item->default ? Text::_('JYES') : Text::_('JNO'); ?></td>
 							<td class="order text-center">
 								<span class="sortable-handler"><i class="icon-menu"></i></span>
 								<input type="text" style="display:none" name="order[]" size="5" value="<?php echo $item->ordering; ?>" class="width-20 text-area-order" />
@@ -89,7 +93,7 @@ if ($this->params->get('show_page_heading', 1))
 		}
 		?>
 
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo HTMLHelper::_('form.token'); ?>
 		<input type="hidden" name="boxchecked" value="0" />
 		<input type="hidden" name="task" value="" />
 	</form>

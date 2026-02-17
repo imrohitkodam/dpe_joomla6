@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 class RSTicketsProUsersHelper
 {
 	protected static $groups = null;
@@ -31,7 +33,7 @@ class RSTicketsProUsersHelper
 			
 			if ($groups	= self::getAdminGroups())
 			{
-				$db 	= JFactory::getDbo();
+				$db 	= Factory::getDbo();
 				$query 	= $db->getQuery(true);
 				$query->select('u.*')
 					  ->from('#__user_usergroup_map m')

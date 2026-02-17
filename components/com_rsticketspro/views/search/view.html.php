@@ -9,15 +9,21 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\View\HtmlView;
 
-class RsticketsproViewSearch extends JViewLegacy
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
+
+class RsticketsproViewSearch extends HtmlView
 {
 	public function display($tpl = null) {
 		
-		$this->globalMessage	        = JText::_(RSTicketsProHelper::getConfig('global_message'));
+		$this->globalMessage	        = Text::_(RSTicketsProHelper::getConfig('global_message'));
 		$this->globalMessagePosition	= RSTicketsProHelper::getConfig('global_message_position');
 		$this->form				= $this->get('Form');
-		$this->params			= JFactory::getApplication()->getParams('com_rsticketspro');
+		$this->params			= Factory::getApplication()->getParams('com_rsticketspro');
 		$this->advanced         = $this->get('Advanced');
 		$this->show_footer		= RSTicketsProHelper::getConfig('rsticketspro_link');
 		$this->footer			= RSTicketsProHelper::getFooter();

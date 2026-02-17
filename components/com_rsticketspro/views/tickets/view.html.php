@@ -9,15 +9,25 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewTickets extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\Uri\Uri;
+
+use Joomla\CMS\HTML\HTMLHelper;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewTickets extends HtmlView
 {
 	public function display($tpl = null)
 	{
 		$this->canAccess();
 
 		$this->bulkForm         = $this->get('BulkForm');
-		$this->params           = JFactory::getApplication()->getParams('com_rsticketspro');
-		$this->globalMessage            = JText::_(RSTicketsProHelper::getConfig('global_message'));
+		$this->params           = Factory::getApplication()->getParams('com_rsticketspro');
+		$this->globalMessage            = Text::_(RSTicketsProHelper::getConfig('global_message'));
 		$this->globalMessagePosition	= RSTicketsProHelper::getConfig('global_message_position');
 		$this->dateFormat 	    = RSTicketsProHelper::getConfig('date_format');
 		$this->autocloseEnabled = RSTicketsProHelper::getConfig('autoclose_enabled');
@@ -83,22 +93,22 @@ class RsticketsproViewTickets extends JViewLegacy
 			
 			if ($css)
 			{
-				JFactory::getDocument()->addStyleDeclaration($css);
+				Factory::getDocument()->addStyleDeclaration($css);
 			}
 		}
 	}
 	
 	protected function canAccess()
 	{
-		if (JFactory::getUser()->get('guest'))
+		if (Factory::getUser()->get('guest'))
 		{
-			JFactory::getApplication()->redirect(RSTicketsProHelper::route('index.php?option=com_users&view=login&return=' . base64_encode((string) JUri::getInstance()), false));
+			Factory::getApplication()->redirect(RSTicketsProHelper::route('index.php?option=com_users&view=login&return=' . base64_encode((string) Uri::getInstance()), false));
 		}
 	}
 	
 	protected function showDate($date)
 	{
-		return JHtml::_('date', $date, $this->dateFormat);
+		return HTMLHelper::_('date', $date, $this->dateFormat);
 	}
 
 	public function showTotal($duration)

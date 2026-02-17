@@ -9,6 +9,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\Filesystem\File;
+
+use Joomla\CMS\Factory;
+
 class RsticketsproTableTickets extends JTable
 {
 	public $id;
@@ -45,7 +49,7 @@ class RsticketsproTableTickets extends JTable
 	{
 		if (!$this->id)
 		{
-			$this->closed = JFactory::getDbo()->getNullDate();
+			$this->closed = Factory::getDbo()->getNullDate();
 
 			if ($this->alternative_email === null)
 			{
@@ -110,7 +114,7 @@ class RsticketsproTableTickets extends JTable
 				foreach ($files as $file)
 				{
 					$hash = md5($file->id . ' ' . $file->ticket_message_id);
-					JFile::delete(RST_UPLOAD_FOLDER . '/' . $hash);
+					File::delete(RST_UPLOAD_FOLDER . '/' . $hash);
 				}
 			}
 			// from the database
@@ -130,10 +134,10 @@ class RsticketsproTableTickets extends JTable
 		if ($loaded)
 		{
 			// load customer
-			$this->customer = JFactory::getUser($this->customer_id);
+			$this->customer = Factory::getUser($this->customer_id);
 
 			// load staff
-			$this->staff = JFactory::getUser($this->staff_id);
+			$this->staff = Factory::getUser($this->staff_id);
 
 			// load department
 			$this->department = $this->getInstance('Departments', 'RsticketsproTable');

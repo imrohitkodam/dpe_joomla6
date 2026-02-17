@@ -9,7 +9,17 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproModelRsticketspro extends JModelList
+use Joomla\CMS\Router\Route;
+
+use Joomla\CMS\HTML\HTMLHelper;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+use Joomla\Registry\Registry;
+use Joomla\CMS\MVC\Model\ListModel;
+
+class RsticketsproModelRsticketspro extends ListModel
 {
 	protected $params = null;
 	protected $_permissions = array();
@@ -25,10 +35,11 @@ class RsticketsproModelRsticketspro extends JModelList
 			}
 		}
 
+
 		parent::__construct($config);
 
-		$app = JFactory::getApplication();
-		$this->params = $app->isClient('site') ? $app->getParams('com_rsticketspro') : new JRegistry();
+		$app = Factory::getApplication();
+		$this->params = $app->isClient('site') ? $app->getParams('com_rsticketspro') : new Registry();
 		$this->setPermissions();
 	}
 
@@ -51,7 +62,7 @@ class RsticketsproModelRsticketspro extends JModelList
 	}
 
 	protected function setSearch($values=array()) {
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 
 		if (isset($values['search'])) {
 			$app->setUserState($this->context.'.filter.search', $values['search']);
@@ -87,7 +98,7 @@ class RsticketsproModelRsticketspro extends JModelList
 	}
 
 	public function getPredefinedSearch() {
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		return $app->getUserState($this->context.'.filter.predefined_search', 0);
 	}
 
@@ -104,7 +115,7 @@ class RsticketsproModelRsticketspro extends JModelList
 			'ordering' => 'date',
 			'direction' => 'desc'
 		);
-		JFactory::getApplication()->setUserState($this->context.'.limitstart', 0);
+		Factory::getApplication()->setUserState($this->context.'.limitstart', 0);
 		$this->setSearch($values);
 	}
 
@@ -135,7 +146,7 @@ class RsticketsproModelRsticketspro extends JModelList
 	public function getSearches() {
 		$db 	= $this->getDbo();
 		$query	= $db->getQuery(true);
-		$user 	= JFactory::getUser();
+		$user 	= Factory::getUser();
 
 		$query->select('*')
 			  ->from($db->qn('#__rsticketspro_searches'))
@@ -155,10 +166,10 @@ class RsticketsproModelRsticketspro extends JModelList
 	}
 
 	public function getPermissions() {
-		$mainframe = JFactory::getApplication();
+		$mainframe = Factory::getApplication();
 		if ($mainframe->isClient('administrator') && empty($this->_permissions))
 		{
-			$mainframe->enqueueMessage(JText::_('RST_PERMISSIONS_ERROR'), 'warning');
+			$mainframe->enqueueMessage(Text::_('RST_PERMISSIONS_ERROR'), 'warning');
 			$mainframe->redirect(RSTicketsProHelper::route('index.php?option=com_rsticketspro', false));
 		}
 
@@ -166,10 +177,10 @@ class RsticketsproModelRsticketspro extends JModelList
 	}
 
 	protected function getListQuery() {
-		$db 	= JFactory::getDbo();
-		$app	= JFactory::getApplication();
+		$db 	= Factory::getDbo();
+		$app	= Factory::getApplication();
 		$query 	= $db->getQuery(true);
-		$user   = JFactory::getUser();
+		$user   = Factory::getUser();
 
 		// get filtering states
 		$search  	 	= $this->getState('filter.search');
@@ -378,7 +389,7 @@ class RsticketsproModelRsticketspro extends JModelList
 	}
 
 	protected function quoteImplode($array) {
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		foreach ($array as $k => $v) {
 			$array[$k] = $db->quote($v);
 		}
@@ -388,7 +399,7 @@ class RsticketsproModelRsticketspro extends JModelList
 
 	public function getUserStateFromRequest($key, $request, $default = null, $type = 'none', $resetPage = true)
 	{
-		$app       = JFactory::getApplication();
+		$app       = Factory::getApplication();
 		$input     = $app->input;
 		$old_state = $app->getUserState($key);
 		$cur_state = (!is_null($old_state)) ? $old_state : $default;
@@ -413,7 +424,7 @@ class RsticketsproModelRsticketspro extends JModelList
 	}
 
 	protected function populateState($ordering = null, $direction = null) {
-		$app 	= JFactory::getApplication();
+		$app 	= Factory::getApplication();
 		$input 	= $app->input;
 
 		// Status ID
@@ -501,45 +512,45 @@ class RsticketsproModelRsticketspro extends JModelList
 
 		$options = array();
 		$options['search'] = array(
-			'label' => JText::_('JSEARCH_FILTER'),
+			'label' => Text::_('JSEARCH_FILTER'),
 			'value' => $this->getState('filter.search')
 		);
 		$options['limitBox']  = $this->getPagination()->getLimitBox();
 		$options['listDirn']  = $this->getState('list.direction', 'desc');
 		$options['listOrder'] = $this->getState('list.ordering', 'date');
 		$options['sortFields'] = array(
-			JHtml::_('select.option', 'date', JText::_('RST_TICKET_DATE')),
-			JHtml::_('select.option', 'last_reply', JText::_('RST_TICKET_LAST_REPLY')),
-			JHtml::_('select.option', 'flagged', JText::_('RST_FLAGGED')),
-			JHtml::_('select.option', 'code', JText::_('RST_TICKET_CODE')),
-			JHtml::_('select.option', 'subject', JText::_('RST_TICKET_SUBJECT')),
-			JHtml::_('select.option', 'customer', JText::_('RST_TICKET_CUSTOMER')),
-			JHtml::_('select.option', 'priority', JText::_('RST_TICKET_PRIORITY')),
-			JHtml::_('select.option', 'status', JText::_('RST_TICKET_STATUS')),
-			JHtml::_('select.option', 'staff', JText::_('RST_TICKET_STAFF')),
-			JHtml::_('select.option', 'time_spent', JText::_('RST_TIME_SPENT'))
+			HTMLHelper::_('select.option', 'date', Text::_('RST_TICKET_DATE')),
+			HTMLHelper::_('select.option', 'last_reply', Text::_('RST_TICKET_LAST_REPLY')),
+			HTMLHelper::_('select.option', 'flagged', Text::_('RST_FLAGGED')),
+			HTMLHelper::_('select.option', 'code', Text::_('RST_TICKET_CODE')),
+			HTMLHelper::_('select.option', 'subject', Text::_('RST_TICKET_SUBJECT')),
+			HTMLHelper::_('select.option', 'customer', Text::_('RST_TICKET_CUSTOMER')),
+			HTMLHelper::_('select.option', 'priority', Text::_('RST_TICKET_PRIORITY')),
+			HTMLHelper::_('select.option', 'status', Text::_('RST_TICKET_STATUS')),
+			HTMLHelper::_('select.option', 'staff', Text::_('RST_TICKET_STAFF')),
+			HTMLHelper::_('select.option', 'time_spent', Text::_('RST_TIME_SPENT'))
 		);
 		$options['leftItems'] = array(
-			'<button id="rst_advanced_search" type="button" class="btn" onclick="document.location=\''.JRoute::_('index.php?option=com_rsticketspro&view=search&advanced=1').'\'">'.JText::_('RST_OPEN_ADVANCED_SEARCH').'</button>'
+			'<button id="rst_advanced_search" type="button" class="btn" onclick="document.location=\''.Route::_('index.php?option=com_rsticketspro&view=search&advanced=1').'\'">'.Text::_('RST_OPEN_ADVANCED_SEARCH').'</button>'
 		);
 
 		$options['rightItems'] = array(
 			array(
 				'input' => '<select name="quick_department_id" class="inputbox" onchange="this.form.submit()">'."\n"
-						   .'<option value="">'.JText::_('RST_SELECT_DEPARTMENT').'</option>'."\n"
-						   .JHtml::_('select.options', RSTicketsProHelper::getDepartments(), 'value', 'text', null, true)."\n"
+						   .'<option value="">'.Text::_('RST_SELECT_DEPARTMENT').'</option>'."\n"
+						   .HTMLHelper::_('select.options', RSTicketsProHelper::getDepartments(), 'value', 'text', null, true)."\n"
 						   .'</select>'
 			),
 			array(
 				'input' => '<select name="quick_priority_id" class="inputbox" onchange="this.form.submit()">'."\n"
-						   .'<option value="">'.JText::_('RST_SELECT_PRIORITY').'</option>'."\n"
-						   .JHtml::_('select.options', RSTicketsProHelper::getPriorities(), 'value', 'text', null, true)."\n"
+						   .'<option value="">'.Text::_('RST_SELECT_PRIORITY').'</option>'."\n"
+						   .HTMLHelper::_('select.options', RSTicketsProHelper::getPriorities(), 'value', 'text', null, true)."\n"
 						   .'</select>'
 			),
 			array(
 				'input' => '<select name="quick_status_id" class="inputbox" onchange="this.form.submit()">'."\n"
-						   .'<option value="">'.JText::_('RST_SELECT_STATUS').'</option>'."\n"
-						   .JHtml::_('select.options', RSTicketsProHelper::getStatuses(), 'value', 'text', null, true)."\n"
+						   .'<option value="">'.Text::_('RST_SELECT_STATUS').'</option>'."\n"
+						   .HTMLHelper::_('select.options', RSTicketsProHelper::getStatuses(), 'value', 'text', null, true)."\n"
 						   .'</select>'
 			)
 		);
@@ -575,7 +586,7 @@ class RsticketsproModelRsticketspro extends JModelList
 	}
 
 	public function getStart() {
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		if ($app->isClient('site')) {
 			return $app->getInput()->get('limitstart', 0, 'uint');
 		} else {

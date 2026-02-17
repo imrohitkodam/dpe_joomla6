@@ -9,7 +9,12 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproModelTicketmessage extends JModelAdmin
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\AdminModel;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproModelTicketmessage extends \Joomla\CMS\MVC\Model\AdminModel
 {
 	public function getTable($type = 'Ticketmessages', $prefix = 'RsticketsproTable', $config = array())
 	{
@@ -31,7 +36,7 @@ class RsticketsproModelTicketmessage extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$app  = JFactory::getApplication();
+		$app  = Factory::getApplication();
 		$data = $app->getUserState('com_rsticketspro.edit.ticketmessage.data', array());
 		
 		if (empty($data))
@@ -45,7 +50,7 @@ class RsticketsproModelTicketmessage extends JModelAdmin
 	protected function canDelete($message)
 	{
 		$messageUserId = $message->user_id;
-		$meId		   = JFactory::getUser()->id;
+		$meId		   = Factory::getUser()->id;
 		$isStaff 	   = RSTicketsProHelper::isStaff($meId);
 		$permissions   = RSTicketsProHelper::getCurrentPermissions();
 		
@@ -94,7 +99,7 @@ class RsticketsproModelTicketmessage extends JModelAdmin
 					}
 					else
 					{
-						\JLog::add(\JText::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'), \JLog::WARNING, 'jerror');
+						\JLog::add(\Text::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'), \JLog::WARNING, 'jerror');
 
 						return false;
 					}

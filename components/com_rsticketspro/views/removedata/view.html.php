@@ -9,21 +9,31 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewRemovedata extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\Uri\Uri;
+
+use Joomla\CMS\Router\Route;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewRemovedata extends HtmlView
 {
 	public function display($tpl = null)
     {
-        $user       = JFactory::getUser();
-        $this->app	= JFactory::getApplication();
+        $user       = Factory::getUser();
+        $this->app	= Factory::getApplication();
 
         // not logged in?
         if (strtolower($this->getLayout()) == 'default' && !$user->get('id'))
         {
-            $link = base64_encode((string) JUri::getInstance());
-            $this->app->redirect(JRoute::_('index.php?option=com_users&view=login&return='.$link, false));
+            $link = base64_encode((string) Uri::getInstance());
+            $this->app->redirect(Route::_('index.php?option=com_users&view=login&return='.$link, false));
         }
 
-        $this->globalMessage	        = JText::_(RSTicketsProHelper::getConfig('global_message'));
+        $this->globalMessage	        = Text::_(RSTicketsProHelper::getConfig('global_message'));
 	    $this->globalMessagePosition	= RSTicketsProHelper::getConfig('global_message_position');
 
         $this->params			        = $this->app->getParams('com_rsticketspro');

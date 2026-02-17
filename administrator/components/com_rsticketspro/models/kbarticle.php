@@ -9,7 +9,14 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproModelKbarticle extends JModelAdmin
+use Joomla\Filesystem\File;
+
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\AdminModel;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproModelKbarticle extends \Joomla\CMS\MVC\Model\AdminModel
 {
 	public function getTable($type = 'Kbcontent', $prefix = 'RsticketsproTable', $config = array())
 	{
@@ -46,7 +53,7 @@ class RsticketsproModelKbarticle extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_rsticketspro.edit.kbarticle.data', array());
+		$data = Factory::getApplication()->getUserState('com_rsticketspro.edit.kbarticle.data', array());
 
 		if (empty($data))
 		{
@@ -58,7 +65,7 @@ class RsticketsproModelKbarticle extends JModelAdmin
 	
 	public function save($data)
 	{
-		$files 		= JFactory::getApplication()->getInput()->files->get('jform', null, 'raw');
+		$files 		= Factory::getApplication()->input->files->get('jform', null, 'raw');
 		$doUpload 	= false;
 		
 		// before attempting to process any further, let's verify if the upload worked
@@ -68,12 +75,12 @@ class RsticketsproModelKbarticle extends JModelAdmin
 			{
 				// uploaded successfully
 				// let's see if the extension is allowed...
-				$thumb_ext	= strtolower(JFile::getExt($files['thumb']['name']));
+				$thumb_ext	= strtolower(File::getExt($files['thumb']['name']));
 				$allowed	= array('jpg', 'jpeg', 'gif', 'png');
 				
 				if (!in_array($thumb_ext, $allowed))
 				{
-					$this->setError(JText::sprintf('RST_IMAGE_UPLOAD_EXTENSION_ERROR', implode(', ', $allowed)));
+					$this->setError(Text::sprintf('RST_IMAGE_UPLOAD_EXTENSION_ERROR', implode(', ', $allowed)));
 					return false;
 				}
 				
@@ -144,9 +151,9 @@ class RsticketsproModelKbarticle extends JModelAdmin
 			{
 				$thumb_name = md5(uniqid($files['thumb']['name']));
 				
-				if (!JFile::upload($files['thumb']['tmp_name'], RST_ARTICLE_THUMB_FOLDER.'/'.$thumb_name.'.'.$thumb_ext, false, true))
+				if (!File::upload($files['thumb']['tmp_name'], RST_ARTICLE_THUMB_FOLDER.'/'.$thumb_name.'.'.$thumb_ext, false, true))
 				{
-					$this->setError(JText::sprintf('RST_IMAGE_UPLOAD_ERROR_FOLDER', RST_ARTICLE_THUMB_FOLDER));
+					$this->setError(Text::sprintf('RST_IMAGE_UPLOAD_ERROR_FOLDER', RST_ARTICLE_THUMB_FOLDER));
 					return false;
 				}
 				
@@ -224,11 +231,11 @@ class RsticketsproModelKbarticle extends JModelAdmin
 
 	protected function canDelete($record)
 	{
-		return JFactory::getUser()->authorise('kbarticle.delete', 'com_rsticketspro');
+		return Factory::getUser()->authorise('kbarticle.delete', 'com_rsticketspro');
 	}
 
 	protected function canEditState($record)
 	{
-		return JFactory::getUser()->authorise('kbarticle.edit.state', 'com_rsticketspro');
+		return Factory::getUser()->authorise('kbarticle.edit.state', 'com_rsticketspro');
 	}
 }

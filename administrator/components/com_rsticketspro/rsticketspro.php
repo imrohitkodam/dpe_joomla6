@@ -9,14 +9,22 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Controller\BaseController;
+
+use Joomla\CMS\HTML\HTMLHelper;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
 // Access check.
-$user = JFactory::getUser();
+$user = Factory::getUser();
 if (!$user->authorise('core.manage', 'com_rsticketspro'))
 {
-    throw new Exception(JText::_('JERROR_ALERTNOAUTHOR'), 403);
+    throw new Exception(Text::_('JERROR_ALERTNOAUTHOR'), 403);
 }
 
-$lang = JFactory::getLanguage();
+$lang = Factory::getLanguage();
 
 // load frontend
 $lang->load('com_rsticketspro', JPATH_SITE, 'en-GB', true);
@@ -33,24 +41,24 @@ require_once __DIR__ . '/helpers/adapter.php';
 require_once __DIR__ . '/helpers/rsticketspro.php';
 require_once __DIR__ . '/helpers/toolbar.php';
 
-JHtml::_('jquery.framework', true);
-JHtml::_('stylesheet', 'com_rsticketspro/rsticketspro.css', array('relative' => true, 'version' => 'auto'));
-JHtml::_('stylesheet', 'com_rsticketspro/icons.css', array('relative' => true, 'version' => 'auto'));
-JHtml::_('script', 'com_rsticketspro/rsticketspro.js', array('relative' => true, 'version' => 'auto'));
+HTMLHelper::_('jquery.framework', true);
+HTMLHelper::_('stylesheet', 'com_rsticketspro/rsticketspro.css', array('relative' => true, 'version' => 'auto'));
+HTMLHelper::_('stylesheet', 'com_rsticketspro/icons.css', array('relative' => true, 'version' => 'auto'));
+HTMLHelper::_('script', 'com_rsticketspro/rsticketspro.js', array('relative' => true, 'version' => 'auto'));
 
 if (version_compare(JVERSION, '4.0', '>='))
 {
-	JHtml::_('stylesheet', 'com_rsticketspro/style40.css', array('relative' => true, 'version' => 'auto'));
+	HTMLHelper::_('stylesheet', 'com_rsticketspro/style40.css', array('relative' => true, 'version' => 'auto'));
 }
 else
 {
-	JHtml::_('stylesheet', 'com_rsticketspro/style30.css', array('relative' => true, 'version' => 'auto'));
+	HTMLHelper::_('stylesheet', 'com_rsticketspro/style30.css', array('relative' => true, 'version' => 'auto'));
 }
 
 // Require the base controller
 require_once __DIR__ . '/controller.php';
 
-$controller	= JControllerLegacy::getInstance('Rsticketspro');
-$task = JFactory::getApplication()->getInput()->get('task');
+$controller	= BaseController::getInstance('Rsticketspro');
+$task = Factory::getApplication()->getInput()->get('task');
 $controller->execute($task);
 $controller->redirect();

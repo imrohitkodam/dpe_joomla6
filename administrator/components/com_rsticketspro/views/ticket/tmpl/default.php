@@ -9,15 +9,21 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::_('behavior.keepalive');
-JHtml::_('behavior.formvalidator');
+use Joomla\CMS\Router\Route;
+
+use Joomla\CMS\HTML\HTMLHelper;
+
+use Joomla\CMS\Language\Text;
+
+HTMLHelper::_('behavior.keepalive');
+HTMLHelper::_('behavior.formvalidator');
 
 // Load JavaScript message titles
-JText::script('ERROR');
-JText::script('WARNING');
-JText::script('NOTICE');
-JText::script('MESSAGE');
-JText::script('COM_RSTICKETSPRO_TIME_BUTTON_CONFIRM_START');
+Text::script('ERROR');
+Text::script('WARNING');
+Text::script('NOTICE');
+Text::script('MESSAGE');
+Text::script('COM_RSTICKETSPRO_TIME_BUTTON_CONFIRM_START');
 
 if ($this->globalMessage && $this->globalMessagePosition === 'top')
 {
@@ -28,7 +34,7 @@ if ($this->globalMessage && $this->globalMessagePosition === 'top')
 	<?php
 }
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_rsticketspro&view=ticket'); ?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data" autocomplete="off">
+<form action="<?php echo Route::_('index.php?option=com_rsticketspro&view=ticket'); ?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data" autocomplete="off">
 <?php
 if ($this->ticketView == 'plain' || $this->isPrint)
 {
@@ -36,7 +42,7 @@ if ($this->ticketView == 'plain' || $this->isPrint)
 	<div class="<?php echo RsticketsproAdapterGrid::row(); ?>">
 		<div class="<?php echo RsticketsproAdapterGrid::column(7); ?>" id="ticket-left-column">
 			<?php
-			$this->plain->addTitle(JText::_('RST_MESSAGES'), 'messages');
+			$this->plain->addTitle(Text::_('RST_MESSAGES'), 'messages');
 			$this->plain->addContent($this->loadTemplate('messages'));
 			$this->plain->render();
 
@@ -89,7 +95,7 @@ else
 	$this->handler->render();
 }
 
-	echo JHtml::_('form.token');
+	echo HTMLHelper::_('form.token');
 ?>
 	<input type="hidden" name="id" value="<?php echo $this->ticket->id; ?>" />
 	<input type="hidden" name="cid" value="<?php echo $this->ticket->id; ?>" />

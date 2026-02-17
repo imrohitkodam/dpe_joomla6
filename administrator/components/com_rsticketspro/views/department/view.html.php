@@ -9,7 +9,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewDepartment extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewDepartment extends HtmlView
 {
 	protected $form;
 	protected $item;
@@ -18,7 +22,7 @@ class RsticketsproViewDepartment extends JViewLegacy
 	
 	public function display($tpl = null)
 	{
-		JFactory::getApplication()->getInput()->set('hidemainmenu', true);
+		Factory::getApplication()->getInput()->set('hidemainmenu', true);
 
 		$this->addToolbar();
 
@@ -33,14 +37,14 @@ class RsticketsproViewDepartment extends JViewLegacy
 	protected function addToolbar()
 	{
 		// set title
-		JToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
+		\Joomla\CMS\Toolbar\ToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
 
 		RSTicketsProToolbarHelper::addToolbar('departments');
 		
-		JToolbarHelper::apply('department.apply');
-		JToolbarHelper::save('department.save');
-		JToolbarHelper::save2new('department.save2new');
-		JToolbarHelper::save2copy('department.save2copy');
-		JToolbarHelper::cancel('department.cancel');
+		\Joomla\CMS\Toolbar\ToolbarHelper::apply('department.apply');
+		\Joomla\CMS\Toolbar\ToolbarHelper::save('department.save');
+		\Joomla\CMS\Toolbar\ToolbarHelper::save2new('department.save2new');
+		\Joomla\CMS\Toolbar\ToolbarHelper::save2copy('department.save2copy');
+		\Joomla\CMS\Toolbar\ToolbarHelper::cancel('department.cancel');
 	}
 }

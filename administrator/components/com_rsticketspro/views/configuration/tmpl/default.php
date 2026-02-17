@@ -9,10 +9,14 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::_('behavior.keepalive');
-JHtml::_('formbehavior.chosen', '.advancedSelect');
+use Joomla\CMS\Router\Route;
+
+use Joomla\CMS\HTML\HTMLHelper;
+
+HTMLHelper::_('behavior.keepalive');
+HTMLHelper::_('formbehavior.chosen', '.advancedSelect');
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_rsticketspro&view=configuration'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::_('index.php?option=com_rsticketspro&view=configuration'); ?>" method="post" name="adminForm" id="adminForm">
 	<?php
 	echo RsticketsproAdapterGrid::sidebar();
 	?>
@@ -40,7 +44,7 @@ JHtml::_('formbehavior.chosen', '.advancedSelect');
 	</div>
 	
 	<div>
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo HTMLHelper::_('form.token'); ?>
 		<input type="hidden" name="option" value="com_rsticketspro" />
 		<input type="hidden" name="task" value="" />
 	</div>

@@ -9,7 +9,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewKbresults extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewKbresults extends HtmlView
 {
 	public function display($tpl = null)
 	{
@@ -19,7 +23,7 @@ class RsticketsproViewKbresults extends JViewLegacy
 		$this->items = $this->get('Items');
 
 		// Set the kb_itemid
-		$kb_itemid = JFactory::getApplication()->input->getInt('kb_itemid',0);
+		$kb_itemid = Factory::getApplication()->getInput()->getInt('kb_itemid',0);
 
 		// parse the results
 		$results = array();
@@ -40,6 +44,6 @@ class RsticketsproViewKbresults extends JViewLegacy
 		));
 		
 		// end application
-		JFactory::getApplication()->close();
+		Factory::getApplication()->close();
 	}
 }

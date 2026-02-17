@@ -8,6 +8,13 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Uri\Uri;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+use Joomla\Registry\Registry;
+
 class RSTicketsProCron {
     
     protected $types = array();
@@ -15,7 +22,7 @@ class RSTicketsProCron {
     
     public function __construct($types = array()) {
         // Load language
-        JFactory::getLanguage()->load('plg_system_rsticketsprocron', JPATH_ADMINISTRATOR);
+        Factory::getLanguage()->load('plg_system_rsticketsprocron', JPATH_ADMINISTRATOR);
         
         // Get cron types
         $this->types = $types;
@@ -30,11 +37,11 @@ class RSTicketsProCron {
         
         $mbox           = $this->_connect($id);
         $imap_errors    = $this->_getConnectionErrors();
-        $app            = JFactory::getApplication();
+        $app            = Factory::getApplication();
         
         if (!$mbox)
         {
-            $app->enqueueMessage(JText::_('RST_CRON_COULD_NOT_CONNECT'), 'error');
+            $app->enqueueMessage(Text::_('RST_CRON_COULD_NOT_CONNECT'), 'error');
 
             if ($imap_errors)
             {
@@ -47,10 +54,10 @@ class RSTicketsProCron {
         }
         else
         {
-            $app->enqueueMessage(JText::sprintf('RST_CRON_OK'));
-            $app->enqueueMessage(JText::sprintf('RST_CRON_OK2'));
+            $app->enqueueMessage(Text::sprintf('RST_CRON_OK'));
+            $app->enqueueMessage(Text::sprintf('RST_CRON_OK2'));
            // DPE HACK
-            $connectionData[] = JText::sprintf('RST_CRON_OK').JText::sprintf('RST_CRON_OK2');
+            $connectionData[] = Text::sprintf('RST_CRON_OK').Text::sprintf('RST_CRON_OK2');
 
             $this->_disconnect($mbox);
         }
@@ -65,7 +72,7 @@ class RSTicketsProCron {
             return;
         }
         
-        $db     = JFactory::getDbo();
+        $db     = Factory::getDbo();
         $query  = $db->getQuery(true);
         
         // Sanitize types
@@ -91,7 +98,7 @@ class RSTicketsProCron {
         
         $use_editor             = RSTicketsProHelper::getConfig('allow_rich_editor');
         $allow_ticket_reopening = RSTicketsProHelper::getConfig('allow_ticket_reopening');
-        $now                    = JFactory::getDate();
+        $now                    = Factory::getDate();
         
         foreach ($accounts as $account)
         {
@@ -348,9 +355,9 @@ class RSTicketsProCron {
                         $rsTktXrefTable = DPE::table('RsticketXref ');
                         $rsTktXrefTable->load(array('ticket_id' => $data['ticket_id']));
 
-                        $ccEmails     = new JRegistry($rsTktXrefTable->emails);
-                        $dpeccEmails  = new JRegistry($rsTktXrefTable->dpe_cc_emails);
-                        $userccEmails = new JRegistry($rsTktXrefTable->user_cc_emails);
+                        $ccEmails     = new Registry($rsTktXrefTable->emails);
+                        $dpeccEmails  = new Registry($rsTktXrefTable->dpe_cc_emails);
+                        $userccEmails = new Registry($rsTktXrefTable->user_cc_emails);
 
                         $ccEmails['email']     = empty($ccEmails['email']) ? (array) $ccEmails['email'] : $ccEmails['email'];
                         $dpeccEmails['email']  = empty($dpeccEmails['email']) ? (array) $dpeccEmails['email'] : $dpeccEmails['email'];
@@ -440,9 +447,9 @@ class RSTicketsProCron {
                             */
                             if (!$isValid)
                             {
-                                $ccEmails     = new JRegistry($rsTktXrefTable->emails);
-                                $dpeccEmails  = new JRegistry($rsTktXrefTable->dpe_cc_emails);
-                                $userccEmails = new JRegistry($rsTktXrefTable->user_cc_emails);
+                                $ccEmails     = new Registry($rsTktXrefTable->emails);
+                                $dpeccEmails  = new Registry($rsTktXrefTable->dpe_cc_emails);
+                                $userccEmails = new Registry($rsTktXrefTable->user_cc_emails);
 
                                 $ccEmails['email']     = empty($ccEmails['email']) ? (array) $ccEmails['email'] : $ccEmails['email'];
                                 $dpeccEmails['email']  = empty($dpeccEmails['email']) ? (array) $dpeccEmails['email'] : $dpeccEmails['email'];
@@ -531,7 +538,7 @@ class RSTicketsProCron {
                                             $replace  = $matches[1][$m];
                                             $filename = $matches[2][$m];
 
-                                            $with = JUri::root().'index.php?option=com_rsticketspro&task=viewinline&cid='.$ticket_id.'&filename='.htmlentities($filename, ENT_COMPAT, 'utf-8').'&lang=en';
+                                            $with = Uri::root().'index.php?option=com_rsticketspro&task=viewinline&cid='.$ticket_id.'&filename='.htmlentities($filename, ENT_COMPAT, 'utf-8').'&lang=en';
                                             $message->message = str_replace($replace, $with, $message->message);
                                         }
 
@@ -662,7 +669,7 @@ class RSTicketsProCron {
                                     $replace  = $matches[1][$m];
                                     $filename = $matches[2][$m];
 
-                                    $with = JUri::root().'index.php?option=com_rsticketspro&task=viewinline&cid='.$ticket_id.'&filename='.htmlentities($filename, ENT_COMPAT, 'utf-8').'&lang=en';
+                                    $with = Uri::root().'index.php?option=com_rsticketspro&task=viewinline&cid='.$ticket_id.'&filename='.htmlentities($filename, ENT_COMPAT, 'utf-8').'&lang=en';
                                     $message->message = str_replace($replace, $with, $message->message);
                                 }
 
@@ -690,7 +697,7 @@ class RSTicketsProCron {
                     // Are we using global ?
                     if (RSTicketsProHelper::getConfig('email_use_global'))
                     {
-                        $app            = JFactory::getApplication();
+                        $app            = Factory::getApplication();
                         $from           = $app->get('mailfrom');
                         $fromname       = $app->get('fromname');
                         $replyto        = $app->get('replyto');
@@ -707,7 +714,7 @@ class RSTicketsProCron {
                     if ($email = RSTicketsProHelper::getEmail('reject_email'))
                     {
                         $replace = array('{live_site}', '{customer_name}', '{customer_email}', '{department}', '{subject}', '{reason}');
-                        $with = array(JUri::root(), $data['name'], $data['email'], JText::_($department->name), $data['subject'], $e->getMessage());
+                        $with = array(Uri::root(), $data['name'], $data['email'], Text::_($department->name), $data['subject'], $e->getMessage());
 
                         $email_subject = str_replace($replace, $with, $email->subject);
                         $email_message = str_replace($replace, $with, $email->message);
@@ -746,7 +753,7 @@ class RSTicketsProCron {
         {
             if ($show_message)
             {
-                JFactory::getApplication()->enqueueMessage(JText::_('RST_CRON_NO_IMAP'), 'warning');
+                Factory::getApplication()->enqueueMessage(Text::_('RST_CRON_NO_IMAP'), 'warning');
             }
 
             return false;
@@ -756,7 +763,7 @@ class RSTicketsProCron {
         {
             if ($show_message)
             {
-                JFactory::getApplication()->enqueueMessage(JText::_('RST_CRON_NO_ICONV'), 'warning');
+                Factory::getApplication()->enqueueMessage(Text::_('RST_CRON_NO_ICONV'), 'warning');
             }
 
             return false;
@@ -828,7 +835,7 @@ class RSTicketsProCron {
     }
     
     protected function addLog($account, $desc, $data = array()) {
-        $date = JFactory::getDate();
+        $date = Factory::getDate();
         $date->modify('+'.count($this->logs).' seconds');
         
         $this->logs[] = array(
@@ -840,7 +847,7 @@ class RSTicketsProCron {
     }
     
     protected function saveLog() {
-        $db     = JFactory::getDbo();
+        $db     = Factory::getDbo();
         $query  = $db->getQuery(true);
         
         foreach ($this->logs as $log) {

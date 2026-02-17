@@ -11,6 +11,10 @@ use Joomla\Utilities\ArrayHelper;
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Router\Route;
+
+use Joomla\CMS\Language\Text;
+
 class RsticketsproControllerTicketmessages extends JControllerAdmin
 {
 	protected $view_list = 'ticket';
@@ -30,7 +34,7 @@ class RsticketsproControllerTicketmessages extends JControllerAdmin
 
 		if (!is_array($cid) || count($cid) < 1)
 		{
-			\JLog::add(\JText::_($this->text_prefix . '_NO_ITEM_SELECTED'), \JLog::WARNING, 'jerror');
+			\JLog::add(\Text::_($this->text_prefix . '_NO_ITEM_SELECTED'), \JLog::WARNING, 'jerror');
 		}
 		else
 		{
@@ -43,7 +47,7 @@ class RsticketsproControllerTicketmessages extends JControllerAdmin
 			// Remove the items.
 			if ($model->delete($cid))
 			{
-				$this->setMessage(\JText::plural($this->text_prefix . '_N_ITEMS_DELETED', count($cid)));
+				$this->setMessage(\Text::plural($this->text_prefix . '_N_ITEMS_DELETED', count($cid)));
 			}
 			else
 			{
@@ -54,9 +58,9 @@ class RsticketsproControllerTicketmessages extends JControllerAdmin
 			$this->postDeleteHook($model, $cid);
 		}
 
-		$append = '&id=' . $this->input->getInt('ticket_id');
+		$append = '&id=' . $this->getInput()->getInt('ticket_id');
 
-		$this->setRedirect(\JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_list . $append, false));
+		$this->setRedirect(\Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list . $append, false));
 	}
 
 	public function deleteattachment()
@@ -69,7 +73,7 @@ class RsticketsproControllerTicketmessages extends JControllerAdmin
 
 		if (!is_array($cid) || count($cid) < 1)
 		{
-			\JLog::add(\JText::_($this->text_prefix . '_NO_ITEM_SELECTED'), \JLog::WARNING, 'jerror');
+			\JLog::add(\Text::_($this->text_prefix . '_NO_ITEM_SELECTED'), \JLog::WARNING, 'jerror');
 		}
 		else
 		{
@@ -82,7 +86,7 @@ class RsticketsproControllerTicketmessages extends JControllerAdmin
 			// Remove the items.
 			if ($model->deleteattachment($cid))
 			{
-				$this->setMessage(\JText::plural($this->text_prefix . '_N_ITEMS_DELETED', count($cid)));
+				$this->setMessage(\Text::plural($this->text_prefix . '_N_ITEMS_DELETED', count($cid)));
 			}
 			else
 			{
@@ -90,8 +94,8 @@ class RsticketsproControllerTicketmessages extends JControllerAdmin
 			}
 		}
 
-		$append = '&id=' . $this->input->getInt('ticket_id');
+		$append = '&id=' . $this->getInput()->getInt('ticket_id');
 
-		$this->setRedirect(\JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_list . $append, false));
+		$this->setRedirect(\Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list . $append, false));
 	}
 }

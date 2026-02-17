@@ -9,6 +9,12 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Uri\Uri;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
 class RSTicketsProEmailsHelper
 {
 	protected static $from;
@@ -27,7 +33,7 @@ class RSTicketsProEmailsHelper
 			if (RSTicketsProHelper::getConfig('email_use_global'))
 			{
 				// if we are using global settings, get them from the Joomla! config
-				$app                = JFactory::getApplication();
+				$app                = Factory::getApplication();
 				self::$from         = $app->get('mailfrom');
 				self::$fromName     = $app->get('fromname');
 				self::$replyTo      = $app->get('replyto');
@@ -57,7 +63,7 @@ class RSTicketsProEmailsHelper
 		// get current language
 		if (is_null($tag))
 		{
-			$tag = JFactory::getLanguage()->get('tag');
+			$tag = Factory::getLanguage()->get('tag');
 		}
 
 		return self::_getEmail($type, $tag);
@@ -67,7 +73,7 @@ class RSTicketsProEmailsHelper
 	// and reverts to english if not found
 	protected static function _getEmail($type, $tag)
 	{
-		$db    = JFactory::getDbo();
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select('*')
@@ -102,7 +108,7 @@ class RSTicketsProEmailsHelper
 			$replyTo = self::$replyTo;
 			$replyToName = self::$replyToName;
 
-			$mailer = JFactory::getMailer();
+			$mailer = Factory::getMailer();
 
 			$mailer->setSender(array($from, $fromName));
 			$mailer->setSubject($subject);
@@ -147,7 +153,7 @@ class RSTicketsProEmailsHelper
 		}
 		catch (Exception $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
 			return false;
 		}
 	}
@@ -155,13 +161,13 @@ class RSTicketsProEmailsHelper
 	// send predefined email messages
 	public static function sendEmail($type, $data = array())
 	{
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load('com_rsticketspro', JPATH_ADMINISTRATOR, 'en-GB', true);
 		$lang->load('com_rsticketspro', JPATH_ADMINISTRATOR, $lang->getDefault(), true);
 		$lang->load('com_rsticketspro', JPATH_ADMINISTRATOR, null, true);
 
 		$replacements = array(
-			'{live_site}' => JUri::root()
+			'{live_site}' => Uri::root()
 		);
 
 		switch ($type)
@@ -181,11 +187,11 @@ class RSTicketsProEmailsHelper
 				// get department
 				$department = RSTicketsProHelper::getDepartment($data['department_id']);
 
-				$customer = JFactory::getUser($ticket->customer_id);
-				$staff    = JFactory::getUser($ticket->staff_id);
+				$customer = Factory::getUser($ticket->customer_id);
+				$staff    = Factory::getUser($ticket->staff_id);
 
 				// get latest message for ticket data
-				$db    = JFactory::getDbo();
+				$db    = Factory::getDbo();
 				$query = $db->getQuery(true);
 				$query->select($db->qn('message'))
 					->from($db->qn('#__rsticketspro_ticket_messages'))
@@ -196,17 +202,17 @@ class RSTicketsProEmailsHelper
 				$message = $db->loadResult();
 
 				// ticket data
-				$replacements['{ticket}']  = RSTicketsProHelper::route(JUri::root() . 'index.php?option=com_rsticketspro&view=ticket&cid=' . $ticket->id . ':' . JFilterOutput::stringURLSafe($ticket->subject));
+				$replacements['{ticket}']  = RSTicketsProHelper::route(Uri::root() . 'index.php?option=com_rsticketspro&view=ticket&cid=' . $ticket->id . ':' . JFilterOutput::stringURLSafe($ticket->subject));
 				$replacements['{message}'] = $message;
 				$replacements['{code}']    = $ticket->code;
 				$replacements['{subject}'] = $ticket->subject;
 				// department data
-				$replacements['{department_name}'] = $replacements['{department-name}'] = JText::_($department->name);
+				$replacements['{department_name}'] = $replacements['{department-name}'] = Text::_($department->name);
 				$replacements['{department_id}']   = $replacements['{department-id}'] = $department->id;
 				// priority
-				$replacements['{priority}'] = JText::_($ticket->priority->name);
+				$replacements['{priority}'] = Text::_($ticket->priority->name);
 				// status
-				$replacements['{status}'] = JText::_($ticket->status->name);
+				$replacements['{status}'] = Text::_($ticket->status->name);
 				// customer data
 				$replacements['{customer_name}']     = $replacements['{customer-name}'] = $customer->name;
 				$replacements['{customer_email}']    = $replacements['{customer-email}'] = $customer->email;
@@ -224,7 +230,7 @@ class RSTicketsProEmailsHelper
 						$field->value = str_replace("\n", ', ', $field->value);
 					}
 
-					$fieldsText .= '<p>' . JText::_($field->label) . ': ' . $field->value . '</p>';
+					$fieldsText .= '<p>' . Text::_($field->label) . ': ' . $field->value . '</p>';
 					$replacements['{field-' . $field->name . '}'] = $field->value;
 				}
 				$replacements['{custom_fields}'] = $replacements['{custom-fields}'] = $fieldsText;
@@ -247,11 +253,11 @@ class RSTicketsProEmailsHelper
 				// get department
 				$department = RSTicketsProHelper::getDepartment($data['to']);
 
-				$customer = JFactory::getUser($ticket->customer_id);
-				$staff    = JFactory::getUser($ticket->staff_id);
+				$customer = Factory::getUser($ticket->customer_id);
+				$staff    = Factory::getUser($ticket->staff_id);
 
 				// get latest message for ticket data
-				$db    = JFactory::getDbo();
+				$db    = Factory::getDbo();
 				$query = $db->getQuery(true);
 				$query->select($db->qn('message'))
 					->from($db->qn('#__rsticketspro_ticket_messages'))
@@ -262,18 +268,18 @@ class RSTicketsProEmailsHelper
 				$message = $db->loadResult();
 
 				// ticket data
-				$replacements['{ticket}']   = RSTicketsProHelper::route(JUri::root() . 'index.php?option=com_rsticketspro&view=ticket&cid=' . $ticket->id . ':' . JFilterOutput::stringURLSafe($ticket->subject));
+				$replacements['{ticket}']   = RSTicketsProHelper::route(Uri::root() . 'index.php?option=com_rsticketspro&view=ticket&cid=' . $ticket->id . ':' . JFilterOutput::stringURLSafe($ticket->subject));
 				$replacements['{message}']  = $message;
 				$replacements['{code}']     = $ticket->code;
 				$replacements['{new_code}'] = $data['code'];
 				$replacements['{subject}']  = $ticket->subject;
 				// department data
-				$replacements['{department_name}'] = $replacements['{department-name}'] = JText::_($department->name);
+				$replacements['{department_name}'] = $replacements['{department-name}'] = Text::_($department->name);
 				$replacements['{department_id}']   = $replacements['{department-id}'] = $department->id;
 				// priority
-				$replacements['{priority}'] = JText::_($ticket->priority->name);
+				$replacements['{priority}'] = Text::_($ticket->priority->name);
 				// status
-				$replacements['{status}'] = JText::_($ticket->status->name);
+				$replacements['{status}'] = Text::_($ticket->status->name);
 				// customer data
 				$replacements['{customer_name}']     = $replacements['{customer-name}'] = $customer->name;
 				$replacements['{customer_email}']    = $replacements['{customer-email}'] = $customer->email;
@@ -282,8 +288,8 @@ class RSTicketsProEmailsHelper
 				$replacements['{staff_name}']      = $replacements['{staff-name}'] = $staff->name;
 				$replacements['{staff_email}']     = $replacements['{staff-email}'] = $staff->email;
 				$replacements['{staff_username}']  = $replacements['{staff-username}'] = $staff->username;
-				$replacements['{department_from}'] = JText::_($data['ticket']->department->name);
-				$replacements['{department_to}']   = JText::_($department->name);
+				$replacements['{department_from}'] = Text::_($data['ticket']->department->name);
+				$replacements['{department_to}']   = Text::_($department->name);
 
 				// custom fields
 				$fieldsText = '';
@@ -294,7 +300,7 @@ class RSTicketsProEmailsHelper
 						$field->value = str_replace("\n", ', ', $field->value);
 					}
 
-					$fieldsText .= '<p>' . JText::_($field->label) . ': ' . $field->value . '</p>';
+					$fieldsText .= '<p>' . Text::_($field->label) . ': ' . $field->value . '</p>';
 					$replacements['{field-' . $field->name . '}'] = $field->value;
 				}
 				$replacements['{custom_fields}'] = $replacements['{custom-fields}'] = $fieldsText;
@@ -316,11 +322,11 @@ class RSTicketsProEmailsHelper
 				// get department
 				$department = RSTicketsProHelper::getDepartment($data['department_id']);
 
-				$customer = JFactory::getUser($ticket->customer_id);
-				$staff    = JFactory::getUser($ticket->staff_id);
+				$customer = Factory::getUser($ticket->customer_id);
+				$staff    = Factory::getUser($ticket->staff_id);
 
 				// get latest message for ticket data
-				$db    = JFactory::getDbo();
+				$db    = Factory::getDbo();
 				$query = $db->getQuery(true);
 				$query->select($db->qn('message'))
 					->from($db->qn('#__rsticketspro_ticket_messages'))
@@ -331,17 +337,17 @@ class RSTicketsProEmailsHelper
 				$message = $db->loadResult();
 
 				// ticket data
-				$replacements['{ticket}']  = RSTicketsProHelper::route(JUri::root() . 'index.php?option=com_rsticketspro&view=ticket&cid=' . $ticket->id . ':' . JFilterOutput::stringURLSafe($ticket->subject));
+				$replacements['{ticket}']  = RSTicketsProHelper::route(Uri::root() . 'index.php?option=com_rsticketspro&view=ticket&cid=' . $ticket->id . ':' . JFilterOutput::stringURLSafe($ticket->subject));
 				$replacements['{message}'] = $message;
 				$replacements['{code}']    = $ticket->code;
 				$replacements['{subject}'] = $ticket->subject;
 				// department data
-				$replacements['{department_name}'] = $replacements['{department-name}'] = JText::_($department->name);
+				$replacements['{department_name}'] = $replacements['{department-name}'] = Text::_($department->name);
 				$replacements['{department_id}']   = $replacements['{department-id}'] = $department->id;
 				// priority
-				$replacements['{priority}'] = JText::_($ticket->priority->name);
+				$replacements['{priority}'] = Text::_($ticket->priority->name);
 				// status
-				$replacements['{status}'] = JText::_($ticket->status->name);
+				$replacements['{status}'] = Text::_($ticket->status->name);
 				// customer data
 				$replacements['{customer_name}']     = $replacements['{customer-name}'] = $customer->name;
 				$replacements['{customer_email}']    = $replacements['{customer-email}'] = $customer->email;
@@ -358,7 +364,7 @@ class RSTicketsProEmailsHelper
 
 				$replacements['{no}'] = $no;
 				$replacements['{yes}'] = $yes;
-				$replacements['{feedback}'] = JText::sprintf('RST_FEEDBACK_EMAIL', $no, $yes);
+				$replacements['{feedback}'] = Text::sprintf('RST_FEEDBACK_EMAIL', $no, $yes);
 
 				// custom fields
 				$fieldsText = '';
@@ -369,7 +375,7 @@ class RSTicketsProEmailsHelper
 						$field->value = str_replace("\n", ', ', $field->value);
 					}
 
-					$fieldsText .= '<p>' . JText::_($field->label) . ': ' . $field->value . '</p>';
+					$fieldsText .= '<p>' . Text::_($field->label) . ': ' . $field->value . '</p>';
 					$replacements['{field-' . $field->name . '}'] = $field->value;
 				}
 				$replacements['{custom_fields}'] = $replacements['{custom-fields}'] = $fieldsText;

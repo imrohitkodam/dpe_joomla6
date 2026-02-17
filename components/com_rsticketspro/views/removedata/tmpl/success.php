@@ -9,7 +9,9 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-$this->app->enqueueMessage(JText::_('COM_RSTICKETSPRO_DATA_HAS_BEEN_SUCCESSFULLY_ANONYMISED'));
+use Joomla\CMS\Language\Text;
+
+$this->app->enqueueMessage(Text::_('COM_RSTICKETSPRO_DATA_HAS_BEEN_SUCCESSFULLY_ANONYMISED'));
 ?>
 
 <?php if ($this->params->get('show_page_heading', 1)) { ?>

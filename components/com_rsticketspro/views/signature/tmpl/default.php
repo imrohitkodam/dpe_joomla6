@@ -9,7 +9,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::_('behavior.keepalive');
+use Joomla\CMS\HTML\HTMLHelper;
+
+use Joomla\CMS\Language\Text;
+
+HTMLHelper::_('behavior.keepalive');
 
 if ($this->params->get('show_page_heading', 1))
 {
@@ -37,7 +41,7 @@ if ($this->globalMessage && $this->globalMessagePosition === 'top')
 	?>
 	
 	<div class="form-actions">
-		<button type="submit" class="btn btn-primary"><?php echo JText::_('RST_UPDATE'); ?></button>
+		<button type="submit" class="btn btn-primary"><?php echo Text::_('RST_UPDATE'); ?></button>
 	</div>
 
 	<?php
@@ -56,7 +60,7 @@ if ($this->globalMessage && $this->globalMessagePosition === 'top')
 	}
 	?>
 	
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo HTMLHelper::_('form.token'); ?>
 	<input type="hidden" name="option" value="com_rsticketspro" />
 	<input type="hidden" name="task" value="signature.save" />
 </form>

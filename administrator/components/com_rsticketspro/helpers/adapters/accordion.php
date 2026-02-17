@@ -9,6 +9,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\HTML\HTMLHelper;
+
+use Joomla\CMS\Language\Text;
+
 class RSAccordion
 {
 	protected $id		= null;
@@ -34,15 +38,15 @@ class RSAccordion
 	{
 		$active = reset($this->titles);
 
-		echo JHtml::_('bootstrap.startAccordion', $this->id, array('active' => $active->id));
+		echo HTMLHelper::_('bootstrap.startAccordion', $this->id, array('active' => $active->id));
 
 		foreach ($this->titles as $i => $title)
 		{
-			echo JHtml::_('bootstrap.addSlide', $this->id, JText::_($title->label), $title->id);
+			echo HTMLHelper::_('bootstrap.addSlide', $this->id, Text::_($title->label), $title->id);
 			echo $this->contents[$i];
-			echo JHtml::_('bootstrap.endSlide');
+			echo HTMLHelper::_('bootstrap.endSlide');
 		}
 
-		echo JHtml::_('bootstrap.endAccordion');
+		echo HTMLHelper::_('bootstrap.endAccordion');
 	}
 }

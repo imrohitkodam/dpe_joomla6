@@ -8,7 +8,13 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewCron extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewCron extends HtmlView
 {
 	protected $form;
 	protected $item;
@@ -16,7 +22,7 @@ class RsticketsproViewCron extends JViewLegacy
 	
 	public function display($tpl = null)
 	{
-		JFactory::getApplication()->getInput()->set('hidemainmenu', true);
+		Factory::getApplication()->getInput()->set('hidemainmenu', true);
 
 		// form
 		$this->form	= $this->get('Form');
@@ -30,18 +36,18 @@ class RsticketsproViewCron extends JViewLegacy
 	
 	protected function addToolbar()
 	{
-        JFactory::getApplication()->enqueueMessage(JText::_('RST_CRON_WARNING'), 'notice');
-		JToolbarHelper::title('RSTickets! Pro <small>['.JText::_('RST_EDIT_ACCOUNT').']</small>','rsticketspro');
+        Factory::getApplication()->enqueueMessage(Text::_('RST_CRON_WARNING'), 'notice');
+		\Joomla\CMS\Toolbar\ToolbarHelper::title('RSTickets! Pro <small>['.Text::_('RST_EDIT_ACCOUNT').']</small>','rsticketspro');
 
 		RSTicketsProToolbarHelper::addToolbar('crons');
 
-		JToolbarHelper::apply('cron.apply');
-		JToolbarHelper::save('cron.save');
-		JToolbarHelper::cancel('cron.cancel');
+		\Joomla\CMS\Toolbar\ToolbarHelper::apply('cron.apply');
+		\Joomla\CMS\Toolbar\ToolbarHelper::save('cron.save');
+		\Joomla\CMS\Toolbar\ToolbarHelper::cancel('cron.cancel');
 
 		if (!empty($this->item->id))
 		{
-			JToolbarHelper::modal('rsticketsproCronModal', 'icon-refresh', JText::_('RST_ACCOUNT_TEST_CONNECTION'));
+			\Joomla\CMS\Toolbar\ToolbarHelper::modal('rsticketsproCronModal', 'icon-refresh', Text::_('RST_ACCOUNT_TEST_CONNECTION'));
 		}
 	}
 }

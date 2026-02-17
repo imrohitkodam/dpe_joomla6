@@ -8,13 +8,15 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <div class="dashboard-container">
 	<?php foreach ($this->buttons as $button) { ?>
 		<?php if ($button['access']) { ?>
 			<div class="dashboard-info dashboard-button">
 				<a href="<?php echo $button['link']; ?>">
-					<?php echo JHtml::image($button['image'], $button['text'], null, true); ?>
+					<?php echo HTMLHelper::image($button['image'], $button['text'], null, true); ?>
 					<span class="dashboard-title"><?php echo $button['text']; ?></span> 
 				</a> 
 			</div>

@@ -9,17 +9,23 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewArticle extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewArticle extends HtmlView
 {
 	public function display($tpl = null)
 	{
-		$this->params	= JFactory::getApplication()->getParams('com_rsticketspro');
+		$this->params	= Factory::getApplication()->getParams('com_rsticketspro');
 		$this->article	= $this->get('article');
-		$this->user		= JFactory::getUser();
+		$this->user		= Factory::getUser();
 		
 		if (!$this->article->id || !$this->article->published || (!RSTicketsProHelper::isStaff() && $this->article->private))
 		{
-			throw new Exception(JText::_('RST_CANNOT_VIEW_ARTICLE'));
+			throw new Exception(Text::_('RST_CANNOT_VIEW_ARTICLE'));
 		}
 		
 		$this->prepareDocument();
@@ -43,7 +49,7 @@ class RsticketsproViewArticle extends JViewLegacy
 		}
 		
 		// Get active menu item
-		$active = JFactory::getApplication()->getMenu()->getActive();
+		$active = Factory::getApplication()->getMenu()->getActive();
 		// If it's an article menu item, menu parameteres overwrite article meta.
 		if ($active && strpos($active->link, '&view=article&id='))
 		{
@@ -67,7 +73,7 @@ class RsticketsproViewArticle extends JViewLegacy
 		// Pathway
 		if ($path = $this->get('path'))
 		{
-			$pathway = JFactory::getApplication()->getPathway();
+			$pathway = Factory::getApplication()->getPathway();
 			foreach ($path as $item)
 			{
 				$pathway->addItem($item->name, $item->link);

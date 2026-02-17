@@ -9,14 +9,20 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-JText::script('RST_TICKET_FEEDBACK_SENT');
+use Joomla\CMS\Router\Route;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
+Text::script('RST_TICKET_FEEDBACK_SENT');
 
 $showReply = $this->form->getValue('message');
 
 if ($this->ticket->status_id == RST_STATUS_CLOSED)
 {
 	?>
-	<p><strong><?php echo JText::_('RST_TICKET_REPLIES_CLOSED'); ?></strong></p>
+	<p><strong><?php echo Text::_('RST_TICKET_REPLIES_CLOSED'); ?></strong></p>
 	<?php
 	if ($this->allowVoting && (($this->isStaff && $this->ticket->feedback) || !$this->isStaff))
 	{
@@ -24,19 +30,19 @@ if ($this->ticket->status_id == RST_STATUS_CLOSED)
 			'score' => $this->ticket->feedback ? $this->ticket->feedback : null,
 			'readOnly' => $this->isStaff || $this->ticket->feedback,
 			'hints' => array(
-				JText::_('RST_FEEDBACK_1'),
-				JText::_('RST_FEEDBACK_2'),
-				JText::_('RST_FEEDBACK_3'),
-				JText::_('RST_FEEDBACK_4'),
-				JText::_('RST_FEEDBACK_5')
+				Text::_('RST_FEEDBACK_1'),
+				Text::_('RST_FEEDBACK_2'),
+				Text::_('RST_FEEDBACK_3'),
+				Text::_('RST_FEEDBACK_4'),
+				Text::_('RST_FEEDBACK_5')
 			)
 		);
 
 		$script = 'RSTicketsPro.initRaty(' . json_encode($ratyParams) . ')';
 
-		JFactory::getDocument()->addScriptDeclaration($script);
+		Factory::getDocument()->addScriptDeclaration($script);
 		?>
-		<p id="com-rsticketspro-rated-message"><?php echo JText::_($this->ticket->feedback ? ($this->isStaff ? 'RST_TICKET_FEEDBACK_SENT_STAFF' : 'RST_TICKET_FEEDBACK_SENT') : 'RST_TICKET_FEEDBACK'); ?></p>
+		<p id="com-rsticketspro-rated-message"><?php echo Text::_($this->ticket->feedback ? ($this->isStaff ? 'RST_TICKET_FEEDBACK_SENT_STAFF' : 'RST_TICKET_FEEDBACK_SENT') : 'RST_TICKET_FEEDBACK'); ?></p>
 		<div id="star"></div>
 		<?php
 	}
@@ -48,12 +54,12 @@ else
 		if (!$showReply)
 		{
 			?>
-			<p><button type="button" class="btn btn-primary btn-large" id="com-rsticketspro-reply-button" onclick="RSTicketsPro.showReply(this);"><?php echo JText::_('RST_TICKET_REPLY'); ?></button></p>
+			<p><button type="button" class="btn btn-primary btn-large" id="com-rsticketspro-reply-button" onclick="RSTicketsPro.showReply(this);"><?php echo Text::_('RST_TICKET_REPLY'); ?></button></p>
 			<?php
 		}
 		?>
 		<div id="com-rsticketspro-reply-box" <?php if (!$showReply) { ?>class="hidden"<?php } ?>>
-			<h3 class="rst_heading"><?php echo JText::_('RST_REPLY_TO_TICKET'); ?></h3>
+			<h3 class="rst_heading"><?php echo Text::_('RST_REPLY_TO_TICKET'); ?></h3>
 			<?php
 			if ($this->isStaff && RSTicketsProHelper::getConfig('show_reply_as_customer'))
 			{
@@ -71,20 +77,20 @@ else
 			{
 				echo $this->form->getField('use_signature')->renderField();
 
-				echo '<p><small><a href="'.JRoute::_('index.php?option=com_rsticketspro&view=signature').'">'.JText::_('RST_EDIT_SIGNATURE').'</a></small></p>';
+				echo '<p><small><a href="'.Route::_('index.php?option=com_rsticketspro&view=signature').'">'.Text::_('RST_EDIT_SIGNATURE').'</a></small></p>';
 			}
 
 			if ($this->canUpload)
 			{
 				$script = "RSTicketsPro.getDepartment = function() { return { id: {$this->ticket->department_id}, uploads: { max: {$this->department->upload_files} } }; }";
-				JFactory::getDocument()->addScriptDeclaration($script);
+				Factory::getDocument()->addScriptDeclaration($script);
 
 				// prepend the upload message
 				echo '<div id="rst_files_message_container">' . $this->department->upload_message . ' ' . $this->department->upload_message_max_files . ' ' . $this->department->upload_message_max_size . '</div>';
 				echo $this->form->getField('files')->renderField(array('class' => 'rst_files_container'));
 			}
 			?>
-			<p><button type="button" onclick="Joomla.submitbutton('ticket.reply')" class="btn btn-primary"><?php echo JText::_('RST_TICKET_SUBMIT'); ?></button></p>
+			<p><button type="button" onclick="Joomla.submitbutton('ticket.reply')" class="btn btn-primary"><?php echo Text::_('RST_TICKET_SUBMIT'); ?></button></p>
 
 			<hr />
 		</div>

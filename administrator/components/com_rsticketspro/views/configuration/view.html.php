@@ -9,7 +9,15 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewConfiguration extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\Router\Route;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewConfiguration extends HtmlView
 {
 	protected $tabs;
 	protected $field;
@@ -20,12 +28,12 @@ class RsticketsproViewConfiguration extends JViewLegacy
 	
 	public function display($tpl = null)
 	{
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		if (!$user->authorise('core.admin', 'com_rsticketspro')) {
-			$app = JFactory::getApplication();
-			$app->enqueueMessage(JText::_('JERROR_ALERTNOAUTHOR'), 'error');
-			$app->redirect(JRoute::_('index.php?option=com_rsticketspro', false));
+			$app = Factory::getApplication();
+			$app->enqueueMessage(Text::_('JERROR_ALERTNOAUTHOR'), 'error');
+			$app->redirect(Route::_('index.php?option=com_rsticketspro', false));
 		}
 		
 		$this->addToolbar();
@@ -47,12 +55,12 @@ class RsticketsproViewConfiguration extends JViewLegacy
 	
 	protected function addToolbar() {
 		// set title
-		JToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
+		\Joomla\CMS\Toolbar\ToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
 
 		RSTicketsProToolbarHelper::addToolbar('configuration');
 		
-		JToolbarHelper::apply('configuration.apply');
-		JToolbarHelper::save('configuration.save');
-		JToolbarHelper::cancel('configuration.cancel');
+		\Joomla\CMS\Toolbar\ToolbarHelper::apply('configuration.apply');
+		\Joomla\CMS\Toolbar\ToolbarHelper::save('configuration.save');
+		\Joomla\CMS\Toolbar\ToolbarHelper::cancel('configuration.cancel');
 	}
 }

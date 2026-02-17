@@ -9,6 +9,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
 class RsticketsproControllerTickets extends JControllerAdmin
 {
     public function getModel($name = 'Tickets', $prefix = 'RsticketsproModel', $config = array('ignore_request' => true))
@@ -19,7 +23,7 @@ class RsticketsproControllerTickets extends JControllerAdmin
     public function writeCsv()
     {
         $model = $this->getModel('Tickets', 'RsticketsproModel', array('ignore_request' => false));
-        $input = JFactory::getApplication()->input;
+        $input = Factory::getApplication()->input;
 
         try
         {
@@ -35,8 +39,8 @@ class RsticketsproControllerTickets extends JControllerAdmin
 
     protected function showResponse($success, $data=null)
     {
-        $app 		= JFactory::getApplication();
-        $document 	= JFactory::getDocument();
+        $app 		= Factory::getApplication();
+        $document 	= Factory::getDocument();
 
         // set JSON encoding
         $document->setMimeEncoding('application/json');
@@ -60,8 +64,8 @@ class RsticketsproControllerTickets extends JControllerAdmin
     {
         require_once JPATH_ADMINISTRATOR . '/components/com_rsticketspro/helpers/export.php';
 
-        $app      = JFactory::getApplication();
-        $filename = JText::_('COM_RSTICKETSPRO_TICKETS');
+        $app      = Factory::getApplication();
+        $filename = Text::_('COM_RSTICKETSPRO_TICKETS');
 	    $fileHash = $app->getInput()->get('filehash');
 
         RsticketsExport::buildCSVHeaders($filename);

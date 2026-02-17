@@ -9,32 +9,38 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-// Load JavaScript message titles
-JText::script('ERROR');
-JText::script('WARNING');
-JText::script('NOTICE');
-JText::script('MESSAGE');
-JText::script('RST_PLEASE_SELECT');
-JText::script('RST_DEPARTMENT');
-JText::script('RST_TICKET_SUBJECT');
-JText::script('RST_TICKET_MESSAGE');
-JText::script('RST_PRIORITY');
-JText::script('RST_TICKET_STATUS');
-JText::script('RST_CUSTOM_FIELD');
-JText::script('RST_IS_EQUAL');
-JText::script('RST_IS_NOT_EQUAL');
-JText::script('RST_IS_LIKE');
-JText::script('RST_IS_NOT_LIKE');
-JText::script('RST_AND');
-JText::script('RST_OR');
-JText::script('RST_IF');
+use Joomla\CMS\Router\Route;
 
-JHtml::_('behavior.formvalidator');
-JHtml::_('behavior.keepalive');
-JHtml::_('jquery.framework');
-JHtml::_('script', 'com_rsticketspro/kbrules.js', array('relative' => true, 'version' => 'auto'));
+use Joomla\CMS\HTML\HTMLHelper;
+
+use Joomla\CMS\Language\Text;
+
+// Load JavaScript message titles
+Text::script('ERROR');
+Text::script('WARNING');
+Text::script('NOTICE');
+Text::script('MESSAGE');
+Text::script('RST_PLEASE_SELECT');
+Text::script('RST_DEPARTMENT');
+Text::script('RST_TICKET_SUBJECT');
+Text::script('RST_TICKET_MESSAGE');
+Text::script('RST_PRIORITY');
+Text::script('RST_TICKET_STATUS');
+Text::script('RST_CUSTOM_FIELD');
+Text::script('RST_IS_EQUAL');
+Text::script('RST_IS_NOT_EQUAL');
+Text::script('RST_IS_LIKE');
+Text::script('RST_IS_NOT_LIKE');
+Text::script('RST_AND');
+Text::script('RST_OR');
+Text::script('RST_IF');
+
+HTMLHelper::_('behavior.formvalidator');
+HTMLHelper::_('behavior.keepalive');
+HTMLHelper::_('jquery.framework');
+HTMLHelper::_('script', 'com_rsticketspro/kbrules.js', array('relative' => true, 'version' => 'auto'));
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_rsticketspro&view=kbrule&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate form-horizontal">
+<form action="<?php echo Route::_('index.php?option=com_rsticketspro&view=kbrule&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate form-horizontal">
 	<?php
 	foreach ($this->form->getFieldsets() as $fieldset)
 	{
@@ -43,7 +49,7 @@ JHtml::_('script', 'com_rsticketspro/kbrules.js', array('relative' => true, 'ver
 	?>
 	
 	<div>
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo HTMLHelper::_('form.token'); ?>
 		<input type="hidden" name="task" value="" />
 	</div>
 </form>

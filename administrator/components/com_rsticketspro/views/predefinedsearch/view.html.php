@@ -9,14 +9,20 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewPredefinedsearch extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewPredefinedsearch extends HtmlView
 {
 	protected $form;
 	protected $item;
 	
 	public function display($tpl = null)
 	{
-		JFactory::getApplication()->getInput()->set('hidemainmenu', true);
+		Factory::getApplication()->getInput()->set('hidemainmenu', true);
 
 		$this->addToolbar();
 		
@@ -29,13 +35,13 @@ class RsticketsproViewPredefinedsearch extends JViewLegacy
 	protected function addToolbar()
 	{
 		// set title
-		JToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
+		\Joomla\CMS\Toolbar\ToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
 
 		RSTicketsProToolbarHelper::addToolbar('tickets');
 		
-		JToolbarHelper::apply('predefinedsearch.apply');
-		JToolbarHelper::save('predefinedsearch.save');
-		JToolbarHelper::cancel('predefinedsearch.cancel');
+		\Joomla\CMS\Toolbar\ToolbarHelper::apply('predefinedsearch.apply');
+		\Joomla\CMS\Toolbar\ToolbarHelper::save('predefinedsearch.save');
+		\Joomla\CMS\Toolbar\ToolbarHelper::cancel('predefinedsearch.cancel');
 	}
 
 	protected function showField($label, $desc)
@@ -45,7 +51,7 @@ class RsticketsproViewPredefinedsearch extends JViewLegacy
 	
 	protected function getDepartments($ids)
 	{
-		$db 	 = JFactory::getDbo();
+		$db 	 = Factory::getDbo();
 		$results = array();
 
 		if (!is_array($ids))
@@ -74,7 +80,7 @@ class RsticketsproViewPredefinedsearch extends JViewLegacy
 		{
 			foreach ($results as $k => $result)
 			{
-				$results[$k] = JText::_($result);
+				$results[$k] = Text::_($result);
 			}
 		}
 		
@@ -83,7 +89,7 @@ class RsticketsproViewPredefinedsearch extends JViewLegacy
 	
 	protected function getPriorities($ids)
 	{
-		$db 	 = JFactory::getDbo();
+		$db 	 = Factory::getDbo();
 		$results = array();
 
 		if (!is_array($ids))
@@ -112,7 +118,7 @@ class RsticketsproViewPredefinedsearch extends JViewLegacy
 		{
 			foreach ($results as $k => $result)
 			{
-				$results[$k] = JText::_($result);
+				$results[$k] = Text::_($result);
 			}
 		}
 		
@@ -121,7 +127,7 @@ class RsticketsproViewPredefinedsearch extends JViewLegacy
 	
 	protected function getStatuses($ids)
 	{
-		$db 	 = JFactory::getDbo();
+		$db 	 = Factory::getDbo();
 		$results = array();
 
 		if (!is_array($ids))
@@ -150,7 +156,7 @@ class RsticketsproViewPredefinedsearch extends JViewLegacy
 		{
 			foreach ($results as $k => $result)
 			{
-				$results[$k] = JText::_($result);
+				$results[$k] = Text::_($result);
 			}
 		}
 		

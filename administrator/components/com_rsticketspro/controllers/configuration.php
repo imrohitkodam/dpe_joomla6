@@ -9,18 +9,26 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproControllerConfiguration extends JControllerLegacy
+use Joomla\CMS\MVC\Controller\BaseController;
+
+use Joomla\CMS\Router\Route;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproControllerConfiguration extends BaseController
 {
     public function __construct($config = array())
     {
 		parent::__construct($config);
 		
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		if (!$user->authorise('core.admin', 'com_rsticketspro'))
 		{
-			$app = JFactory::getApplication();
-			$app->enqueueMessage(JText::_('JERROR_ALERTNOAUTHOR'), 'error');
-			$app->redirect(JRoute::_('index.php?option=com_rsticketspro', false));
+			$app = Factory::getApplication();
+			$app->enqueueMessage(Text::_('JERROR_ALERTNOAUTHOR'), 'error');
+			$app->redirect(Route::_('index.php?option=com_rsticketspro', false));
 		}
 		
 		$this->registerTask('apply', 'save');
@@ -28,16 +36,16 @@ class RsticketsproControllerConfiguration extends JControllerLegacy
 	
 	public function cancel()
 	{
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 		
-		$this->setRedirect(JRoute::_('index.php?option=com_rsticketspro', false));
+		$this->setRedirect(Route::_('index.php?option=com_rsticketspro', false));
 	}
 	
 	public function save()
 	{
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
-        $app   = JFactory::getApplication();
+        $app   = Factory::getApplication();
 		$input = $app->input;
 		$data  = $input->get('jform', array(), 'array');
 		$model = $this->getModel('configuration');
@@ -66,7 +74,7 @@ class RsticketsproControllerConfiguration extends JControllerLegacy
 			}
 
 			// Redirect back to the edit screen.
-			$this->setRedirect(JRoute::_('index.php?option=com_rsticketspro&view=configuration', false));
+			$this->setRedirect(Route::_('index.php?option=com_rsticketspro&view=configuration', false));
 			return false;
 		}
 
@@ -78,17 +86,17 @@ class RsticketsproControllerConfiguration extends JControllerLegacy
 		}
 		else
 		{
-			$this->setMessage(JText::_('RST_CONFIGURATION_OK', 'info'));
+			$this->setMessage(Text::_('RST_CONFIGURATION_OK', 'info'));
 		}
 		
 		$task = $this->getTask();
 		if ($task == 'save')
 		{
-			$this->setRedirect(JRoute::_('index.php?option=com_rsticketspro', false));
+			$this->setRedirect(Route::_('index.php?option=com_rsticketspro', false));
 		}
 		elseif ($task == 'apply')
 		{
-			$this->setRedirect(JRoute::_('index.php?option=com_rsticketspro&view=configuration', false));
+			$this->setRedirect(Route::_('index.php?option=com_rsticketspro&view=configuration', false));
 		}
 	}
 }

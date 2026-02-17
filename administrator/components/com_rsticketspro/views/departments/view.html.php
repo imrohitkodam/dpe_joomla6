@@ -9,7 +9,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewDepartments extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewDepartments extends HtmlView
 {
 	protected $items;
 	protected $pagination;
@@ -31,28 +35,28 @@ class RsticketsproViewDepartments extends JViewLegacy
 	protected function addToolbar()
 	{
 		// set title
-		JToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
+		\Joomla\CMS\Toolbar\ToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
 
 		RSTicketsProToolbarHelper::addToolbar('departments');
 
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		if ($user->authorise('department.create', 'com_rsticketspro'))
 		{
-			JToolbarHelper::addNew('department.add');
+			\Joomla\CMS\Toolbar\ToolbarHelper::addNew('department.add');
 		}
 		if ($user->authorise('department.edit', 'com_rsticketspro'))
 		{
-			JToolbarHelper::editList('department.edit');
+			\Joomla\CMS\Toolbar\ToolbarHelper::editList('department.edit');
 		}
 		if ($user->authorise('department.edit.state', 'com_rsticketspro'))
 		{
-			JToolbarHelper::publish('departments.publish', 'JTOOLBAR_PUBLISH', true);
-			JToolbarHelper::unpublish('departments.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+			\Joomla\CMS\Toolbar\ToolbarHelper::publish('departments.publish', 'JTOOLBAR_PUBLISH', true);
+			\Joomla\CMS\Toolbar\ToolbarHelper::unpublish('departments.unpublish', 'JTOOLBAR_UNPUBLISH', true);
 		}
 		if ($user->authorise('department.delete', 'com_rsticketspro'))
 		{
-			JToolbarHelper::deleteList('RST_CONFIRM_DELETE_DEPARTMENT', 'departments.delete');
+			\Joomla\CMS\Toolbar\ToolbarHelper::deleteList('RST_CONFIRM_DELETE_DEPARTMENT', 'departments.delete');
 		}
 	}
 }

@@ -9,6 +9,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Router\Route;
+
+use Joomla\CMS\Factory;
+
 class RsticketsproControllerNotes extends JControllerAdmin
 {
 	public function getModel($name = 'Note', $prefix = 'RsticketsproModel', $config = array('ignore_request' => true))
@@ -20,6 +24,6 @@ class RsticketsproControllerNotes extends JControllerAdmin
 	{
 		parent::delete();
 
-		$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_list . '&ticket_id=' . JFactory::getApplication()->input->getInt('ticket_id') . '&tmpl=component', false));
+		$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list . '&ticket_id=' . Factory::getApplication()->getInput()->getInt('ticket_id') . '&tmpl=component', false));
 	}
 }

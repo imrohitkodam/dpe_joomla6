@@ -9,7 +9,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproModelSignature extends JModelAdmin
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\AdminModel;
+
+class RsticketsproModelSignature extends \Joomla\CMS\MVC\Model\AdminModel
 {
 	public function getForm($data = array(), $loadData = true)
 	{
@@ -34,9 +37,9 @@ class RsticketsproModelSignature extends JModelAdmin
 	
 	public function save($data)
 	{
-		$db 	= JFactory::getDbo();
+		$db 	= Factory::getDbo();
 		$query 	= $db->getQuery(true);
-		$userId	= JFactory::getUser()->id;
+		$userId	= Factory::getUser()->id;
 		
 		$query->update($db->qn('#__rsticketspro_staff'))
 			  ->set($db->qn('signature') . '=' . $db->q($data['signature']))
@@ -46,9 +49,9 @@ class RsticketsproModelSignature extends JModelAdmin
 	
 	public function getIsAssigned()
 	{
-		$db 	= JFactory::getDbo();
+		$db 	= Factory::getDbo();
 		$query 	= $db->getQuery(true);
-		$userId	= JFactory::getUser()->id;
+		$userId	= Factory::getUser()->id;
 		
 		$query->select($db->qn('id'))
 			  ->from($db->qn('#__rsticketspro_staff'))

@@ -9,6 +9,12 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\Filesystem\File;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
 class RsticketsproTableKbcontent extends JTable
 {
 	public $id = null;
@@ -43,12 +49,12 @@ class RsticketsproTableKbcontent extends JTable
 
 		if (!$this->id)
 		{
-			$this->created = JFactory::getDate()->toSql();
+			$this->created = Factory::getDate()->toSql();
 			$this->modified = $db->getNullDate();
 		}
 		else
 		{
-			$this->modified = JFactory::getDate()->toSql();
+			$this->modified = Factory::getDate()->toSql();
 		}
 		
 		$this->alias = trim($this->alias);
@@ -60,7 +66,7 @@ class RsticketsproTableKbcontent extends JTable
 		$this->alias = JFilterOutput::stringURLSafe($this->alias);
 
 		if (trim(str_replace('-', '', $this->alias)) == '') {
-			$this->alias = JFactory::getDate()->format('Y-m-d-H-i-s');
+			$this->alias = Factory::getDate()->format('Y-m-d-H-i-s');
 		}
 
 		return true;
@@ -72,7 +78,7 @@ class RsticketsproTableKbcontent extends JTable
 		{
 			if (file_exists(RST_ARTICLE_THUMB_FOLDER.'/'.$this->thumb))
 			{
-				JFile::delete(RST_ARTICLE_THUMB_FOLDER.'/'.$this->thumb);
+				File::delete(RST_ARTICLE_THUMB_FOLDER.'/'.$this->thumb);
 			}
 			
 			return true;
@@ -85,7 +91,7 @@ class RsticketsproTableKbcontent extends JTable
 	{
 		if ($this->id)
 		{
-			$db		= JFactory::getDbo();
+			$db		= Factory::getDbo();
 			$query	= $db->getQuery(true);
 			
 			$query	->delete($db->qn('#__rsticketspro_kb_content_tags'))
@@ -110,7 +116,7 @@ class RsticketsproTableKbcontent extends JTable
 			$this->deleteTags();
 			
 			JPluginHelper::importPlugin('finder');
-			JFactory::getApplication()->triggerEvent('onFinderAfterDelete', array('com_rsticketspro.article', $this));
+			Factory::getApplication()->triggerEvent('onFinderAfterDelete', array('com_rsticketspro.article', $this));
 		}
 		
 		return $deleted;
@@ -123,13 +129,13 @@ class RsticketsproTableKbcontent extends JTable
 
         if ($table->load(array('alias' => $this->alias, 'category_id' => (int) $this->category_id)) && ($table->id != $this->id || $this->id == 0)) {
             // Is the existing category trashed?
-            $this->setError(JText::_('RST_KB_ARTICLE_UNIQUE_ALIAS'));
+            $this->setError(Text::_('RST_KB_ARTICLE_UNIQUE_ALIAS'));
 			
             return false;
         }
 		
 		JPluginHelper::importPlugin('finder');
-		JFactory::getApplication()->triggerEvent('onFinderAfterSave', array('com_rsticketspro.article', $this, true));
+		Factory::getApplication()->triggerEvent('onFinderAfterSave', array('com_rsticketspro.article', $this, true));
 		
 		return parent::store($updateNulls);
 	}
@@ -137,7 +143,7 @@ class RsticketsproTableKbcontent extends JTable
 	public function publish($pks = null, $value = 1, $userid = 0) 
 	{
 		JPluginHelper::importPlugin('finder');
-		JFactory::getApplication()->triggerEvent('onFinderChangeState', array('com_rsticketspro.article', $pks, $value));
+		Factory::getApplication()->triggerEvent('onFinderChangeState', array('com_rsticketspro.article', $pks, $value));
 		
 		return parent::publish($pks, $value, $userid);
 	}

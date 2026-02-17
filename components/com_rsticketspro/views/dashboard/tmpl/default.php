@@ -9,9 +9,13 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::_('stylesheet', 'com_rsticketspro/awesomplete.css', array('relative' => true, 'version' => 'auto'));
-JHtml::_('script', 'com_rsticketspro/awesomplete.min.js', array('relative' => true, 'version' => 'auto'));
-JHtml::_('script', 'com_rsticketspro/dashboard.js', array('relative' => true, 'version' => 'auto'));
+use Joomla\CMS\HTML\HTMLHelper;
+
+use Joomla\CMS\Language\Text;
+
+HTMLHelper::_('stylesheet', 'com_rsticketspro/awesomplete.css', array('relative' => true, 'version' => 'auto'));
+HTMLHelper::_('script', 'com_rsticketspro/awesomplete.min.js', array('relative' => true, 'version' => 'auto'));
+HTMLHelper::_('script', 'com_rsticketspro/dashboard.js', array('relative' => true, 'version' => 'auto'));
 
 if ($this->params->get('show_page_heading', 1))
 {
@@ -33,8 +37,8 @@ if ($this->globalMessage && $this->globalMessagePosition === 'top')
 	<?php if ($this->params->get('show_search', 1)) { ?>
 	<div class="rst-dashboard-search rst-dashboard-section text-center">
 		<div class="btn-group">
-			<input type="text" placeholder="<?php echo $this->escape(JText::_('RST_SEARCH_HELPDESK')); ?>" class="form-control input-xlarge" name="search" autocomplete="off" id="rsticketspro_searchinp" />
-			<button type="submit" class="btn btn-primary"><i id="rstickets_search_icon" class="rsticketsproicon-search"></i><?php echo JHtml::_('image', 'com_rsticketspro/loading.gif', '', array('id' => 'rsticketspro_loading', 'style' => 'display:none;'), true); ?></button>
+			<input type="text" placeholder="<?php echo $this->escape(Text::_('RST_SEARCH_HELPDESK')); ?>" class="form-control input-xlarge" name="search" autocomplete="off" id="rsticketspro_searchinp" />
+			<button type="submit" class="btn btn-primary"><i id="rstickets_search_icon" class="rsticketsproicon-search"></i><?php echo HTMLHelper::_('image', 'com_rsticketspro/loading.gif', '', array('id' => 'rsticketspro_loading', 'style' => 'display:none;'), true); ?></button>
 		</div>
 	</div>
 	<?php } ?>
@@ -44,24 +48,24 @@ if ($this->globalMessage && $this->globalMessagePosition === 'top')
 			<div class="rst-dashboard-item <?php echo RsticketsproAdapterCard::render(); ?> bg-white">
 				<div class="<?php echo RsticketsproAdapterCard::render('body'); ?> text-center">
 					<?php if ($this->db_thumb_type == 'icons') { ?>
-					<h2><i class="rsticketsproicon-mail"></i> <a class="rst-title" href="<?php echo RSTicketsProHelper::route('index.php?option=com_rsticketspro&view=submit'); ?>"><?php echo JText::_('RST_SUBMIT_TICKET'); ?></a></h2>
+					<h2><i class="rsticketsproicon-mail"></i> <a class="rst-title" href="<?php echo RSTicketsProHelper::route('index.php?option=com_rsticketspro&view=submit'); ?>"><?php echo Text::_('RST_SUBMIT_TICKET'); ?></a></h2>
 					<?php } else { ?>
 					<a href="<?php echo RSTicketsProHelper::route('index.php?option=com_rsticketspro&view=submit'); ?>">
 						<?php
 						if ($this->db_submit_ticket_thumb) {
-							$submit_ticket_thumb = JHtml::_('image', $this->db_submit_ticket_thumb, JText::_('RST_SUBMIT_TICKET'), array(), false);
+							$submit_ticket_thumb = HTMLHelper::_('image', $this->db_submit_ticket_thumb, Text::_('RST_SUBMIT_TICKET'), array(), false);
 						} else {
-							$submit_ticket_thumb = JHtml::_('image', 'com_rsticketspro/kb-icon.png', JText::_('RST_SUBMIT_TICKET'), array(), true);
+							$submit_ticket_thumb = HTMLHelper::_('image', 'com_rsticketspro/kb-icon.png', Text::_('RST_SUBMIT_TICKET'), array(), true);
 						}
 						
 						echo $submit_ticket_thumb;
 						?>
 					</a>
-					<h2 class="rst-title"><?php echo JText::_('RST_SUBMIT_TICKET'); ?></h2>
+					<h2 class="rst-title"><?php echo Text::_('RST_SUBMIT_TICKET'); ?></h2>
 					<?php } ?>
 					<div class="rst-caption">
-						<p><?php echo JText::_($this->params->get('submit_ticket_desc')); ?></p>
-						<a class="btn btn-secondary" href="<?php echo RSTicketsProHelper::route('index.php?option=com_rsticketspro&view=submit'); ?>"><?php echo JText::_('RST_DB_SUBMIT'); ?></a>
+						<p><?php echo Text::_($this->params->get('submit_ticket_desc')); ?></p>
+						<a class="btn btn-secondary" href="<?php echo RSTicketsProHelper::route('index.php?option=com_rsticketspro&view=submit'); ?>"><?php echo Text::_('RST_DB_SUBMIT'); ?></a>
 					</div>
 				</div>
 			</div>
@@ -70,24 +74,24 @@ if ($this->globalMessage && $this->globalMessagePosition === 'top')
 			<div class="rst-dashboard-item <?php echo RsticketsproAdapterCard::render(); ?> bg-white">
 				<div class="<?php echo RsticketsproAdapterCard::render('body'); ?> text-center">
 					<?php if ($this->db_thumb_type == 'icons') { ?>
-					<h2><i class="rsticketsproicon-clipboard"></i> <a class="rst-title" href="<?php echo RSTicketsProHelper::route('index.php?option=com_rsticketspro&view=tickets'); ?>"><?php echo JText::_('RST_VIEW_TICKETS'); ?></a></h2>
+					<h2><i class="rsticketsproicon-clipboard"></i> <a class="rst-title" href="<?php echo RSTicketsProHelper::route('index.php?option=com_rsticketspro&view=tickets'); ?>"><?php echo Text::_('RST_VIEW_TICKETS'); ?></a></h2>
 					<?php } else { ?>
 					<a href="<?php echo RSTicketsProHelper::route('index.php?option=com_rsticketspro&view=tickets'); ?>">
 						<?php
 						if ($this->db_view_tickets_thumb) {
-							$view_tickets_thumb = JHtml::_('image', $this->db_view_tickets_thumb, JText::_('RST_VIEW_TICKETS'), array(), false);
+							$view_tickets_thumb = HTMLHelper::_('image', $this->db_view_tickets_thumb, Text::_('RST_VIEW_TICKETS'), array(), false);
 						} else {
-							$view_tickets_thumb = JHtml::_('image', 'com_rsticketspro/kb-icon.png', JText::_('RST_VIEW_TICKETS'), array(), true);
+							$view_tickets_thumb = HTMLHelper::_('image', 'com_rsticketspro/kb-icon.png', Text::_('RST_VIEW_TICKETS'), array(), true);
 						}
 						
 						echo $view_tickets_thumb;
 						?>
 					</a>
-					<h2 class="rst-title"><?php echo JText::_('RST_VIEW_TICKETS'); ?></h2>
+					<h2 class="rst-title"><?php echo Text::_('RST_VIEW_TICKETS'); ?></h2>
 					<?php } ?>
 					<div class="rst-caption">
-						<p><?php echo JText::_($this->params->get('view_tickets_desc')); ?></p>
-						<a class="btn btn-secondary" href="<?php echo RSTicketsProHelper::route('index.php?option=com_rsticketspro&view=tickets'); ?>"><?php echo JText::_('RST_DB_VIEW'); ?></a>
+						<p><?php echo Text::_($this->params->get('view_tickets_desc')); ?></p>
+						<a class="btn btn-secondary" href="<?php echo RSTicketsProHelper::route('index.php?option=com_rsticketspro&view=tickets'); ?>"><?php echo Text::_('RST_DB_VIEW'); ?></a>
 					</div>
 				</div>
 			</div>
@@ -96,24 +100,24 @@ if ($this->globalMessage && $this->globalMessagePosition === 'top')
 			<div class="rst-dashboard-item <?php echo RsticketsproAdapterCard::render(); ?> bg-white">
 				<div class="<?php echo RsticketsproAdapterCard::render('body'); ?> text-center">
 					<?php if ($this->db_thumb_type == 'icons') { ?>
-					<h2><i class="rsticketsproicon-search"></i> <a class="rst-title" href="<?php echo RSTicketsProHelper::route('index.php?option=com_rsticketspro&view=search'); ?>"><?php echo JText::_('RST_SEARCH_TICKETS'); ?></a></h2>
+					<h2><i class="rsticketsproicon-search"></i> <a class="rst-title" href="<?php echo RSTicketsProHelper::route('index.php?option=com_rsticketspro&view=search'); ?>"><?php echo Text::_('RST_SEARCH_TICKETS'); ?></a></h2>
 					<?php } else { ?>
 					<a href="<?php echo RSTicketsProHelper::route('index.php?option=com_rsticketspro&view=tickets'); ?>">
 						<?php
 						if ($this->db_search_tickets_thumb) {
-							$search_tickets_thumb = JHtml::_('image', $this->db_search_tickets_thumb, JText::_('RST_SEARCH_TICKETS'), array(), false);
+							$search_tickets_thumb = HTMLHelper::_('image', $this->db_search_tickets_thumb, Text::_('RST_SEARCH_TICKETS'), array(), false);
 						} else {
-							$search_tickets_thumb = JHtml::_('image', 'com_rsticketspro/kb-icon.png', JText::_('RST_SEARCH_TICKETS'), array(), true);
+							$search_tickets_thumb = HTMLHelper::_('image', 'com_rsticketspro/kb-icon.png', Text::_('RST_SEARCH_TICKETS'), array(), true);
 						}
 						
 						echo $search_tickets_thumb;
 						?>
 					</a>
-					<h2 class="rst-title"><?php echo JText::_('RST_SEARCH_TICKETS'); ?></h2>
+					<h2 class="rst-title"><?php echo Text::_('RST_SEARCH_TICKETS'); ?></h2>
 					<?php } ?>
 					<div class="rst-caption">
-						<p><?php echo JText::_($this->params->get('search_tickets_desc')); ?></p>
-						<a class="btn btn-secondary" href="<?php echo RSTicketsProHelper::route('index.php?option=com_rsticketspro&view=search'); ?>"><?php echo JText::_('RST_DB_SEARCH'); ?></a>
+						<p><?php echo Text::_($this->params->get('search_tickets_desc')); ?></p>
+						<a class="btn btn-secondary" href="<?php echo RSTicketsProHelper::route('index.php?option=com_rsticketspro&view=search'); ?>"><?php echo Text::_('RST_DB_SEARCH'); ?></a>
 					</div>
 				</div>
 			</div>
@@ -126,14 +130,14 @@ if ($this->globalMessage && $this->globalMessagePosition === 'top')
 		?>
 		<div id="rsticketspro_dashboard_tickets" class="rst-dashboard-tickets rst-dashboard-section <?php echo RsticketsproAdapterGrid::row(); ?>">
 			<div class="<?php echo RsticketsproAdapterGrid::column(12); ?>">
-				<h2 class="rst-section-title"><?php echo JText::_('RST_MY_TICKETS'); ?></h2>
+				<h2 class="rst-section-title"><?php echo Text::_('RST_MY_TICKETS'); ?></h2>
 				<?php
 				if ($this->user->get('guest'))
 				{
 					?>
 					<div class="rst-dashboard-login">
-						<p><?php echo JText::_('RST_YOU_HAVE_TO_BE_LOGGED_IN'); ?></p>
-						<a class="btn btn-primary" href="<?php echo $this->login_link; ?>"><i class="icon-lock"></i> <?php echo JText::_('RST_CLICK_HERE_TO_LOGIN'); ?></a>
+						<p><?php echo Text::_('RST_YOU_HAVE_TO_BE_LOGGED_IN'); ?></p>
+						<a class="btn btn-primary" href="<?php echo $this->login_link; ?>"><i class="icon-lock"></i> <?php echo Text::_('RST_CLICK_HERE_TO_LOGIN'); ?></a>
 					</div>
 					<?php
 				}
@@ -145,8 +149,8 @@ if ($this->globalMessage && $this->globalMessagePosition === 'top')
 						<table class="table table-striped table-hover table-bordered">
 							<thead>
 							<tr>
-								<th><?php echo JText::_('RST_TICKET_SUBJECT'); ?></th>
-								<th><?php echo JText::_('RST_TICKET_STATUS'); ?></th>
+								<th><?php echo Text::_('RST_TICKET_SUBJECT'); ?></th>
+								<th><?php echo Text::_('RST_TICKET_STATUS'); ?></th>
 							</tr>
 							</thead>
 							<tbody>
@@ -157,7 +161,7 @@ if ($this->globalMessage && $this->globalMessagePosition === 'top')
 								?>
 								<tr class="rst-dashboard-status-<?php echo strtolower(str_replace(array(' ', '_'), '-', preg_replace('/[^a-zA-Z0-9\s-]/', '', $ticket->status_name))); ?>">
 									<td><?php if ($hasReply) { ?><strong><?php } ?><a href="<?php echo RSTicketsProHelper::route('index.php?option=com_rsticketspro&view=ticket&id='.$ticket->id.':'.JFilterOutput::stringURLSafe($ticket->subject)); ?>"><?php echo $this->escape($ticket->subject); ?></a><?php if ($hasReply) { ?> (1)</strong><?php } ?></td>
-									<td><?php echo $this->escape(JText::_($ticket->status_name)); ?></td>
+									<td><?php echo $this->escape(Text::_($ticket->status_name)); ?></td>
 								</tr>
 								<?php
 							}
@@ -170,7 +174,7 @@ if ($this->globalMessage && $this->globalMessagePosition === 'top')
 					{
 						?>
 						<div class="alert alert-info">
-							<p><?php echo JText::_('RST_NO_RECENT_ACTIVITY'); ?></p>
+							<p><?php echo Text::_('RST_NO_RECENT_ACTIVITY'); ?></p>
 						</div>
 						<?php
 					}
@@ -184,7 +188,7 @@ if ($this->globalMessage && $this->globalMessagePosition === 'top')
 	if ($this->params->get('show_kb', 1)) {
 		?>
 		<div id="rsticketspro_dashboard_knowledgebase" class="rst-dashboard-section">
-			<h2 class="rst-section-title"><?php echo JText::_('RST_KNOWLEDGEBASE'); ?></h2>
+			<h2 class="rst-section-title"><?php echo Text::_('RST_KNOWLEDGEBASE'); ?></h2>
 			<?php
 			if (count($this->categories)) {
 				if ($this->params->get('split_kb_to_tabs', 0)) {
@@ -213,7 +217,7 @@ if ($this->globalMessage && $this->globalMessagePosition === 'top')
 								}
 								$kb_tabs->addContent($kb_rows);
 							} else {
-								$kb_tabs->addContent('<div class="alert alert-info"><span class="fa fa-info-circle" aria-hidden="true"></span><span class="sr-only">' . JText::_('INFO') . '</span> ' . JText::_('RST_NO_KB_SUBCATEGORIES') . '</div>');
+								$kb_tabs->addContent('<div class="alert alert-info"><span class="fa fa-info-circle" aria-hidden="true"></span><span class="sr-only">' . Text::_('INFO') . '</span> ' . Text::_('RST_NO_KB_SUBCATEGORIES') . '</div>');
 							}
 						}
 						
@@ -221,7 +225,7 @@ if ($this->globalMessage && $this->globalMessagePosition === 'top')
 					} else {
 					?>
 					<div class="alert alert-info">
-						<span class="fa fa-info-circle" aria-hidden="true"></span> <?php echo JText::_('RST_NO_KB_CATEGORIES'); ?>
+						<span class="fa fa-info-circle" aria-hidden="true"></span> <?php echo Text::_('RST_NO_KB_CATEGORIES'); ?>
 					</div>
 					<?php
 					}
@@ -243,7 +247,7 @@ if ($this->globalMessage && $this->globalMessagePosition === 'top')
 			} else {
 			?>
 			<div class="alert alert-info">
-				<span class="fa fa-info-circle" aria-hidden="true"></span> <?php echo JText::_('RST_NO_KB_CATEGORIES'); ?>
+				<span class="fa fa-info-circle" aria-hidden="true"></span> <?php echo Text::_('RST_NO_KB_CATEGORIES'); ?>
 			</div>
 			<?php } ?>
 		</div>

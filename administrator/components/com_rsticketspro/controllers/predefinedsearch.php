@@ -9,6 +9,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Router\Route;
+
+use Joomla\CMS\Factory;
+
 class RsticketsproControllerPredefinedsearch extends JControllerForm
 {
 	protected function allowAdd($data = array())
@@ -62,17 +66,17 @@ class RsticketsproControllerPredefinedsearch extends JControllerForm
 			return false;
 		}
 		
-		return $table->user_id == JFactory::getUser()->id;
+		return $table->user_id == Factory::getUser()->id;
 	}
 	
 	public function perform()
 	{
-		$app 	= JFactory::getApplication();
-		$id	 	= $app->input->getInt('id');
+		$app 	= Factory::getApplication();
+		$id	 	= $app->getInput()->getInt('id');
 		
 		if (!RSTicketsProHelper::isStaff() || !$this->isSameUser($id))
 		{
-			return $this->setRedirect(JRoute::_('index.php?option=com_rsticketspro&view=tickets', false));
+			return $this->setRedirect(Route::_('index.php?option=com_rsticketspro&view=tickets', false));
 		}
 		
 		// load the predefined search
@@ -84,6 +88,6 @@ class RsticketsproControllerPredefinedsearch extends JControllerForm
 		$tickets = $this->getModel('Tickets');
 		$tickets->performSearch($table);
 		
-		return $this->setRedirect(JRoute::_('index.php?option=com_rsticketspro&view=tickets', false));
+		return $this->setRedirect(Route::_('index.php?option=com_rsticketspro&view=tickets', false));
 	}
 }

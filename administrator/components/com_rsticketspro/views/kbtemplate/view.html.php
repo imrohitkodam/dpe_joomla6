@@ -9,7 +9,9 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewKbtemplate extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+class RsticketsproViewKbtemplate extends HtmlView
 {
 	protected $tabs;
 	protected $field;
@@ -33,13 +35,13 @@ class RsticketsproViewKbtemplate extends JViewLegacy
 	
 	protected function addToolbar() {
 		// set title
-		JToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
+		\Joomla\CMS\Toolbar\ToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
 		
 		require_once JPATH_COMPONENT.'/helpers/toolbar.php';
 		RSTicketsProToolbarHelper::addToolbar('kbtemplate');
 		
-		JToolbarHelper::apply('kbtemplate.apply');
-		JToolbarHelper::save('kbtemplate.save');
-		JToolbarHelper::cancel('kbtemplate.cancel');
+		\Joomla\CMS\Toolbar\ToolbarHelper::apply('kbtemplate.apply');
+		\Joomla\CMS\Toolbar\ToolbarHelper::save('kbtemplate.save');
+		\Joomla\CMS\Toolbar\ToolbarHelper::cancel('kbtemplate.cancel');
 	}
 }

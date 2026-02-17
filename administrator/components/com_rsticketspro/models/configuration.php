@@ -9,7 +9,12 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproModelConfiguration extends JModelAdmin
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\AdminModel;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproModelConfiguration extends \Joomla\CMS\MVC\Model\AdminModel
 {
 	public function getForm($data = array(), $loadData = true)
 	{
@@ -50,34 +55,34 @@ class RsticketsproModelConfiguration extends JModelAdmin
 
 				if ($key == 'captcha_characters' && $value < 3)
 				{
-					JFactory::getApplication()->enqueueMessage(JText::_('RST_CAPTCHA_CHARACTERS_ERROR'), 'warning');
+					Factory::getApplication()->enqueueMessage(Text::_('RST_CAPTCHA_CHARACTERS_ERROR'), 'warning');
 					$value = 3;
 				}
 				elseif ($key == 'autoclose_cron_interval' && $value < 10)
 				{
-					JFactory::getApplication()->enqueueMessage(JText::_('RST_AUTOCLOSE_CHECK_ERROR'), 'warning');
+					Factory::getApplication()->enqueueMessage(Text::_('RST_AUTOCLOSE_CHECK_ERROR'), 'warning');
 					$value = 10;
 				}
 				elseif ($key == 'autoclose_email_interval' && $value < 1)
 				{
-					JFactory::getApplication()->enqueueMessage(JText::_('RST_AUTOCLOSE_DAYS_STATUS_ERROR'), 'warning');
+					Factory::getApplication()->enqueueMessage(Text::_('RST_AUTOCLOSE_DAYS_STATUS_ERROR'), 'warning');
 					$value = 1;
 				}
 				elseif ($key == 'autoclose_interval' && $value < 1)
 				{
-					JFactory::getApplication()->enqueueMessage(JText::_('RST_AUTOCLOSE_DAYS_CLOSED_ERROR'), 'warning');
+					Factory::getApplication()->enqueueMessage(Text::_('RST_AUTOCLOSE_DAYS_CLOSED_ERROR'), 'warning');
 					$value = 1;
 				}
 				elseif ($key == 'followup_cron_interval' && $value < 10)
 				{
-					JFactory::getApplication()->enqueueMessage(JText::_('RST_FEEDBACK_FOLLOWUP_CHECK_ERROR'), 'warning');
+					Factory::getApplication()->enqueueMessage(Text::_('RST_FEEDBACK_FOLLOWUP_CHECK_ERROR'), 'warning');
 					$value = 10;
 				}
 				elseif ($key == 'followup_enabled_time')
 				{
 					if ($data['enable_followup'] == 1 && $value == 0)
 					{
-						$value = JFactory::getDate()->toSql();
+						$value = Factory::getDate()->toSql();
 					}
 					elseif ($data['enable_followup'] == 0 && $value != 0)
 					{

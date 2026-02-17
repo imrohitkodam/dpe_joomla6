@@ -9,7 +9,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproModelArticle extends JModelLegacy
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproModelArticle extends BaseDatabaseModel
 {
 	protected $article;
 	
@@ -19,7 +23,7 @@ class RsticketsproModelArticle extends JModelLegacy
 		{
 			$this->article = JTable::getInstance('Kbcontent','RsticketsproTable');
 
-			if ($this->article->load(JFactory::getApplication()->input->getInt('cid')) && $this->article->id)
+			if ($this->article->load(Factory::getApplication()->getInput()->getInt('cid')) && $this->article->id)
 			{
 				$this->article->categories = array();
 				
@@ -49,7 +53,7 @@ class RsticketsproModelArticle extends JModelLegacy
 				}
 				
 				// Check if article is draft
-				$this->article->is_draft = (JFactory::getApplication()->input->getInt('draft') !== null && $this->article->draft) ? true : false;
+				$this->article->is_draft = (Factory::getApplication()->getInput()->getInt('draft') !== null && $this->article->draft) ? true : false;
 				
 				// Increment article hits
 				$this->article->hit();
@@ -156,7 +160,7 @@ class RsticketsproModelArticle extends JModelLegacy
 		$feedback->ip 				= $data['ip'];
 		$feedback->date_submitted 	= $data['date_submitted'];
 		
-		$db		= JFactory::getDbo();
+		$db		= Factory::getDbo();
 		$query	= $db->getQuery(true);
 
 		$query	->update($db->qn('#__rsticketspro_kb_content'))

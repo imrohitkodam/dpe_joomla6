@@ -8,9 +8,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
 // set description if required
 if (isset($this->fieldset->description) && !empty($this->fieldset->description)) { ?>
-	<?php echo JText::_($this->fieldset->description); ?>
+	<?php echo Text::_($this->fieldset->description); ?>
 <?php } ?>
 <?php
 $this->field->startFieldset('');

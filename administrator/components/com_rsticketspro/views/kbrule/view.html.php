@@ -9,14 +9,18 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewKbrule extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewKbrule extends HtmlView
 {
 	protected $form;
 	protected $item;
 	
 	public function display($tpl = null)
 	{
-		JFactory::getApplication()->getInput()->set('hidemainmenu', true);
+		Factory::getApplication()->getInput()->set('hidemainmenu', true);
 
 		$this->addToolbar();
 		
@@ -28,14 +32,14 @@ class RsticketsproViewKbrule extends JViewLegacy
 	
 	protected function addToolbar() {
 		// set title
-		JToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
+		\Joomla\CMS\Toolbar\ToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
 
 		RSTicketsProToolbarHelper::addToolbar('kbrules');
 		
-		JToolbarHelper::apply('kbrule.apply');
-		JToolbarHelper::save('kbrule.save');
-		JToolbarHelper::save2new('kbrule.save2new');
-		JToolbarHelper::save2copy('kbrule.save2copy');
-		JToolbarHelper::cancel('kbrule.cancel');
+		\Joomla\CMS\Toolbar\ToolbarHelper::apply('kbrule.apply');
+		\Joomla\CMS\Toolbar\ToolbarHelper::save('kbrule.save');
+		\Joomla\CMS\Toolbar\ToolbarHelper::save2new('kbrule.save2new');
+		\Joomla\CMS\Toolbar\ToolbarHelper::save2copy('kbrule.save2copy');
+		\Joomla\CMS\Toolbar\ToolbarHelper::cancel('kbrule.cancel');
 	}
 }

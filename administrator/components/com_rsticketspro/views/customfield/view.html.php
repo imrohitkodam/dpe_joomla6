@@ -9,7 +9,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewCustomfield extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewCustomfield extends HtmlView
 {
 	protected $form;
 	protected $item;
@@ -17,7 +21,7 @@ class RsticketsproViewCustomfield extends JViewLegacy
 	
 	public function display($tpl = null)
 	{
-		JFactory::getApplication()->getInput()->set('hidemainmenu', true);
+		Factory::getApplication()->getInput()->set('hidemainmenu', true);
 
 		$this->addToolbar();
 		
@@ -30,14 +34,14 @@ class RsticketsproViewCustomfield extends JViewLegacy
 	protected function addToolbar()
 	{
 		// set title
-		JToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
+		\Joomla\CMS\Toolbar\ToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
 
 		RSTicketsProToolbarHelper::addToolbar('customfields');
 		
-		JToolbarHelper::apply('customfield.apply');
-		JToolbarHelper::save('customfield.save');
-		JToolbarHelper::save2new('customfield.save2new');
-		JToolbarHelper::save2copy('customfield.save2copy');
-		JToolbarHelper::cancel('customfield.cancel');
+		\Joomla\CMS\Toolbar\ToolbarHelper::apply('customfield.apply');
+		\Joomla\CMS\Toolbar\ToolbarHelper::save('customfield.save');
+		\Joomla\CMS\Toolbar\ToolbarHelper::save2new('customfield.save2new');
+		\Joomla\CMS\Toolbar\ToolbarHelper::save2copy('customfield.save2copy');
+		\Joomla\CMS\Toolbar\ToolbarHelper::cancel('customfield.cancel');
 	}
 }

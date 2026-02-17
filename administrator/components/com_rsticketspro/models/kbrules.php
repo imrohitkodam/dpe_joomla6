@@ -9,7 +9,12 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproModelKbrules extends JModelList
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\ListModel;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproModelKbrules extends \Joomla\CMS\MVC\Model\ListModel
 {
 	public function __construct($config = array())
 	{
@@ -25,7 +30,7 @@ class RsticketsproModelKbrules extends JModelList
 	
 	protected function getListQuery()
 	{
-		$db 	= JFactory::getDbo();
+		$db 	= Factory::getDbo();
 		$query 	= $db->getQuery(true);
 		
 		// get filtering states
@@ -77,7 +82,7 @@ class RsticketsproModelKbrules extends JModelList
 	
 	public function getDepartments()
 	{
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true)
 			->select($db->qn('id'))
 			->select($db->qn('name'))
@@ -87,7 +92,7 @@ class RsticketsproModelKbrules extends JModelList
 		{
 			foreach ($results as $result)
 			{
-				$result->name = JText::_($result->name);
+				$result->name = Text::_($result->name);
 			}
 		}
 		
@@ -96,7 +101,7 @@ class RsticketsproModelKbrules extends JModelList
 	
 	public function getPriorities()
 	{
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true)
 			->select($db->qn('id'))
 			->select($db->qn('name'))
@@ -107,7 +112,7 @@ class RsticketsproModelKbrules extends JModelList
 		{
 			foreach ($results as $result)
 			{
-				$result->name = JText::_($result->name);
+				$result->name = Text::_($result->name);
 			}
 		}
 		
@@ -116,7 +121,7 @@ class RsticketsproModelKbrules extends JModelList
 	
 	public function getStatuses()
 	{
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true)
 			->select($db->qn('id'))
 			->select($db->qn('name'))
@@ -127,7 +132,7 @@ class RsticketsproModelKbrules extends JModelList
 		{
 			foreach ($results as $result)
 			{
-				$result->name = JText::_($result->name);
+				$result->name = Text::_($result->name);
 			}
 		}
 		
@@ -136,7 +141,7 @@ class RsticketsproModelKbrules extends JModelList
 	
 	public function getCustomFields()
 	{
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true)
 			->select('*')
 			->from($db->qn('#__rsticketspro_custom_fields'))
@@ -149,8 +154,8 @@ class RsticketsproModelKbrules extends JModelList
 	public function getCustomFieldValues()
 	{
 		$return = array();
-		$db 	= JFactory::getDbo();
-		$cfid 	= JFactory::getApplication()->input->getInt('cfid');
+		$db 	= Factory::getDbo();
+		$cfid 	= Factory::getApplication()->getInput()->getInt('cfid');
 
 		$query = $db->getQuery(true)
 			->select($db->qn('values'))

@@ -9,9 +9,18 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\MVC\Model\AdminModel;
+
+use Joomla\CMS\HTML\HTMLHelper;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
 use Joomla\Registry\Registry;
 
-class RsticketsproModelTicket extends JModelAdmin
+class RsticketsproModelTicket extends \Joomla\CMS\MVC\Model\AdminModel
 {
 	public function __construct()
 	{
@@ -44,28 +53,28 @@ class RsticketsproModelTicket extends JModelAdmin
 
 			$form->setFieldAttribute('priority_id', 'type', 'rsticketsprohtml');
 			$form->setFieldAttribute('priority_id', 'escape', 'true');
-			$form->setValue('priority_id', null, JText::_($ticket->priority->name));
+			$form->setValue('priority_id', null, Text::_($ticket->priority->name));
 		}
 
 		if (!$isStaff || !$permissions->move_ticket)
 		{
 			$form->setFieldAttribute('department_id', 'type', 'rsticketsprohtml');
 			$form->setFieldAttribute('department_id', 'escape', 'true');
-			$form->setValue('department_id', null, JText::_($ticket->department->name));
+			$form->setValue('department_id', null, Text::_($ticket->department->name));
 		}
 
 		if (!$isStaff || !$permissions->change_ticket_status)
 		{
 			$form->setFieldAttribute('status_id', 'type', 'rsticketsprohtml');
 			$form->setFieldAttribute('status_id', 'escape', 'true');
-			$form->setValue('status_id', null, JText::_($ticket->status->name));
+			$form->setValue('status_id', null, Text::_($ticket->status->name));
 		}
 
 		if (!$isStaff || !$permissions->assign_tickets)
 		{
 			$form->setFieldAttribute('staff_id', 'type', 'rsticketsprohtml');
 			$form->setFieldAttribute('staff_id', 'escape', 'true');
-			$form->setValue('staff_id', null, $ticket->staff_id > 0 ? $ticket->staff->get($userField) : JText::_('RST_UNASSIGNED'));
+			$form->setValue('staff_id', null, $ticket->staff_id > 0 ? $ticket->staff->get($userField) : Text::_('RST_UNASSIGNED'));
 		}
 
 		if (!$isStaff || (!$permissions->add_ticket_customers && !$permissions->add_ticket_staff))
@@ -78,9 +87,9 @@ class RsticketsproModelTicket extends JModelAdmin
 			$form->setFieldAttribute('alternative_email', 'escape', 'true');
 		}
 
-		$form->setValue('date', null, JHtml::_('date', $ticket->date, RSTicketsProHelper::getConfig('date_format')));
+		$form->setValue('date', null, HTMLHelper::_('date', $ticket->date, RSTicketsProHelper::getConfig('date_format')));
 
-		if (JFactory::getApplication()->isClient('site'))
+		if (Factory::getApplication()->isClient('site'))
 		{
 			$form->setFieldAttribute('search', 'class', 'input-xlarge');
 			$form->setFieldAttribute('message', 'class', 'input-xlarge');
@@ -113,7 +122,7 @@ class RsticketsproModelTicket extends JModelAdmin
 		}
 
 		// workaround to get the message
-		$data = JFactory::getApplication()->getUserState('com_rsticketspro.edit.ticket.data', null);
+		$data = Factory::getApplication()->getUserState('com_rsticketspro.edit.ticket.data', null);
 		if (is_array($data) && isset($data['message']))
 		{
 			$validData['message'] = $data['message'];
@@ -156,8 +165,8 @@ class RsticketsproModelTicket extends JModelAdmin
 
 		$direction = RSTicketsProHelper::getConfig('messages_direction');
 
-		$db    = JFactory::getDbo();
-		$app   = JFactory::getApplication();
+		$db    = Factory::getDbo();
+		$app   = Factory::getApplication();
 		$query = $db->getQuery(true);
 
 		$query->select('*')
@@ -184,7 +193,7 @@ class RsticketsproModelTicket extends JModelAdmin
 						{
 							if (strpos($image, 'viewinline') !== false)
 							{
-								$new_image               = str_replace(JUri::root(), JUri::root() . 'administrator/', $image);
+								$new_image               = str_replace(Uri::root(), Uri::root() . 'administrator/', $image);
 								$messages[$mid]->message = str_replace($matches[1][$i], $new_image, $messages[$mid]->message);
 							}
 						}
@@ -230,7 +239,7 @@ class RsticketsproModelTicket extends JModelAdmin
 
 	protected function getUser()
 	{
-		return JFactory::getUser();
+		return Factory::getUser();
 	}
 
 	public function isGuest()
@@ -335,7 +344,7 @@ class RsticketsproModelTicket extends JModelAdmin
 				// staff - check if belongs to department only if he is not the customer
 				if ($ticket->customer_id != $user->get('id') && !in_array($ticket->department_id, $departments))
 				{
-					$this->setError(JText::_('RST_STAFF_CANNOT_VIEW_TICKET'));
+					$this->setError(Text::_('RST_STAFF_CANNOT_VIEW_TICKET'));
 
 					return false;
 				}
@@ -343,7 +352,7 @@ class RsticketsproModelTicket extends JModelAdmin
 				// check if department can be seen by this staff member
 				if (RSTicketsProHelper::getConfig('staff_force_departments') && !in_array($ticket->department_id, $departments))
 				{
-					$this->setError(JText::_('RST_STAFF_CANNOT_VIEW_TICKET'));
+					$this->setError(Text::_('RST_STAFF_CANNOT_VIEW_TICKET'));
 
 					return false;
 				}
@@ -351,7 +360,7 @@ class RsticketsproModelTicket extends JModelAdmin
 				// is this ticket unassigned?
 				if (!$permissions->see_unassigned_tickets && !$ticket->staff_id)
 				{
-					$this->setError(JText::_('RST_STAFF_CANNOT_VIEW_TICKET'));
+					$this->setError(Text::_('RST_STAFF_CANNOT_VIEW_TICKET'));
 
 					return false;
 				}
@@ -359,7 +368,7 @@ class RsticketsproModelTicket extends JModelAdmin
 				// does this ticket belong to another staff member?
 				if (!$permissions->see_other_tickets && $ticket->staff_id > 0 && $ticket->staff_id != $user->get('id'))
 				{
-					$this->setError(JText::_('RST_STAFF_CANNOT_VIEW_TICKET'));
+					$this->setError(Text::_('RST_STAFF_CANNOT_VIEW_TICKET'));
 
 					return false;
 				}
@@ -401,7 +410,7 @@ class RsticketsproModelTicket extends JModelAdmin
 				{
 					if ($ticket->customer_id != $user->get('id'))
 					{
-						$this->setError(JText::_('RST_CUSTOMER_CANNOT_VIEW_TICKET'));
+						$this->setError(Text::_('RST_CUSTOMER_CANNOT_VIEW_TICKET'));
 
 						return false;
 					}
@@ -442,7 +451,7 @@ class RsticketsproModelTicket extends JModelAdmin
 				'flagged' => $flagged
 			);
 
-			return JFactory::getDbo()->updateObject('#__rsticketspro_tickets', $object, array('id'));
+			return Factory::getDbo()->updateObject('#__rsticketspro_tickets', $object, array('id'));
 		}
 
 		return false;
@@ -472,11 +481,11 @@ class RsticketsproModelTicket extends JModelAdmin
 		}
 
 		// get the date
-		$date = JFactory::getDate();
+		$date = Factory::getDate();
 
 		if ($ticket = $this->getTicket($id))
 		{
-			$last_reply = JFactory::getDate($ticket->last_reply)->toUnix();
+			$last_reply = Factory::getDate($ticket->last_reply)->toUnix();
 			if ($ticket->last_reply_customer || $ticket->autoclose_sent || $last_reply + $interval > $date->toUnix())
 			{
 				return false;
@@ -492,7 +501,7 @@ class RsticketsproModelTicket extends JModelAdmin
 				if (RSTicketsProHelper::getConfig('email_use_global'))
 				{
 					// are we using global Joomla! config ?
-					$app                        = JFactory::getApplication();
+					$app                        = Factory::getApplication();
 					$emailConfig['from']        = $app->get('mailfrom');
 					$emailConfig['fromName']    = $app->get('fromname');
 					$emailConfig['replyTo']     = $app->get('replyto');
@@ -522,8 +531,8 @@ class RsticketsproModelTicket extends JModelAdmin
 			if ($email = RSTicketsProHelper::getEmail('notification_email'))
 			{
                 $replacements = array(
-                    '{live_site}' => JUri::root(),
-                    '{ticket}' => RSTicketsProHelper::route(JUri::root() . 'index.php?option=com_rsticketspro&view=ticket&cid=' . $ticket->id . ':' . JFilterOutput::stringURLSafe($ticket->subject)),
+                    '{live_site}' => Uri::root(),
+                    '{ticket}' => RSTicketsProHelper::route(Uri::root() . 'index.php?option=com_rsticketspro&view=ticket&cid=' . $ticket->id . ':' . JFilterOutput::stringURLSafe($ticket->subject)),
                     '{customer_name}' => $ticket->customer->get('name'),
                     '{customer_username}' => $ticket->customer->get('username'),
                     '{customer_email}' => $ticket->customer->get('email'),
@@ -532,8 +541,8 @@ class RsticketsproModelTicket extends JModelAdmin
                     '{staff_email}' => $ticket->staff->get('email'),
                     '{code}' => $ticket->code,
                     '{subject}' => $ticket->subject,
-                    '{priority}' => JText::_($ticket->priority->name),
-                    '{status}' => JText::_($ticket->status->name),
+                    '{priority}' => Text::_($ticket->priority->name),
+                    '{status}' => Text::_($ticket->status->name),
                     '{inactive_interval}' => $overdue,
                     '{close_interval}' => $closed
                 );
@@ -550,7 +559,7 @@ class RsticketsproModelTicket extends JModelAdmin
 				'id'             => $ticket->id,
 				'autoclose_sent' => $date->toUnix()
 			);
-			JFactory::getDbo()->updateObject('#__rsticketspro_tickets', $object, array('id'));
+			Factory::getDbo()->updateObject('#__rsticketspro_tickets', $object, array('id'));
 
 			RSTicketsProHelper::addHistory($ticket->id, 'notify');
 
@@ -569,7 +578,7 @@ class RsticketsproModelTicket extends JModelAdmin
 			return array();
 		}
 
-		$db    = JFactory::getDbo();
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select($db->qn('start'))
@@ -592,8 +601,8 @@ class RsticketsproModelTicket extends JModelAdmin
 				}
 				else
 				{
-					$int_start = JFactory::getDate($interval->start);
-					$int_end = JFactory::getDate($interval->end);
+					$int_start = Factory::getDate($interval->start);
+					$int_end = Factory::getDate($interval->end);
 
 					$int_start = $int_start->getTimestamp();
 					$int_end = $int_end->getTimestamp();
@@ -616,7 +625,7 @@ class RsticketsproModelTicket extends JModelAdmin
 	}
 
 	public function checkIfExistsTimeSpentEntry($ticket_id, $entry_id, $staff_id = null) {
-		$db    = JFactory::getDbo();
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select('COUNT(*)')
@@ -641,7 +650,7 @@ class RsticketsproModelTicket extends JModelAdmin
 
 		if (!isset($names[$id]))
 		{
-			$user = JFactory::getUser($id);
+			$user = Factory::getUser($id);
 			if ($user && !$user->get('guest'))
 			{
 				$names[$id] = $user->get('name');
@@ -660,7 +669,7 @@ class RsticketsproModelTicket extends JModelAdmin
 			return;
 		}
 
-		$db    = JFactory::getDbo();
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->delete($db->qn('#__rsticketspro_timespent'))
@@ -684,7 +693,7 @@ class RsticketsproModelTicket extends JModelAdmin
 				'time_spent' => 0
 			);
 
-			JFactory::getDbo()->updateObject('#__rsticketspro_tickets', $object, array('id'));
+			Factory::getDbo()->updateObject('#__rsticketspro_tickets', $object, array('id'));
 		}
 	}
 
@@ -695,14 +704,14 @@ class RsticketsproModelTicket extends JModelAdmin
 
 		if ($isStaff && $enableTimeSpent)
 		{
-			$db    = JFactory::getDbo();
+			$db    = Factory::getDbo();
 
 			if ($state)
 			{
 				$object = (object) array(
 					'staff_id' => $this->getUser()->id,
 					'ticket_id' => $ticket_id,
-					'start' => JFactory::getDate('now')->toSql(),
+					'start' => Factory::getDate('now')->toSql(),
 					'end' => $db->getNullDate()
 				);
 
@@ -712,7 +721,7 @@ class RsticketsproModelTicket extends JModelAdmin
 			{
 				$query = $db->getQuery(true)
 					->update($db->qn('#__rsticketspro_timespent'))
-					->set($db->qn('end') . ' = ' . $db->q(JFactory::getDate('now')->toSql()))
+					->set($db->qn('end') . ' = ' . $db->q(Factory::getDate('now')->toSql()))
 					->where($db->qn('ticket_id') . ' = ' . $db->q($ticket_id))
 					->where($db->qn('start') . ' != ' . $db->q($db->getNullDate()))
 					->where($db->qn('end') . ' = ' . $db->q($db->getNullDate()));
@@ -734,7 +743,7 @@ class RsticketsproModelTicket extends JModelAdmin
 	}
 
 	protected function remakeTimeSpent($ticket_id, $force_zero = false){
-		$db    = JFactory::getDbo();
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select($db->qn('start'))
@@ -749,7 +758,7 @@ class RsticketsproModelTicket extends JModelAdmin
 			$total_time_sec = 0;
 			foreach ($intervals as $interval)
 			{
-				$total_time_sec +=  JFactory::getDate($interval->end)->toUnix() - JFactory::getDate($interval->start)->toUnix();
+				$total_time_sec +=  Factory::getDate($interval->end)->toUnix() - Factory::getDate($interval->start)->toUnix();
 			}
 
 			if ($total_time_sec > 0)
@@ -765,7 +774,7 @@ class RsticketsproModelTicket extends JModelAdmin
 					'id' => $ticket_id,
 					'time_spent' => $total_time
 				);
-				JFactory::getDbo()->updateObject('#__rsticketspro_tickets', $object, array('id'));
+				Factory::getDbo()->updateObject('#__rsticketspro_tickets', $object, array('id'));
 			}
 		}
 		else if ($force_zero)
@@ -774,7 +783,7 @@ class RsticketsproModelTicket extends JModelAdmin
 				'id' => $ticket_id,
 				'time_spent' => 0
 			);
-			JFactory::getDbo()->updateObject('#__rsticketspro_tickets', $object, array('id'));
+			Factory::getDbo()->updateObject('#__rsticketspro_tickets', $object, array('id'));
 		}
 	}
 
@@ -782,26 +791,26 @@ class RsticketsproModelTicket extends JModelAdmin
 	{
 		$isStaff              = $this->isStaff();
 		$sections             = array();
-		$sections['messages'] = JText::_('RST_TICKET_MESSAGES');
-		$sections['info']     = JText::_('RST_TICKET_INFORMATION');
+		$sections['messages'] = Text::_('RST_TICKET_MESSAGES');
+		$sections['info']     = Text::_('RST_TICKET_INFORMATION');
 		$enableTimeSpent      = RSTicketsProHelper::getConfig('enable_time_spent');
 		$showInfo             = RSTicketsProHelper::getConfig('show_ticket_info');
 
 		if ($isStaff && $enableTimeSpent)
 		{
-			$sections['time'] = JText::_('RST_TIME_SPENT');
+			$sections['time'] = Text::_('RST_TIME_SPENT');
 		}
 
 		if ($isStaff && $showInfo)
 		{
-			$sections['submitter'] = JText::_('RST_SUBMITTER_INFORMATION');
+			$sections['submitter'] = Text::_('RST_SUBMITTER_INFORMATION');
 		}
 
-		$sections['custom_fields'] = JText::_('RST_TICKET_CUSTOM_FIELDS');
+		$sections['custom_fields'] = Text::_('RST_TICKET_CUSTOM_FIELDS');
 
 		if ($isStaff)
 		{
-			$sections['history'] = JText::_('RST_TICKET_HISTORY');
+			$sections['history'] = Text::_('RST_TICKET_HISTORY');
 		}
 
 		return $sections;
@@ -813,7 +822,7 @@ class RsticketsproModelTicket extends JModelAdmin
 		$customer_id = $ticket->customer_id;
 		$ticket_id   = $ticket->id;
 
-		$db    = JFactory::getDbo();
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select($db->qn('t.id'))
@@ -847,7 +856,7 @@ class RsticketsproModelTicket extends JModelAdmin
 
 	public function getDepartments()
 	{
-		$db      = JFactory::getDbo();
+		$db      = Factory::getDbo();
 		$query   = $db->getQuery(true);
 		$options = array();
 
@@ -861,7 +870,7 @@ class RsticketsproModelTicket extends JModelAdmin
 		{
 			foreach ($departments as $department)
 			{
-				$tmp = JHtml::_('select.option', $department->id, JText::_($department->name));
+				$tmp = HTMLHelper::_('select.option', $department->id, Text::_($department->name));
 
 				// Add the option object to the result set.
 				$options[] = $tmp;
@@ -873,7 +882,7 @@ class RsticketsproModelTicket extends JModelAdmin
 
 	public function getStatuses()
 	{
-		$db      = JFactory::getDbo();
+		$db      = Factory::getDbo();
 		$query   = $db->getQuery(true);
 		$options = array();
 
@@ -887,7 +896,7 @@ class RsticketsproModelTicket extends JModelAdmin
 		{
 			foreach ($statuses as $status)
 			{
-				$tmp = JHtml::_('select.option', $status->id, JText::_($status->name));
+				$tmp = HTMLHelper::_('select.option', $status->id, Text::_($status->name));
 
 				// Add the option object to the result set.
 				$options[] = $tmp;
@@ -899,7 +908,7 @@ class RsticketsproModelTicket extends JModelAdmin
 
 	public function getPriorities()
 	{
-		$db      = JFactory::getDbo();
+		$db      = Factory::getDbo();
 		$query   = $db->getQuery(true);
 		$options = array();
 
@@ -913,7 +922,7 @@ class RsticketsproModelTicket extends JModelAdmin
 		{
 			foreach ($priorities as $priority)
 			{
-				$tmp = JHtml::_('select.option', $priority->id, JText::_($priority->name));
+				$tmp = HTMLHelper::_('select.option', $priority->id, Text::_($priority->name));
 
 				// Add the option object to the result set.
 				$options[] = $tmp;
@@ -1085,7 +1094,7 @@ class RsticketsproModelTicket extends JModelAdmin
 			if (!$this->staffHasAccessToDepartment($data['staff_id'], $data['department_id']))
 			{
 				unset($data['staff_id']);
-				JFactory::getApplication()->enqueueMessage(JText::sprintf('RST_COULD_NOT_CHANGE_STAFF_MEMBER_DOES_NOT_BELONG_TO_TICKET_DEPARTMENT', $original->code), 'warning');
+				Factory::getApplication()->enqueueMessage(Text::sprintf('RST_COULD_NOT_CHANGE_STAFF_MEMBER_DOES_NOT_BELONG_TO_TICKET_DEPARTMENT', $original->code), 'warning');
 			}
 			else
 			{
@@ -1119,7 +1128,7 @@ class RsticketsproModelTicket extends JModelAdmin
 				$query = $db->getQuery(true);
 				$query->clear()
 					->update($db->qn('#__rsticketspro_tickets'))
-					->set($db->qn('closed') . ' = ' . $db->q(JFactory::getDate()->toSql()))
+					->set($db->qn('closed') . ' = ' . $db->q(Factory::getDate()->toSql()))
 					->where($db->qn('id') . ' = ' . $db->q($id));
 				$db->setQuery($query);
 				$db->execute();
@@ -1261,7 +1270,7 @@ class RsticketsproModelTicket extends JModelAdmin
 							break;
 					}
 
-					$this->setError(JText::sprintf($msg, $file['name']));
+					$this->setError(Text::sprintf($msg, $file['name']));
 
 					return false;
 				}
@@ -1269,14 +1278,14 @@ class RsticketsproModelTicket extends JModelAdmin
 				// is this an allowed extension?
 				if (!RSTicketsProHelper::isAllowedExtension(RSTicketsProHelper::getExtension($file['name']), $upload_extensions))
 				{
-					$this->setError(JText::sprintf('RST_TICKET_UPLOAD_EXTENSION_ERROR', $file['name'], $department->upload_extensions));
+					$this->setError(Text::sprintf('RST_TICKET_UPLOAD_EXTENSION_ERROR', $file['name'], $department->upload_extensions));
 
 					return false;
 				}
 				// check file size
 				if ($department->upload_size > 0 && $file['size'] > $department->upload_size * 1048576)
 				{
-					$this->setError(JText::sprintf('RST_TICKET_UPLOAD_SIZE_ERROR', $file['name'], $department->upload_size));
+					$this->setError(Text::sprintf('RST_TICKET_UPLOAD_SIZE_ERROR', $file['name'], $department->upload_size));
 
 					return;
 				}
@@ -1292,7 +1301,7 @@ class RsticketsproModelTicket extends JModelAdmin
 		// must write a message
 		if (empty($data['message']))
 		{
-			$this->setError(JText::_('RST_TICKET_REPLY_ERROR'));
+			$this->setError(Text::_('RST_TICKET_REPLY_ERROR'));
 
 			return false;
 		}
@@ -1307,7 +1316,7 @@ class RsticketsproModelTicket extends JModelAdmin
 
 	        if (empty($data['consent']))
 	        {
-		        $this->setError(JText::_('COM_RSTICKETSPRO_CONSENT_IS_NEEDED_TO_SUBMIT_THIS_FORM'));
+		        $this->setError(Text::_('COM_RSTICKETSPRO_CONSENT_IS_NEEDED_TO_SUBMIT_THIS_FORM'));
 		        return false;
 	        }
         }
@@ -1348,12 +1357,12 @@ class RsticketsproModelTicket extends JModelAdmin
 			'id'       => $id,
 			'feedback' => $rating
 		);
-		JFactory::getDbo()->updateObject('#__rsticketspro_tickets', $object, array('id'));
+		Factory::getDbo()->updateObject('#__rsticketspro_tickets', $object, array('id'));
 	}
 
 	public function isConvertedToKB($id)
 	{
-		$db    = JFactory::getDbo();
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select('*')
 			->from($db->qn('#__rsticketspro_kb_content'))
@@ -1365,7 +1374,7 @@ class RsticketsproModelTicket extends JModelAdmin
 
 	public function getIsPrint()
 	{
-		return JFactory::getApplication()->input->getInt('print');
+		return Factory::getApplication()->getInput()->getInt('print');
 	}
 
 	public function getRSFieldset()
@@ -1400,7 +1409,7 @@ class RsticketsproModelTicket extends JModelAdmin
 
 	protected function getId()
 	{
-		$input = JFactory::getApplication()->input;
+		$input = Factory::getApplication()->input;
 		$id    = $input->getInt('id', 0);
 		$cid   = $input->getInt('cid', 0);
 

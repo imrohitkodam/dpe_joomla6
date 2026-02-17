@@ -9,8 +9,14 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\HTML\HTMLHelper;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
 if ($this->show_thumbs && ($this->category->thumb || $this->parent_category->thumb)) {
-	$category_thumb = '<span class="rst-kb-category-thumb">' . JHtml::_('image', 'components/com_rsticketspro/assets/thumbs/small/' . ($this->category->thumb ? $this->category->thumb : $this->parent_category->thumb), $this->category->name, array(), false) . '</span>';
+	$category_thumb = '<span class="rst-kb-category-thumb">' . HTMLHelper::_('image', 'components/com_rsticketspro/assets/thumbs/small/' . ($this->category->thumb ? $this->category->thumb : $this->parent_category->thumb), $this->category->name, array(), false) . '</span>';
 } else {
 	$category_thumb = '';
 }
@@ -63,14 +69,14 @@ if (count($this->categories))
 					}
 					$kb_tabs->addContent($kb_rows);
 				} else {
-					$kb_tabs->addContent('<div class="alert alert-info"><span class="fa fa-info-circle" aria-hidden="true"></span><span class="sr-only">' . JText::_('INFO') . '</span> ' . JText::_('RST_NO_KB_SUBCATEGORIES') . '</div>');
+					$kb_tabs->addContent('<div class="alert alert-info"><span class="fa fa-info-circle" aria-hidden="true"></span><span class="sr-only">' . Text::_('INFO') . '</span> ' . Text::_('RST_NO_KB_SUBCATEGORIES') . '</div>');
 				}
 			}
 			$kb_tabs->render();
 		} else {
 		?>
 		<div class="alert alert-info">
-			<span class="fa fa-info-circle" aria-hidden="true"></span><span class="sr-only"><?php echo JText::_('RST_NO_KB_CATEGORIES'); ?>
+			<span class="fa fa-info-circle" aria-hidden="true"></span><span class="sr-only"><?php echo Text::_('RST_NO_KB_CATEGORIES'); ?>
 		</div>
 		<?php
 		}
@@ -106,15 +112,15 @@ if (count($this->categories))
 					?>
 					<div class="btn-group pull-left float-left">
 						<label class="filter-search-lbl element-invisible" for="filter-search">
-							<?php echo JText::_('RST_FILTER').'&#160;'; ?>
+							<?php echo Text::_('RST_FILTER').'&#160;'; ?>
 						</label>
-						<input type="text" class="form-control" name="search" id="filter-search" value="<?php echo $this->escape($this->filter_word); ?>" title="<?php echo JText::_('RST_FILTER'); ?>" placeholder="<?php echo JText::_('RST_FILTER'); ?>" />
-						<button type="submit" class="btn btn-primary"><?php echo JText::_('RST_SEARCH'); ?></button>
+						<input type="text" class="form-control" name="search" id="filter-search" value="<?php echo $this->escape($this->filter_word); ?>" title="<?php echo Text::_('RST_FILTER'); ?>" placeholder="<?php echo Text::_('RST_FILTER'); ?>" />
+						<button type="submit" class="btn btn-primary"><?php echo Text::_('RST_SEARCH'); ?></button>
 						<?php
 						if (strlen($this->filter_word))
 						{
 							?>
-							<button type="button" class="btn btn-danger" onclick="document.getElementById('filter-search').value=''; this.form.submit();"><?php echo JText::_('RST_CLEAR'); ?></button>
+							<button type="button" class="btn btn-danger" onclick="document.getElementById('filter-search').value=''; this.form.submit();"><?php echo Text::_('RST_CLEAR'); ?></button>
 							<?php
 						}
 						?>
@@ -127,7 +133,7 @@ if (count($this->categories))
 					?>
 					<div class="btn-group pull-right float-right">
 						<label for="limit" class="element-invisible">
-							<?php echo JText::_('JGLOBAL_DISPLAY_NUM'); ?>
+							<?php echo Text::_('JGLOBAL_DISPLAY_NUM'); ?>
 						</label>
 						<?php echo $this->pagination->getLimitBox(); ?>
 					</div>
@@ -148,10 +154,10 @@ if (count($this->categories))
 			if (count($tags)) {
 		?>
 		<div class="rst-kb-tag-sorting">
-			<input type="hidden" name="tag" id="filter-tag" value="<?php echo $this->escape($this->filter_tag); ?>" title="<?php echo JText::_('RST_FILTER'); ?>" />
+			<input type="hidden" name="tag" id="filter-tag" value="<?php echo $this->escape($this->filter_tag); ?>" title="<?php echo Text::_('RST_FILTER'); ?>" />
 			<ul class="nav nav-pills">
 				<li class="nav-item">
-					<button class="nav-link<?php echo !$this->filter_tag ? ' active' : ''; ?>" onclick="document.getElementById('filter-tag').value=''; this.form.submit();"><?php echo JText::_('RST_FILTER_ALL'); ?></button>
+					<button class="nav-link<?php echo !$this->filter_tag ? ' active' : ''; ?>" onclick="document.getElementById('filter-tag').value=''; this.form.submit();"><?php echo Text::_('RST_FILTER_ALL'); ?></button>
 				</li>
 				
 				<?php
@@ -161,7 +167,7 @@ if (count($this->categories))
 					$tag_lang = 'RST_TAG_' . strtoupper($tag_lang);
 				?>
 				<li class="nav-item">
-					<button class="nav-link<?php echo ($this->filter_tag == $tag->tag) ? ' active' : ''; ?>" onclick="document.getElementById('filter-tag').value='<?php echo $tag->tag; ?>'; this.form.submit();"><?php echo (JFactory::getLanguage()->hasKey($tag_lang) ? JText::_($tag_lang) : $tag->tag); ?></button>
+					<button class="nav-link<?php echo ($this->filter_tag == $tag->tag) ? ' active' : ''; ?>" onclick="document.getElementById('filter-tag').value='<?php echo $tag->tag; ?>'; this.form.submit();"><?php echo (Factory::getLanguage()->hasKey($tag_lang) ? Text::_($tag_lang) : $tag->tag); ?></button>
 				</li>
 				<?php } ?>
 			</ul>
@@ -182,13 +188,13 @@ if (count($this->categories))
 				?>
 				<thead>
 					<tr>
-						<th nowrap="nowrap" style="width: 1%;"><?php echo JText::_('#'); ?></th>
-						<th><?php echo JHtml::_('grid.sort', 'RST_KB_ARTICLE_NAME', 'name', $this->sortOrder, $this->sortColumn); ?></th>
+						<th nowrap="nowrap" style="width: 1%;"><?php echo Text::_('#'); ?></th>
+						<th><?php echo HTMLHelper::_('grid.sort', 'RST_KB_ARTICLE_NAME', 'name', $this->sortOrder, $this->sortColumn); ?></th>
 						<?php
 						if ($this->params->get('show_hits', 0))
 						{
 							?>
-							<th nowrap="nowrap" style="width: 1%;"><?php echo JHtml::_('grid.sort', 'RST_KB_ARTICLE_HITS', 'hits', $this->sortOrder, $this->sortColumn); ?></th>
+							<th nowrap="nowrap" style="width: 1%;"><?php echo HTMLHelper::_('grid.sort', 'RST_KB_ARTICLE_HITS', 'hits', $this->sortOrder, $this->sortColumn); ?></th>
 							<?php
 						}
 						?>
@@ -210,14 +216,14 @@ if (count($this->categories))
 				<?php } ?>
 					<td>
 						<a href="<?php echo RSTicketsProHelper::route('index.php?option=com_rsticketspro&view=article&cid='.RSTicketsProHelper::KbSEF($item)); ?>">
-							<?php echo ($this->show_thumbs && $item->thumb) != '' ? JHtml::_('image', 'components/com_rsticketspro/assets/thumbs/articles/' . $item->thumb, '', array('class' => 'rst-kb-article-thumb'), false) : ''; ?>
-							<?php echo $item->name != '' ? $item->name : JText::_('RST_NO_TITLE'); ?>
+							<?php echo ($this->show_thumbs && $item->thumb) != '' ? HTMLHelper::_('image', 'components/com_rsticketspro/assets/thumbs/articles/' . $item->thumb, '', array('class' => 'rst-kb-article-thumb'), false) : ''; ?>
+							<?php echo $item->name != '' ? $item->name : Text::_('RST_NO_TITLE'); ?>
 						</a>
 						<?php
 						if ($this->isHot($item->hits))
 						{
 							?>
-							<em class="rst-hot"><?php echo JText::_('RST_HOT'); ?></em>
+							<em class="rst-hot"><?php echo Text::_('RST_HOT'); ?></em>
 							<?php
 						}
 						?>
@@ -250,8 +256,8 @@ if (count($this->categories))
 				<div class="<?php echo RsticketsproAdapterGrid::column(12 / $this->category_columns); ?>">
 					<div class="rst-kb-article-item">
 						<a href="<?php echo RSTicketsProHelper::route('index.php?option=com_rsticketspro&view=article&cid='.RSTicketsProHelper::KbSEF($item)); ?>">
-							<?php echo ($this->show_thumbs && $item->thumb) != '' ? JHtml::_('image', 'components/com_rsticketspro/assets/thumbs/articles/' . $item->thumb, '', array('class' => 'rst-kb-item-thumb ' . (version_compare(JVERSION, '4.0', '>=') ? 'img-' : '') . 'thumbnail'), false) : ''; ?>
-							<h4 class="rst-kb-item-title"><?php echo $item->name != '' ? $item->name : JText::_('RST_NO_TITLE'); ?></h4>
+							<?php echo ($this->show_thumbs && $item->thumb) != '' ? HTMLHelper::_('image', 'components/com_rsticketspro/assets/thumbs/articles/' . $item->thumb, '', array('class' => 'rst-kb-item-thumb ' . (version_compare(JVERSION, '4.0', '>=') ? 'img-' : '') . 'thumbnail'), false) : ''; ?>
+							<h4 class="rst-kb-item-title"><?php echo $item->name != '' ? $item->name : Text::_('RST_NO_TITLE'); ?></h4>
 						</a>
 					</div>
 				</div>
@@ -274,12 +280,12 @@ if (count($this->categories))
 		} else {
 		?>
 		<div class="alert alert-info">
-			<span class="fa fa-info-circle" aria-hidden="true"></span><span class="sr-only"><?php echo JText::_('INFO'); ?></span>
-			<?php echo JText::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
+			<span class="fa fa-info-circle" aria-hidden="true"></span><span class="sr-only"><?php echo Text::_('INFO'); ?></span>
+			<?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
 		</div>
 		<?php } ?>
 
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo HTMLHelper::_('form.token'); ?>
 		<input type="hidden" name="option" value="com_rsticketspro" />
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="cid" value="<?php echo $this->cid; ?>" />

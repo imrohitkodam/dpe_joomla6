@@ -8,6 +8,14 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\Filesystem\File;
+
+use Joomla\CMS\Uri\Uri;
+
+use Joomla\CMS\Router\Route;
+
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Factory;
@@ -299,7 +307,7 @@ class RSTicketsProHelper
 	public static function mailRoute($url, $xhtml = true, $Itemid = 0)
 	{
 		$url .= $Itemid ? '&Itemid=' . $Itemid : '';
-		$path = JUri::root(false) . $url;
+		$path = Uri::root(false) . $url;
 
 		return self::route($path, $xhtml, $Itemid, false);
 	}
@@ -315,7 +323,7 @@ class RSTicketsProHelper
 		{
 			if (!$Itemid)
 			{
-				$Itemid = Factory::getApplication()->input->getInt('Itemid', 0);
+				$Itemid = Factory::getApplication()->getInput()->getInt('Itemid', 0);
 				if ($Itemid)
 				{
 					$Itemid = 'Itemid=' . $Itemid;
@@ -332,10 +340,10 @@ class RSTicketsProHelper
 			}
 		}
 
-		$converted_url = JRoute::_($url, $xhtml);
+		$converted_url = Route::_($url, $xhtml);
 		if ($absolute)
 		{
-			$uri           = JUri::getInstance();
+			$uri           = Uri::getInstance();
 			$converted_url = $uri->toString(array('scheme', 'host', 'port')) . $converted_url;
 		}
 
@@ -393,9 +401,9 @@ class RSTicketsProHelper
 					$count++;
 				}
 			}
-			if ($count == count($query) && $app->input->getInt('Itemid'))
+			if ($count == count($query) && $app->getInput()->getInt('Itemid'))
 			{
-				return $app->input->getInt('Itemid');
+				return $app->getInput()->getInt('Itemid');
 			}
 		}
 
@@ -464,7 +472,7 @@ class RSTicketsProHelper
 
 		if ($show_please_select)
 		{
-			$return[] = JHtml::_('select.option', '', Text::_('RST_PLEASE_SELECT_PRIORITY'));
+			$return[] = HTMLHelper::_('select.option', '', Text::_('RST_PLEASE_SELECT_PRIORITY'));
 		}
 
 		$query = $db->getQuery(true)
@@ -477,7 +485,7 @@ class RSTicketsProHelper
 		{
 			foreach ($results as $result)
 			{
-				$return[] = JHtml::_('select.option', $result->id, Text::_($result->name));
+				$return[] = HTMLHelper::_('select.option', $result->id, Text::_($result->name));
 			}
 		}
 
@@ -525,7 +533,7 @@ class RSTicketsProHelper
 		{
 			foreach ($results as $result)
 			{
-				$return[] = JHtml::_('select.option', $result->id, Text::_($result->name));
+				$return[] = HTMLHelper::_('select.option', $result->id, Text::_($result->name));
 			}
 		}
 
@@ -539,7 +547,7 @@ class RSTicketsProHelper
 
 		if ($show_please_select)
 		{
-			$return[] = JHtml::_('select.option', '', Text::_('RST_PLEASE_SELECT_DEPARTMENT'));
+			$return[] = HTMLHelper::_('select.option', '', Text::_('RST_PLEASE_SELECT_DEPARTMENT'));
 		}
 
 		$query = $db->getQuery(true)
@@ -561,7 +569,7 @@ class RSTicketsProHelper
 					continue;
 				}
 
-				$return[] = JHtml::_('select.option', $result->id, Text::_($result->name));
+				$return[] = HTMLHelper::_('select.option', $result->id, Text::_($result->name));
 			}
 		}
 
@@ -576,7 +584,7 @@ class RSTicketsProHelper
 
 		if ($show_please_select)
 		{
-			$return[] = JHtml::_('select.option', '', Text::_('RST_PLEASE_SELECT_STAFF'));
+			$return[] = HTMLHelper::_('select.option', '', Text::_('RST_PLEASE_SELECT_STAFF'));
 		}
 
 		if ($show_only_can_reply)
@@ -632,7 +640,7 @@ class RSTicketsProHelper
 					foreach ($users as $user_id)
 					{
 						$user     = Factory::getUser($user_id);
-						$return[] = JHtml::_('select.option', $user->get('id'), $user->get($what));
+						$return[] = HTMLHelper::_('select.option', $user->get('id'), $user->get($what));
 					}
 				}
 
@@ -653,7 +661,7 @@ class RSTicketsProHelper
 		{
 			$avatars = RSTicketsProHelper::getConfig('avatars');
 			$icon    = RSTicketsProHelper::isStaff($user_id) ? 'staff' : 'user';
-			$src     = JHtml::_('image', 'com_rsticketspro/' . $icon . '-icon.png', '', array(), true, 1);
+			$src     = HTMLHelper::_('image', 'com_rsticketspro/' . $icon . '-icon.png', '', array(), true, 1);
 
 			switch ($avatars)
 			{
@@ -661,10 +669,10 @@ class RSTicketsProHelper
 				case 'gravatar':
 					$user  = Factory::getUser($user_id);
 					$email = md5(strtolower(trim($user->get('email'))));
-					$length = strlen(JUri::root(true).'/');
-					$site_url = substr(JUri::root(), 0 , -$length);
+					$length = strlen(Uri::root(true).'/');
+					$site_url = substr(Uri::root(), 0 , -$length);
 
-					$src = 'https://www.gravatar.com/avatar/' . $email . '?d=' . urlencode($site_url.JHtml::_('image', 'com_rsticketspro/' . $icon . '.png', '', array(), true, 1));
+					$src = 'https://www.gravatar.com/avatar/' . $email . '?d=' . urlencode($site_url.HTMLHelper::_('image', 'com_rsticketspro/' . $icon . '.png', '', array(), true, 1));
 					break;
 
 				// Community Builder
@@ -776,7 +784,7 @@ class RSTicketsProHelper
 				return false;
 			}
 
-			return Factory::getApplication()->getSession()->get('rsticketspro.is_staff', false);
+			return Factory::getSession()->get('rsticketspro.is_staff', false);
 		}
 
 		$db = Factory::getDbo();
@@ -804,7 +812,7 @@ class RSTicketsProHelper
 			return array();
 		}
 
-		return Factory::getApplication()->getSession()->get('rsticketspro.permissions', array());
+		return Factory::getSession()->get('rsticketspro.permissions', array());
 	}
 
 	public static function getCurrentDepartments()
@@ -814,7 +822,7 @@ class RSTicketsProHelper
 			return array();
 		}
 
-		return Factory::getApplication()->getSession()->get('rsticketspro.departments', array());
+		return Factory::getSession()->get('rsticketspro.departments', array());
 	}
 
 	public static function getPermissions($user_id)
@@ -916,7 +924,7 @@ class RSTicketsProHelper
 
 	public static function getExtension($filename)
 	{
-		return JFile::getExt($filename);
+		return File::getExt($filename);
 	}
 
 	public static function isAllowedExtension($ext, $ext_array)
@@ -1472,7 +1480,7 @@ class RSTicketsProHelper
 	// Load tooltip
 	public static function tooltipLoad()
 	{
-		JHtml::_('bootstrap.popover', '.hasPopover', array('trigger' => 'hover focus'));
+		HTMLHelper::_('bootstrap.popover', '.hasPopover', array('trigger' => 'hover focus'));
 	}
 
 	public static function renderModal($id, $args)
@@ -1483,7 +1491,7 @@ class RSTicketsProHelper
 		}
 		else
 		{
-			return JHtml::_('bootstrap.renderModal', $id, $args);
+			return HTMLHelper::_('bootstrap.renderModal', $id, $args);
 		}
 	}
 
@@ -1520,9 +1528,9 @@ class RSTicketsProHelper
 
 		if (is_null($loadFiles))
 		{
-			JHtml::_('jquery.framework');
-			JHtml::_('script', 'com_rsticketspro/jquery.magnific-popup.min.js', array('relative' => true, 'version' => 'auto'));
-			JHtml::_('stylesheet', 'com_rsticketspro/magnific-popup.css', array('relative' => true, 'version' => 'auto'));
+			HTMLHelper::_('jquery.framework');
+			HTMLHelper::_('script', 'com_rsticketspro/jquery.magnific-popup.min.js', array('relative' => true, 'version' => 'auto'));
+			HTMLHelper::_('stylesheet', 'com_rsticketspro/magnific-popup.css', array('relative' => true, 'version' => 'auto'));
 
 			Text::script('RST_JQUERY_NOT_FOUND');
 
@@ -1649,7 +1657,7 @@ class RSTicketsProHelper
             foreach ($files as $file)
             {
                 $hash = md5($file->id . ' ' . $file->ticket_message_id);
-                JFile::delete(RST_UPLOAD_FOLDER . '/' . $hash);
+                File::delete(RST_UPLOAD_FOLDER . '/' . $hash);
             }
         }
 

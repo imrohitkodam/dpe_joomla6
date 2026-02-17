@@ -9,16 +9,22 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::_('behavior.keepalive');
-JHtml::_('behavior.formvalidator');
+use Joomla\CMS\Router\Route;
+
+use Joomla\CMS\HTML\HTMLHelper;
+
+use Joomla\CMS\Language\Text;
+
+HTMLHelper::_('behavior.keepalive');
+HTMLHelper::_('behavior.formvalidator');
 
 // Load JavaScript message titles
-JText::script('ERROR');
-JText::script('WARNING');
-JText::script('NOTICE');
-JText::script('MESSAGE');
+Text::script('ERROR');
+Text::script('WARNING');
+Text::script('NOTICE');
+Text::script('MESSAGE');
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_rsticketspro&view=group&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate form-horizontal">
+<form action="<?php echo Route::_('index.php?option=com_rsticketspro&view=group&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate form-horizontal">
 	<?php
 	foreach ($this->form->getFieldsets() as $name => $fieldset)
 	{
@@ -30,7 +36,7 @@ JText::script('MESSAGE');
 		// set description if required
 		if (isset($fieldset->description) && !empty($fieldset->description))
 		{
-			$content .= '<p>' . JText::_($fieldset->description) . '</p>';
+			$content .= '<p>' . Text::_($fieldset->description) . '</p>';
 		}
 
 		$content .= $this->form->renderFieldset($fieldset->name);
@@ -43,7 +49,7 @@ JText::script('MESSAGE');
 	$this->tabs->render();
 	?>	
 	<div>
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo HTMLHelper::_('form.token'); ?>
 		<input type="hidden" name="task" value="" />
 	</div>
 </form>

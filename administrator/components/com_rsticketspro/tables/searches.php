@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 class RsticketsproTableSearches extends JTable
 {
 	public $id = null;
@@ -25,8 +27,8 @@ class RsticketsproTableSearches extends JTable
 	{
 		if (!$this->id)
 		{
-			$db = JFactory::getDbo();
-			$this->ordering = $this->getNextOrder($db->qn('user_id') . '=' . $db->q(JFactory::getUser()->id));
+			$db = Factory::getDbo();
+			$this->ordering = $this->getNextOrder($db->qn('user_id') . '=' . $db->q(Factory::getUser()->id));
 		}
 		
 		return true;
@@ -96,6 +98,6 @@ class RsticketsproTableSearches extends JTable
 	
 	public function reorder($where = '')
 	{
-		return parent::reorder($this->_db->qn('user_id') . '=' . $this->_db->q(JFactory::getUser()->id));
+		return parent::reorder($this->_db->qn('user_id') . '=' . $this->_db->q(Factory::getUser()->id));
 	}
 }

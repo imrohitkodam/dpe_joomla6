@@ -8,7 +8,9 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewCrons extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+class RsticketsproViewCrons extends HtmlView
 {
 	protected $items;
 	protected $pagination;
@@ -30,15 +32,15 @@ class RsticketsproViewCrons extends JViewLegacy
 	protected function addToolbar()
 	{
 		// set title
-		JToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
+		\Joomla\CMS\Toolbar\ToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
 
 		RSTicketsProToolbarHelper::addToolbar('crons');
 		
-		JToolbarHelper::addNew('cron.add');
-		JToolbarHelper::editList('cron.edit');
-		JToolbarHelper::divider();
-		JToolbarHelper::publish('crons.publish');
-		JToolbarHelper::unpublish('crons.unpublish');
-		JToolbarHelper::deleteList('RST_CONFIRM_DELETE', 'crons.delete');
+		\Joomla\CMS\Toolbar\ToolbarHelper::addNew('cron.add');
+		\Joomla\CMS\Toolbar\ToolbarHelper::editList('cron.edit');
+		\Joomla\CMS\Toolbar\ToolbarHelper::divider();
+		\Joomla\CMS\Toolbar\ToolbarHelper::publish('crons.publish');
+		\Joomla\CMS\Toolbar\ToolbarHelper::unpublish('crons.unpublish');
+		\Joomla\CMS\Toolbar\ToolbarHelper::deleteList('RST_CONFIRM_DELETE', 'crons.delete');
 	}
 }

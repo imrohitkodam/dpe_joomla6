@@ -9,16 +9,22 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::_('behavior.keepalive');
-JHtml::_('behavior.formvalidator');
+use Joomla\CMS\Router\Route;
+
+use Joomla\CMS\HTML\HTMLHelper;
+
+use Joomla\CMS\Language\Text;
+
+HTMLHelper::_('behavior.keepalive');
+HTMLHelper::_('behavior.formvalidator');
 
 // Load JavaScript message titles
-JText::script('ERROR');
-JText::script('WARNING');
-JText::script('NOTICE');
-JText::script('MESSAGE');
+Text::script('ERROR');
+Text::script('WARNING');
+Text::script('NOTICE');
+Text::script('MESSAGE');
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_rsticketspro&view=predefinedsearch&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
+<form action="<?php echo Route::_('index.php?option=com_rsticketspro&view=predefinedsearch&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
 	<?php
 	foreach ($this->form->getFieldsets() as $fieldset)
 	{
@@ -27,14 +33,14 @@ JText::script('MESSAGE');
 
 	if (isset($this->item->params['search']))
 	{
-		$input = strlen($this->item->params['search']) ? $this->escape($this->item->params['search']) : '<em>' . JText::_('RST_NONE_SUPPLIED') . '</em>';
-		$this->showField(JText::_('RST_SEARCH_TEXT'), $input);
+		$input = strlen($this->item->params['search']) ? $this->escape($this->item->params['search']) : '<em>' . Text::_('RST_NONE_SUPPLIED') . '</em>';
+		$this->showField(Text::_('RST_SEARCH_TEXT'), $input);
 	}
 
 	if (isset($this->item->params['customer']))
 	{
-		$input = strlen($this->item->params['customer']) ? $this->escape($this->item->params['customer']) : '<em>' . JText::_('RST_NONE_SUPPLIED') . '</em>';
-		$this->showField(JText::_('RST_SEARCH_CUSTOMER'), $input);
+		$input = strlen($this->item->params['customer']) ? $this->escape($this->item->params['customer']) : '<em>' . Text::_('RST_NONE_SUPPLIED') . '</em>';
+		$this->showField(Text::_('RST_SEARCH_CUSTOMER'), $input);
 	}
 
 	if (isset($this->item->params['staff']))
@@ -43,7 +49,7 @@ JText::script('MESSAGE');
 		{
 			if ((string) $this->item->params['staff'] === '0')
 			{
-				$input = '<em>' . JText::_('RST_UNASSIGNED') . '</em>';
+				$input = '<em>' . Text::_('RST_UNASSIGNED') . '</em>';
 			}
 			else
 			{
@@ -52,68 +58,68 @@ JText::script('MESSAGE');
 		}
 		else
 		{
-			$input = '<em>' . JText::_('RST_NONE_SUPPLIED') . '</em>';
+			$input = '<em>' . Text::_('RST_NONE_SUPPLIED') . '</em>';
 		}
-		$this->showField(JText::_('RST_SEARCH_STAFF'), $input);
+		$this->showField(Text::_('RST_SEARCH_STAFF'), $input);
 	}
 
 	if (isset($this->item->params['department_id']))
 	{
 		$departments = $this->getDepartments($this->item->params['department_id']);
-		$input = $departments ? $this->escape(implode(', ', $departments)) : '<em>' . JText::_('RST_NONE_SUPPLIED') . '</em>';
-		$this->showField(JText::_('RST_SEARCH_DEPARTMENTS'), $input);
+		$input = $departments ? $this->escape(implode(', ', $departments)) : '<em>' . Text::_('RST_NONE_SUPPLIED') . '</em>';
+		$this->showField(Text::_('RST_SEARCH_DEPARTMENTS'), $input);
 	}
 
 	if (isset($this->item->params['priority_id']))
 	{
 		$priorities = $this->getPriorities($this->item->params['priority_id']);
-		$input = $priorities ? $this->escape(implode(', ', $priorities)) : '<em>' . JText::_('RST_NONE_SUPPLIED') . '</em>';
-		$this->showField(JText::_('RST_SEARCH_PRIORITIES'), $input);
+		$input = $priorities ? $this->escape(implode(', ', $priorities)) : '<em>' . Text::_('RST_NONE_SUPPLIED') . '</em>';
+		$this->showField(Text::_('RST_SEARCH_PRIORITIES'), $input);
 	}
 
 	if (isset($this->item->params['status_id']))
 	{
 		$statuses = $this->getStatuses($this->item->params['status_id']);
-		$input = $statuses ? $this->escape(implode(', ', $statuses)) : '<em>' . JText::_('RST_NONE_SUPPLIED') . '</em>';
-		$this->showField(JText::_('RST_SEARCH_STATUSES'), $input);
+		$input = $statuses ? $this->escape(implode(', ', $statuses)) : '<em>' . Text::_('RST_NONE_SUPPLIED') . '</em>';
+		$this->showField(Text::_('RST_SEARCH_STATUSES'), $input);
 	}
 
 	if (isset($this->item->params['flagged']))
 	{
-		$input = $this->item->params['flagged'] ? JText::_('JYES') : JText::_('JNO');
-		$this->showField(JText::_('RST_SEARCH_FLAGGED'), $input);
+		$input = $this->item->params['flagged'] ? Text::_('JYES') : Text::_('JNO');
+		$this->showField(Text::_('RST_SEARCH_FLAGGED'), $input);
 	}
 
 	if (!empty($this->item->params['from']))
 	{
 		$input = $this->escape($this->item->params['from']);
-		$this->showField(JText::_('COM_RSTICKETSPRO_FROM_DATE'), $input);
+		$this->showField(Text::_('COM_RSTICKETSPRO_FROM_DATE'), $input);
 	}
 
 	if (!empty($this->item->params['to']))
 	{
 		$input = $this->escape($this->item->params['to']);
-		$this->showField(JText::_('COM_RSTICKETSPRO_TO_DATE'), $input);
+		$this->showField(Text::_('COM_RSTICKETSPRO_TO_DATE'), $input);
 	}
 
 	if (!empty($this->item->params['ordering']))
 	{
-		$input = JText::_('RST_TICKET_'.$this->item->params['ordering']);
+		$input = Text::_('RST_TICKET_'.$this->item->params['ordering']);
 		if (!empty($this->item->params['direction']))
 		{
-			$input .= ' ' . ($this->item->params['direction'] == 'asc' ? JText::_('JGLOBAL_ORDER_ASCENDING') : JText::_('JGLOBAL_ORDER_DESCENDING'));
+			$input .= ' ' . ($this->item->params['direction'] == 'asc' ? Text::_('JGLOBAL_ORDER_ASCENDING') : Text::_('JGLOBAL_ORDER_DESCENDING'));
 		}
-		$this->showField(JText::_('JFIELD_ORDERING_LABEL'), $input);
+		$this->showField(Text::_('JFIELD_ORDERING_LABEL'), $input);
 	}
 	?>
 	
 	<div class="form-actions">
-		<button type="button" onclick="Joomla.submitbutton('predefinedsearch.save');" class="btn btn-primary"><?php echo JText::_('RST_SAVE'); ?></button>
-		<a href="<?php echo RSTicketsProHelper::route('index.php?option=com_rsticketspro&view=predefinedsearches'); ?>" class="btn btn-secondary"><?php echo JText::_('RST_BACK_TO_SEARCHES_LIST'); ?></a>
+		<button type="button" onclick="Joomla.submitbutton('predefinedsearch.save');" class="btn btn-primary"><?php echo Text::_('RST_SAVE'); ?></button>
+		<a href="<?php echo RSTicketsProHelper::route('index.php?option=com_rsticketspro&view=predefinedsearches'); ?>" class="btn btn-secondary"><?php echo Text::_('RST_BACK_TO_SEARCHES_LIST'); ?></a>
 	</div>
 	
 	<div>
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo HTMLHelper::_('form.token'); ?>
 		<input type="hidden" name="task" value="" />
 	</div>
 </form>

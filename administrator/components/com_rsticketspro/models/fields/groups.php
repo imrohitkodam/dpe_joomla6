@@ -21,10 +21,10 @@ class JFormFieldGroups extends JFormFieldList
 		
 		if (isset($this->element['all']) && $this->element['all'] == 'true')
 		{
-			$options[] = JHtml::_('select.option', 0, JText::_('RST_ALL_PRIORITIES'));
+			$options[] = HTMLHelper::_('select.option', 0, Text::_('RST_ALL_PRIORITIES'));
 		}
 		
-		$db 	= JFactory::getDbo();
+		$db 	= Factory::getDbo();
 		$query 	= $db->getQuery(true);
 		$query->select($db->qn('id'))
 			  ->select($db->qn('name'))
@@ -34,7 +34,7 @@ class JFormFieldGroups extends JFormFieldList
 		$groups = $db->loadObjectList();
 		foreach ($groups as $group)
 		{
-			$options[] = JHtml::_('select.option', $group->id, JText::_($group->name));
+			$options[] = HTMLHelper::_('select.option', $group->id, Text::_($group->name));
 		}
 
 		reset($options);

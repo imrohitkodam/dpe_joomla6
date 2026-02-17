@@ -9,7 +9,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproModelSearch extends JModelAdmin
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\AdminModel;
+
+class RsticketsproModelSearch extends \Joomla\CMS\MVC\Model\AdminModel
 {
 	public function getForm($data = array(), $loadData = true)
 	{
@@ -33,7 +36,7 @@ class RsticketsproModelSearch extends JModelAdmin
 			$form->removeField('customer');
 		}
 
-		if (JFactory::getApplication()->isClient('site') && !$this->getAdvanced())
+		if (Factory::getApplication()->isClient('site') && !$this->getAdvanced())
 		{
 			$form->removeField('staff');
 			$form->removeField('customer');
@@ -44,7 +47,7 @@ class RsticketsproModelSearch extends JModelAdmin
 			$form->removeField('filter_order_Dir');
 		}
 
-		if (JFactory::getApplication()->isClient('site') && !RSTicketsProHelper::getConfig('use_btn_group_radio'))
+		if (Factory::getApplication()->isClient('site') && !RSTicketsProHelper::getConfig('use_btn_group_radio'))
 		{
 			$form->setFieldAttribute('flagged', 'class', '');
 		}
@@ -73,12 +76,12 @@ class RsticketsproModelSearch extends JModelAdmin
 
 	public function getAdvanced()
 	{
-		return JFactory::getApplication()->getInput()->get('advanced', false, 'bool');
+		return Factory::getApplication()->getInput()->get('advanced', false, 'bool');
 	}
 
 	public function getItemId()
 	{
-		$params = JFactory::getApplication()->getParams('com_rsticketspro');
+		$params = Factory::getApplication()->getParams('com_rsticketspro');
 
 		if (RSTicketsProHelper::isStaff() && $params->get('staff_itemid'))
 		{

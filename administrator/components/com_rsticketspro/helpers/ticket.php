@@ -8,7 +8,17 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\Filesystem\File;
+
+use Joomla\CMS\Uri\Uri;
+
+use Joomla\CMS\HTML\HTMLHelper;
+
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\Registry\Registry;
+use Joomla\CMS\User\User;
 
 class RSTicketsProTicketHelper
 {
@@ -28,14 +38,14 @@ class RSTicketsProTicketHelper
 		$userInfo      = RSTicketsProHelper::getConfig('show_user_info');
 
 		$table = JTable::getInstance('Kbcontent', 'RsticketsproTable');
-		$db    = JFactory::getDbo();
+		$db    = Factory::getDbo();
 
 		// Parse ticket message template
 		$messages = array();
 		foreach ($ticketMessages as $message)
 		{
 			// get user
-			$user = JFactory::getUser($message->user_id);
+			$user = Factory::getUser($message->user_id);
 
 			// no editor - transform newlines into <br />
 			if (!$useEditor)
@@ -49,7 +59,7 @@ class RSTicketsProTicketHelper
 				'{message_user_name}' => htmlentities($user->name, ENT_COMPAT, 'utf-8'),
 				'{message_user_username}' => htmlentities($user->username, ENT_COMPAT, 'utf-8'),
 				'{message_user_email}' => htmlentities($user->email, ENT_COMPAT, 'utf-8'),
-				'{message_date}' => JHtml::_('date', $message->date, $dateFormat),
+				'{message_date}' => HTMLHelper::_('date', $message->date, $dateFormat),
 				'{message_text}' => $message->message
 			);
 
@@ -60,7 +70,7 @@ class RSTicketsProTicketHelper
 		$replacements = array(
 			'{ticket_subject}'    => $ticket->subject,
 			'{ticket_department}' => $ticket->department->name,
-			'{ticket_date}'       => JHtml::_('date', $ticket->date, $dateFormat),
+			'{ticket_date}'       => HTMLHelper::_('date', $ticket->date, $dateFormat),
 			'{ticket_messages}'   => implode("\n", $messages)
 		);
 
@@ -99,7 +109,7 @@ class RSTicketsProTicketHelper
 	public static function generateCode($department_id)
 	{
 		$code = '';
-		$db   = JFactory::getDbo();
+		$db   = Factory::getDbo();
 
 		$department = RSTicketsProHelper::getDepartment($department_id);
 
@@ -187,7 +197,7 @@ class RSTicketsProTicketHelper
 		}
 		// Hack end DPE: if user is not belong to the cluster then don't add ticket
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// trigger event before saving and adding user_error
 		RSTicketsProHelper::trigger('onBeforeStoreTicket', array($this->data));
@@ -351,7 +361,7 @@ class RSTicketsProTicketHelper
 				$field = JTable::getInstance('Customfields', 'RsticketsproTable');
 				$field->load($custom_field_id);
 
-				$label = JText::_($field->label);
+				$label = Text::_($field->label);
 				$val   = is_array($value) ? implode(', ', $value) : $value;
 
 				$custom_fields_email .= "<p>$label: $val</p>";
@@ -371,7 +381,7 @@ class RSTicketsProTicketHelper
 			// are we using global ?
 			if (RSTicketsProHelper::getConfig('email_use_global'))
 			{
-				$app            = JFactory::getApplication();
+				$app            = Factory::getApplication();
 				$from           = $app->get('mailfrom');
 				$fromname       = $app->get('fromname');
 				$replyto        = $app->get('replyto');
@@ -411,22 +421,22 @@ class RSTicketsProTicketHelper
 		{
 			if ($email = RSTicketsProHelper::getEmail('add_ticket_customer'))
 			{
-				$customer = JFactory::getUser($ticket->customer_id);
+				$customer = Factory::getUser($ticket->customer_id);
 
 				$replacements = array(
-					'{live_site}'         => JUri::root(),
+					'{live_site}'         => Uri::root(),
 					'{ticket}'            => RSTicketsProHelper::mailRoute('index.php?option=com_rsticketspro&view=ticket&id=' . $ticket->id . ':' . JFilterOutput::stringURLSafe($ticket->subject), true, RSTicketsProHelper::getConfig('customer_itemid')),
 					'{customer_name}'     => $customer->name,
 					'{customer_username}' => $customer->username,
 					'{customer_email}'    => $customer->email,
 					'{code}'              => $ticket->code,
 					'{subject}'           => $ticket->subject,
-					'{priority}'          => JText::_($priority->name),
-					'{status}'            => JText::_($status->name),
+					'{priority}'          => Text::_($priority->name),
+					'{status}'            => Text::_($status->name),
 					'{message}'           => $nl2brMessage,
 					'{custom_fields}'     => $custom_fields_email,
 					'{department_id}'     => $department->id,
-					'{department_name}'   => JText::_($department->name)
+					'{department_name}'   => Text::_($department->name)
 				);
 				$replacements = array_merge($replacements, $custom_fields_replacements);
 
@@ -501,7 +511,7 @@ class RSTicketsProTicketHelper
 
 				if ($customer->id)
 				{
-					$db = JFactory::getDbo();
+					$db = Factory::getDbo();
 					$query = $db->getQuery(true);
 
 					// Query to get activated licesce school(s) of logged in user
@@ -524,7 +534,7 @@ class RSTicketsProTicketHelper
 				}
 				else
 				{
-					$email_message = JText::sprintf('RST_TICKET_CUSTOM_GUEST_USER_EMAIL', $customer->name);
+					$email_message = Text::sprintf('RST_TICKET_CUSTOM_GUEST_USER_EMAIL', $customer->name);
 					RSTicketsProHelper::sendMail($from, $fromname, $customer->email, $email_subject, $email_message, 1, $attachments, $ccUserEmail, $department->bcc);
 				}
 			}
@@ -535,11 +545,11 @@ class RSTicketsProTicketHelper
 		{
 			if ($email = RSTicketsProHelper::getEmail('add_ticket_staff'))
 			{
-				$customer = JFactory::getUser($this->data['customer_id']);
-				$staff    = JFactory::getUser($this->data['staff_id']);
+				$customer = Factory::getUser($this->data['customer_id']);
+				$staff    = Factory::getUser($this->data['staff_id']);
 
 				$replacements = array(
-					'{live_site}'         => JUri::root(),
+					'{live_site}'         => Uri::root(),
 					'{ticket}'            => RSTicketsProHelper::mailRoute('index.php?option=com_rsticketspro&view=ticket&id=' . $ticket->id . ':' . JFilterOutput::stringURLSafe($ticket->subject), true, RSTicketsProHelper::getConfig('customer_itemid')),
 					'{customer_name}'     => $customer->name,
 					'{customer_username}' => $customer->username,
@@ -549,12 +559,12 @@ class RSTicketsProTicketHelper
 					'{staff_email}'       => $staff->email,
 					'{code}'              => $ticket->code,
 					'{subject}'           => $ticket->subject,
-					'{priority}'          => JText::_($priority->name),
-					'{status}'            => JText::_($status->name),
+					'{priority}'          => Text::_($priority->name),
+					'{status}'            => Text::_($status->name),
 					'{message}'           => $nl2brMessage,
 					'{custom_fields}'     => $custom_fields_email,
 					'{department_id}'     => $department->id,
-					'{department_name}'   => JText::_($department->name)
+					'{department_name}'   => Text::_($department->name)
 				);
 				$replacements = array_merge($replacements, $custom_fields_replacements);
 
@@ -614,11 +624,11 @@ class RSTicketsProTicketHelper
 		{
 			if ($email = RSTicketsProHelper::getEmail('add_ticket_notify'))
 			{
-				$customer = JFactory::getUser($this->data['customer_id']);
-				$staff    = JFactory::getUser($this->data['staff_id']);
+				$customer = Factory::getUser($this->data['customer_id']);
+				$staff    = Factory::getUser($this->data['staff_id']);
 
 				$replacements = array(
-					'{live_site}'         => JUri::root(),
+					'{live_site}'         => Uri::root(),
 					'{ticket}'            => RSTicketsProHelper::mailRoute('index.php?option=com_rsticketspro&view=ticket&id=' . $ticket->id . ':' . JFilterOutput::stringURLSafe($ticket->subject), true, RSTicketsProHelper::getConfig('customer_itemid')),
 					'{customer_name}'     => $customer->name,
 					'{customer_username}' => $customer->username,
@@ -628,12 +638,12 @@ class RSTicketsProTicketHelper
 					'{staff_email}'       => $staff->email,
 					'{code}'              => $ticket->code,
 					'{subject}'           => $ticket->subject,
-					'{priority}'          => JText::_($priority->name),
-					'{status}'            => JText::_($status->name),
+					'{priority}'          => Text::_($priority->name),
+					'{status}'            => Text::_($status->name),
 					'{message}'           => $nl2brMessage,
 					'{custom_fields}'     => $custom_fields_email,
 					'{department_id}'     => $department->id,
-					'{department_name}'   => JText::_($department->name)
+					'{department_name}'   => Text::_($department->name)
 				);
 				$replacements = array_merge($replacements, $custom_fields_replacements);
 
@@ -698,7 +708,7 @@ class RSTicketsProTicketHelper
 
 	protected function getUserByEmail($email)
 	{
-		$db    = JFactory::getDbo();
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select('*')
@@ -717,8 +727,8 @@ class RSTicketsProTicketHelper
 		}
 		else
 		{
-			$db   = JFactory::getDbo();
-			$lang = JFactory::getLanguage();
+			$db   = Factory::getDbo();
+			$lang = Factory::getLanguage();
 			$lang->load('com_users', JPATH_ADMINISTRATOR, null, true);
 
 			if ((bool) RSTicketsProHelper::getConfig('emails_as_usernames'))
@@ -755,7 +765,7 @@ class RSTicketsProTicketHelper
 				}
 			}
 			// create user object
-			$user = new JUser();
+			$user = new User();
 
 			// Bind the data array to the user object
 			jimport('joomla.user.helper');
@@ -777,12 +787,12 @@ class RSTicketsProTicketHelper
 			$params = JComponentHelper::getParams('com_users');
 			$user->set('groups', array(RSTicketsProHelper::getConfig('user_type')));
 
-			$date = JFactory::getDate();
+			$date = Factory::getDate();
 			$user->set('registerDate', $date->toSql());
 
 			$user->set('block', 0);
 
-			$app = JFactory::getApplication();
+			$app = Factory::getApplication();
 
 			$app->triggerEvent('onRsticketsproBeforeCreateUser', array($user));
 
@@ -812,14 +822,14 @@ class RSTicketsProTicketHelper
 		// disallow control chars in the email
 		$password = preg_replace('/[\x00-\x1F\x7F]/', '', $password);
 
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load('com_rsticketspro', JPATH_SITE);
 
 		// get email sending settings
 		// are we using global ?
 		if (RSTicketsProHelper::getConfig('email_use_global'))
 		{
-			$app            = JFactory::getApplication();
+			$app            = Factory::getApplication();
 			$from           = $app->get('mailfrom');
 			$fromname       = $app->get('fromname');
 			$replyto        = $app->get('replyto');
@@ -834,7 +844,7 @@ class RSTicketsProTicketHelper
 		}
 
 		$replacements = array(
-			'{live_site}' => JUri::root(),
+			'{live_site}' => Uri::root(),
 			'{username}'  => $user->username,
 			'{password}'  => $password,
 			'{email}'     => $user->email
@@ -843,11 +853,11 @@ class RSTicketsProTicketHelper
 		// assemble the email data
 		try
 		{
-			return JFactory::getMailer()->sendMail($from, $fromname, $user->email, $email->subject, str_replace(array_keys($replacements), array_values($replacements), $email->message), true, null, null, null, $replyto, $replytoname);
+			return Factory::getMailer()->sendMail($from, $fromname, $user->email, $email->subject, str_replace(array_keys($replacements), array_values($replacements), $email->message), true, null, null, null, $replyto, $replytoname);
 		}
 		catch (Exception $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
 			return false;
 		}
 	}
@@ -922,11 +932,11 @@ class RSTicketsProTicketHelper
 
 				if ($file['src'] == 'upload')
 				{
-					$success = JFile::upload($file['tmp_name'], RST_UPLOAD_FOLDER . '/' . $hash, false, true);
+					$success = File::upload($file['tmp_name'], RST_UPLOAD_FOLDER . '/' . $hash, false, true);
 				}
 				elseif ($file['src'] == 'cron')
 				{
-					$success = JFile::write(RST_UPLOAD_FOLDER . '/' . $hash, $file['contents']);
+					$success = File::write(RST_UPLOAD_FOLDER . '/' . $hash, $file['contents']);
 				}
 
 				// store attachment
@@ -968,7 +978,7 @@ class RSTicketsProTicketHelper
 			'replies'             => $original->replies + 1,
 			'status_id'           => $statusId
 		);
-		JFactory::getDbo()->updateObject('#__rsticketspro_tickets', $object, array('id'));
+		Factory::getDbo()->updateObject('#__rsticketspro_tickets', $object, array('id'));
 
 		// Reload all ticket fields
 		$ticket = JTable::getInstance('Tickets', 'RsticketsproTable');
@@ -981,7 +991,7 @@ class RSTicketsProTicketHelper
 			// are we using global ?
 			if (RSTicketsProHelper::getConfig('email_use_global'))
 			{
-				$app            = JFactory::getApplication();
+				$app            = Factory::getApplication();
 				$from           = $app->get('mailfrom');
 				$fromname       = $app->get('fromname');
 				$replyto        = $app->get('replyto');
@@ -1026,11 +1036,11 @@ class RSTicketsProTicketHelper
 			// If ticket is assigned to org then only add org cc users in cc email
 			if ($rsTktXrefTable->agency_id)
 			{
-				$ccEmails = new JRegistry($rsTktXrefTable->emails);
+				$ccEmails = new Registry($rsTktXrefTable->emails);
 			}
 
-			$dpeccEmails  = new JRegistry($rsTktXrefTable->dpe_cc_emails);
-			$userccEmails = new JRegistry($rsTktXrefTable->user_cc_emails);
+			$dpeccEmails  = new Registry($rsTktXrefTable->dpe_cc_emails);
+			$userccEmails = new Registry($rsTktXrefTable->user_cc_emails);
 
 			/* If following variable found empty then typecast variable to array because array_merge need only array,
 			in this case no need to check variable having a value or not to merge
@@ -1058,7 +1068,7 @@ class RSTicketsProTicketHelper
 			{
 				if ($email = RSTicketsProHelper::getEmail('add_ticket_reply_staff'))
 				{
-					$actor = JFactory::getUser($this->data['user_id']);
+					$actor = Factory::getUser($this->data['user_id']);
 					
 					if ($ccEmails['email'])
 					{
@@ -1073,7 +1083,7 @@ class RSTicketsProTicketHelper
 					$ticket_id = $original->id;
 
 					$replacements = array(
-						'{live_site}' => JUri::root(),
+						'{live_site}' => Uri::root(),
 						'{ticket}' => RSTicketsProHelper::mailRoute('index.php?option=com_rsticketspro&view=ticket&id=' . $ticket_id . ':' . JFilterOutput::stringURLSafe($original->subject), true, RSTicketsProHelper::getConfig('staff_itemid')),
 						'{customer_name}' => $customer->name,
 						'{customer_username}' => $customer->username,
@@ -1086,11 +1096,11 @@ class RSTicketsProTicketHelper
 						'{user_email}' => $actor->email,
 						'{code}' => $original->code,
 						'{subject}' => $original->subject,
-						'{priority}' => JText::_($priority->name),
-						'{status}' => JText::_($status->name),
+						'{priority}' => Text::_($priority->name),
+						'{status}' => Text::_($status->name),
 						'{message}' => $nl2brMessage,
 						'{department_id}' => $original->department_id,
-						'{department_name}' => JText::_($department->name)
+						'{department_name}' => Text::_($department->name)
 					);
 
 					$email_subject = '[' . $original->code . '] ' . $original->subject;
@@ -1138,13 +1148,13 @@ class RSTicketsProTicketHelper
 			{
 				if ($email = RSTicketsProHelper::getEmail('add_ticket_reply_customer'))
 				{
-					$actor = JFactory::getUser($this->data['user_id']);
+					$actor = Factory::getUser($this->data['user_id']);
 					$customer = &$original->customer;
 					$staff = $original->staff->id ? $original->staff : $ticket->staff;
 					$ticket_id = $original->id;
 
 					$replacements = array(
-						'{live_site}' => JUri::root(),
+						'{live_site}' => Uri::root(),
 						'{ticket}' => RSTicketsProHelper::mailRoute('index.php?option=com_rsticketspro&view=ticket&id=' . $ticket_id . ':' . JFilterOutput::stringURLSafe($original->subject), true, RSTicketsProHelper::getConfig('customer_itemid')),
 						'{customer_name}' => $customer->name,
 						'{customer_username}' => $customer->username,
@@ -1157,11 +1167,11 @@ class RSTicketsProTicketHelper
 						'{user_email}' => $actor->email,
 						'{code}' => $original->code,
 						'{subject}' => $original->subject,
-						'{priority}' => JText::_($priority->name),
-						'{status}' => JText::_($status->name),
+						'{priority}' => Text::_($priority->name),
+						'{status}' => Text::_($status->name),
 						'{message}' => $nl2brMessage,
 						'{department_id}' => $original->department_id,
-						'{department_name}' => JText::_($department->name)
+						'{department_name}' => Text::_($department->name)
 					);
 
 					// Hack in DPE start: To remove ticket link from guest user reply email
@@ -1178,7 +1188,7 @@ class RSTicketsProTicketHelper
 					}
 					else
 					{
-						$email_message = str_replace(array_keys($replacements), array_values($replacements), JText::_('RST_TICKET_CUSTOM_GUEST_USER_REPLY_EMAIL'));
+						$email_message = str_replace(array_keys($replacements), array_values($replacements), Text::_('RST_TICKET_CUSTOM_GUEST_USER_REPLY_EMAIL'));
 					}
 
 					// Hack in DPE end: To remove ticket link from guest user reply email
@@ -1238,12 +1248,12 @@ class RSTicketsProTicketHelper
 			{
 				if ($email = RSTicketsProHelper::getEmail('notification_max_replies_nr'))
 				{
-					$actor = JFactory::getUser($this->data['user_id']);
-					$customer = JFactory::getUser($this->data['user_id']);
+					$actor = Factory::getUser($this->data['user_id']);
+					$customer = Factory::getUser($this->data['user_id']);
 					$ticket_id = $original->id;
 
 					$replacements = array(
-						'{live_site}' => JUri::root(),
+						'{live_site}' => Uri::root(),
 						'{ticket}' => RSTicketsProHelper::mailRoute('index.php?option=com_rsticketspro&view=ticket&id=' . $ticket_id . ':' . JFilterOutput::stringURLSafe($original->subject), true, RSTicketsProHelper::getConfig('staff_itemid')),
 						'{customer_name}' => $customer->name,
 						'{customer_username}' => $customer->username,
@@ -1253,12 +1263,12 @@ class RSTicketsProTicketHelper
 						'{user_email}' => $actor->email,
 						'{code}' => $original->code,
 						'{subject}' => $original->subject,
-						'{priority}' => JText::_($priority->name),
-						'{status}' => JText::_($status->name),
+						'{priority}' => Text::_($priority->name),
+						'{status}' => Text::_($status->name),
 						'{message}' => $nl2brMessage,
 						'{replies}' => $currentReplies,
 						'{department_id}' => $original->department_id,
-						'{department_name}' => JText::_($department->name)
+						'{department_name}' => Text::_($department->name)
 					);
 
 					$email_subject = str_replace(array_keys($replacements), array_values($replacements), $email->subject);
@@ -1274,13 +1284,13 @@ class RSTicketsProTicketHelper
 			{
 				if ($email = RSTicketsProHelper::getEmail('notification_replies_with_no_response_nr'))
 				{
-					$actor = JFactory::getUser($this->data['user_id']);
-					$customer = JFactory::getUser($this->data['user_id']);
+					$actor = Factory::getUser($this->data['user_id']);
+					$customer = Factory::getUser($this->data['user_id']);
 					$staff = &$original->staff;
 					$ticket_id = $original->id;
 
 					$replacements = array(
-						'{live_site}' => JUri::root(),
+						'{live_site}' => Uri::root(),
 						'{ticket}' => RSTicketsProHelper::mailRoute('index.php?option=com_rsticketspro&view=ticket&id=' . $ticket_id . ':' . JFilterOutput::stringURLSafe($original->subject), true, RSTicketsProHelper::getConfig('staff_itemid')),
 						'{customer_name}' => $customer->name,
 						'{customer_username}' => $customer->username,
@@ -1293,12 +1303,12 @@ class RSTicketsProTicketHelper
 						'{user_email}' => $actor->email,
 						'{code}' => $original->code,
 						'{subject}' => $original->subject,
-						'{priority}' => JText::_($priority->name),
-						'{status}' => JText::_($status->name),
+						'{priority}' => Text::_($priority->name),
+						'{status}' => Text::_($status->name),
 						'{message}' => $nl2brMessage,
 						'{replies}' => $currentReplies,
 						'{department_id}' => $original->department_id,
-						'{department_name}' => JText::_($department->name)
+						'{department_name}' => Text::_($department->name)
 					);
 
 					$email_subject = str_replace(array_keys($replacements), array_values($replacements), $email->subject);
@@ -1316,8 +1326,8 @@ class RSTicketsProTicketHelper
 
 				if ($email)
 				{
-					$actor = JFactory::getUser($this->data['user_id']);
-					$customer = JFactory::getUser($this->data['user_id']);
+					$actor = Factory::getUser($this->data['user_id']);
+					$customer = Factory::getUser($this->data['user_id']);
 					$staff = $original->staff->id ? $original->staff : $ticket->staff;
 					$ticket_id = $original->id;
 
@@ -1331,7 +1341,7 @@ class RSTicketsProTicketHelper
 					$pattern = '#\b(' . implode('|', $quotedWords) . ')\b#i';
 					if (preg_match($pattern, $this->data['message'])) {
 						$replacements = array(
-							'{live_site}' => JUri::root(),
+							'{live_site}' => Uri::root(),
 							'{ticket}' => RSTicketsProHelper::mailRoute('index.php?option=com_rsticketspro&view=ticket&id=' . $ticket_id . ':' . JFilterOutput::stringURLSafe($original->subject), true, RSTicketsProHelper::getConfig('staff_itemid')),
 							'{customer_name}' => $customer->name,
 							'{customer_username}' => $customer->username,
@@ -1344,12 +1354,12 @@ class RSTicketsProTicketHelper
 							'{user_email}' => $actor->email,
 							'{code}' => $original->code,
 							'{subject}' => $original->subject,
-							'{priority}' => JText::_($priority->name),
-							'{status}' => JText::_($status->name),
+							'{priority}' => Text::_($priority->name),
+							'{status}' => Text::_($status->name),
 							'{message}' => preg_replace($pattern, '<b style="color: red">$1</b>', $nl2brMessage),
 							'{replies}' => $currentReplies,
 							'{department_id}' => $original->department_id,
-							'{department_name}' => JText::_($department->name)
+							'{department_name}' => Text::_($department->name)
 						);
 
 						$email_subject = str_replace(array_keys($replacements), array_values($replacements), $email->subject);
@@ -1375,7 +1385,7 @@ class RSTicketsProTicketHelper
 	}
 
 	public function getTicketAttachments($ticketid){
-		$db    = JFactory::getDbo();
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select('*')
 			->from($db->qn('#__rsticketspro_ticket_files'))
@@ -1385,7 +1395,7 @@ class RSTicketsProTicketHelper
 	}
 	
 	public function getTicketMessageAttachments($message_id){
-		$db    = JFactory::getDbo();
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select('*')
 			->from($db->qn('#__rsticketspro_ticket_files'))
@@ -1395,7 +1405,7 @@ class RSTicketsProTicketHelper
 	}
 
 	public static function getTicketTimeState($ticketid) {
-		$db    = JFactory::getDbo();
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select($db->qn('start'))
 			->select($db->qn('end'))

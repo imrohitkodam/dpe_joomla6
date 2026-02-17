@@ -9,27 +9,35 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewSubmit extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\Uri\Uri;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewSubmit extends HtmlView
 {
 	public function display($tpl = null)
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 
 		if (!$this->canView())
 		{
-			$app->enqueueMessage(JText::_('RST_CANNOT_SUBMIT_TICKET'), 'warning');
-			$app->redirect(RSTicketsProHelper::route('index.php?option=com_users&view=login&return=' . base64_encode((string) JUri::getInstance()), false));
+			$app->enqueueMessage(Text::_('RST_CANNOT_SUBMIT_TICKET'), 'warning');
+			$app->redirect(RSTicketsProHelper::route('index.php?option=com_users&view=login&return=' . base64_encode((string) Uri::getInstance()), false));
 		}
 
-		$this->globalMessage			= JText::_(RSTicketsProHelper::getConfig('global_message'));
+		$this->globalMessage			= Text::_(RSTicketsProHelper::getConfig('global_message'));
 		$this->globalMessagePosition	= RSTicketsProHelper::getConfig('global_message_position');
-		$this->submitMessage			= JText::_(RSTicketsProHelper::getConfig('submit_message'));
+		$this->submitMessage			= Text::_(RSTicketsProHelper::getConfig('submit_message'));
 		$this->submitMessagePosition	= RSTicketsProHelper::getConfig('submit_message_position');
 		$this->form						= $this->get('Form');
 		$this->field       = $this->get('RSFieldset');// DPE Hack
 		$this->departments				= $this->get('Departments');
 		$this->customFields        		= $this->get('CustomFields');
-		$this->user						= JFactory::getUser();
+		$this->user						= Factory::getUser();
 		$this->permissions				= $this->get('Permissions');
 		$this->isStaff					= RSTicketsProHelper::isStaff();
 		$this->canChangeSubmitType		= $this->isStaff && $this->permissions && ($this->permissions->add_ticket_customers || $this->permissions->add_ticket_staff);
@@ -47,7 +55,7 @@ class RsticketsproViewSubmit extends JViewLegacy
 
 	protected function prepareDocument()
 	{
-		$app   = JFactory::getApplication();
+		$app   = Factory::getApplication();
 		$menus = $app->getMenu();
 		$title = null;
 
@@ -60,7 +68,7 @@ class RsticketsproViewSubmit extends JViewLegacy
 		}
 		else
 		{
-			$this->params->def('page_heading', JText::_('RST_ADD_NEW_TICKET'));
+			$this->params->def('page_heading', Text::_('RST_ADD_NEW_TICKET'));
 		}
 
 		$title = $this->params->get('page_title', '');
@@ -70,11 +78,11 @@ class RsticketsproViewSubmit extends JViewLegacy
 		}
 		elseif ($app->get('sitename_pagetitles', 0) == 1)
 		{
-			$title = JText::sprintf('JPAGETITLE', $app->get('sitename'), $title);
+			$title = Text::sprintf('JPAGETITLE', $app->get('sitename'), $title);
 		}
 		elseif ($app->get('sitename_pagetitles', 0) == 2)
 		{
-			$title = JText::sprintf('JPAGETITLE', $title, $app->get('sitename'));
+			$title = Text::sprintf('JPAGETITLE', $title, $app->get('sitename'));
 		}
 		$this->document->setTitle($title);
 
@@ -97,7 +105,7 @@ class RsticketsproViewSubmit extends JViewLegacy
 	protected function canView()
 	{
 		$canAddTickets = RSTicketsProHelper::getConfig('rsticketspro_add_tickets');
-		$guest         = JFactory::getUser()->get('guest');
+		$guest         = Factory::getUser()->get('guest');
 
 		if (!$canAddTickets && $guest)
 		{

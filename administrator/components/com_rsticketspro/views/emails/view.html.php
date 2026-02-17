@@ -9,7 +9,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewEmails extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewEmails extends HtmlView
 {
 	protected $items;
 	protected $pagination;
@@ -31,20 +35,20 @@ class RsticketsproViewEmails extends JViewLegacy
 	protected function addToolbar()
 	{
 		// set title
-		JToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
+		\Joomla\CMS\Toolbar\ToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
 
 		RSTicketsProToolbarHelper::addToolbar('emails');
 
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		if ($user->authorise('email.edit', 'com_rsticketspro'))
 		{
-			JToolbarHelper::editList('email.edit');
+			\Joomla\CMS\Toolbar\ToolbarHelper::editList('email.edit');
 		}
 		if ($user->authorise('email.edit.state', 'com_rsticketspro'))
 		{
-			JToolbarHelper::publish('emails.publish', 'JTOOLBAR_PUBLISH', true);
-			JToolbarHelper::unpublish('emails.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+			\Joomla\CMS\Toolbar\ToolbarHelper::publish('emails.publish', 'JTOOLBAR_PUBLISH', true);
+			\Joomla\CMS\Toolbar\ToolbarHelper::unpublish('emails.unpublish', 'JTOOLBAR_UNPUBLISH', true);
 		}
 	}
 }

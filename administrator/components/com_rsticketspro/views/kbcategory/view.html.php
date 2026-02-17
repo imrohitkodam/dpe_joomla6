@@ -9,14 +9,18 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewKbcategory extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewKbcategory extends HtmlView
 {
 	protected $form;
 	protected $item;
 	
 	public function display($tpl = null)
 	{
-		JFactory::getApplication()->getInput()->set('hidemainmenu', true);
+		Factory::getApplication()->getInput()->set('hidemainmenu', true);
 
 		$this->addToolbar();
 		
@@ -29,14 +33,14 @@ class RsticketsproViewKbcategory extends JViewLegacy
 	protected function addToolbar()
 	{
 		// set title
-		JToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
+		\Joomla\CMS\Toolbar\ToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
 
 		RSTicketsProToolbarHelper::addToolbar('kbcategories');
 		
-		JToolbarHelper::apply('kbcategory.apply');
-		JToolbarHelper::save('kbcategory.save');
-		JToolbarHelper::save2new('kbcategory.save2new');
-		JToolbarHelper::save2copy('kbcategory.save2copy');
-		JToolbarHelper::cancel('kbcategory.cancel');
+		\Joomla\CMS\Toolbar\ToolbarHelper::apply('kbcategory.apply');
+		\Joomla\CMS\Toolbar\ToolbarHelper::save('kbcategory.save');
+		\Joomla\CMS\Toolbar\ToolbarHelper::save2new('kbcategory.save2new');
+		\Joomla\CMS\Toolbar\ToolbarHelper::save2copy('kbcategory.save2copy');
+		\Joomla\CMS\Toolbar\ToolbarHelper::cancel('kbcategory.cancel');
 	}
 }

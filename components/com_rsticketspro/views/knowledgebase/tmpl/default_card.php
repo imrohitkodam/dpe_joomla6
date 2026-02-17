@@ -9,13 +9,15 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\HTML\HTMLHelper;
+
 $category	= $this->category;
 $subcats	= $this->subcats_limit >= 0 ? $this->model->getCategories(array('inherited' => false, 'id' => $category->id)) : array();
 
 if ($category->thumb) {
-	$thumb = JHtml::_('image', 'components/com_rsticketspro/assets/thumbs/small/'.$category->thumb, $category->name, array(), false);
+	$thumb = HTMLHelper::_('image', 'components/com_rsticketspro/assets/thumbs/small/'.$category->thumb, $category->name, array(), false);
 } else {
-	$thumb = JHtml::_('image', 'com_rsticketspro/kb-icon.png', $category->name, array(), true);
+	$thumb = HTMLHelper::_('image', 'com_rsticketspro/kb-icon.png', $category->name, array(), true);
 }
 ?>
 

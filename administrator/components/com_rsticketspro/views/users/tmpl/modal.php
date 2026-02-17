@@ -9,21 +9,27 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Router\Route;
+
+use Joomla\CMS\HTML\HTMLHelper;
+
+use Joomla\CMS\Language\Text;
+
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
 
-JHtml::_('script', 'com_rsticketspro/users.js', array('relative' => true, 'version' => 'auto'));
+HTMLHelper::_('script', 'com_rsticketspro/users.js', array('relative' => true, 'version' => 'auto'));
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_rsticketspro&view=users&layout=modal&tmpl=component&field=' . $this->escape($this->field)); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::_('index.php?option=com_rsticketspro&view=users&layout=modal&tmpl=component&field=' . $this->escape($this->field)); ?>" method="post" name="adminForm" id="adminForm">
 	<?php
-	echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+	echo \Joomla\CMS\Layout\LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
 
 	if (empty($this->items))
 	{
 		?>
 		<div class="alert alert-info">
-			<span class="fa fa-info-circle" aria-hidden="true"></span><span class="sr-only"><?php echo JText::_('INFO'); ?></span>
-			<?php echo JText::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
+			<span class="fa fa-info-circle" aria-hidden="true"></span><span class="sr-only"><?php echo Text::_('INFO'); ?></span>
+			<?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
 		</div>
 		<?php
 	}
@@ -33,10 +39,10 @@ JHtml::_('script', 'com_rsticketspro/users.js', array('relative' => true, 'versi
 		<table class="table table-striped table-condensed">
 			<thead>
 				<tr>
-					<th><?php echo JHtml::_('searchtools.sort', 'RST_NAME', 'name', $listDirn, $listOrder); ?></th>
-					<th nowrap width="25%"><?php echo JHtml::_('searchtools.sort', 'JGLOBAL_USERNAME', 'username', $listDirn, $listOrder); ?></th>
-					<th nowrap width="25%"><?php echo JHtml::_('searchtools.sort', 'JGLOBAL_EMAIL', 'email', $listDirn, $listOrder); ?></th>
-					<th nowrap width="1%"><?php echo JHtml::_('searchtools.sort', 'JGRID_HEADING_ID', 'id', $listDirn, $listOrder); ?></th>
+					<th><?php echo HTMLHelper::_('searchtools.sort', 'RST_NAME', 'name', $listDirn, $listOrder); ?></th>
+					<th nowrap width="25%"><?php echo HTMLHelper::_('searchtools.sort', 'JGLOBAL_USERNAME', 'username', $listDirn, $listOrder); ?></th>
+					<th nowrap width="25%"><?php echo HTMLHelper::_('searchtools.sort', 'JGLOBAL_EMAIL', 'email', $listDirn, $listOrder); ?></th>
+					<th nowrap width="1%"><?php echo HTMLHelper::_('searchtools.sort', 'JGRID_HEADING_ID', 'id', $listDirn, $listOrder); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -60,7 +66,7 @@ JHtml::_('script', 'com_rsticketspro/users.js', array('relative' => true, 'versi
 		echo $this->pagination->getListFooter();
 	}
 
-	echo JHtml::_('form.token');
+	echo HTMLHelper::_('form.token');
 	?>
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="field" value="<?php echo $this->escape($this->field); ?>" />

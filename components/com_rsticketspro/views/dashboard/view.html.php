@@ -9,22 +9,32 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewDashboard extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\Uri\Uri;
+
+use Joomla\CMS\Router\Route;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewDashboard extends HtmlView
 {
 	public function display($tpl = null)
 	{
-		$this->globalMessage	        = JText::_(RSTicketsProHelper::getConfig('global_message'));
+		$this->globalMessage	        = Text::_(RSTicketsProHelper::getConfig('global_message'));
 		$this->globalMessagePosition	= RSTicketsProHelper::getConfig('global_message_position');
 		$this->model					= $this->getModel('dashboard');
-		$this->params					= JFactory::getApplication()->getParams('com_rsticketspro');
-		$this->user						= JFactory::getUser();
+		$this->params					= Factory::getApplication()->getParams('com_rsticketspro');
+		$this->user						= Factory::getUser();
 		$this->categories				= $this->params->get('split_kb_to_tabs', 0) ? $this->model->getCategories($this->params->get('top_category_id', 0)) : $this->model->getCategories(0);
 		$this->tickets					= $this->get('tickets');
-		$this->login_link				= JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode((string) JUri::getInstance()));
+		$this->login_link				= Route::_('index.php?option=com_users&view=login&return=' . base64_encode((string) Uri::getInstance()));
 		$this->kb_subcats_limit			= (int) $this->params->get('kb_subcategories_list', -1);
 		$this->kb_itemid				= (int) $this->params->get('kb_itemid');
 		$this->search_link  			= RSTicketsProHelper::route('index.php?option=com_rsticketspro&view=knowledgebase' . (empty($this->kb_itemid) ? '&layout=results' : '&Itemid=' . $this->kb_itemid));
-		$this->itemid       			= JFactory::getApplication()->input->getInt('Itemid', 0);
+		$this->itemid       			= Factory::getApplication()->getInput()->getInt('Itemid', 0);
 		$this->db_thumb_type			= $this->params->get('db_thumb_type', 'icons');
 		$this->db_submit_ticket_thumb	= $this->params->get('db_submit_ticket_thumb');
 		$this->db_view_tickets_thumb	= $this->params->get('db_view_tickets_thumb');

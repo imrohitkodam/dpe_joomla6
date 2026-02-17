@@ -9,18 +9,30 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewTicket extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\Uri\Uri;
+
+use Joomla\CMS\Router\Route;
+
+use Joomla\CMS\HTML\HTMLHelper;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewTicket extends HtmlView
 {
     protected $app;
     protected $form;
 
 	public function display($tpl = null)
 	{
-		$this->app = JFactory::getApplication();
+		$this->app = Factory::getApplication();
 
 		if ($this->app->isClient('administrator'))
 		{
-			JFactory::getApplication()->getInput()->set('hidemainmenu', true);
+			Factory::getApplication()->getInput()->set('hidemainmenu', true);
 
 			$this->addToolbar();
 		}
@@ -32,16 +44,16 @@ class RsticketsproViewTicket extends JViewLegacy
 		// get ticket information
 		$this->ticket = $this->get('Item');
 		
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		if (!$user->id) {
-			JFactory::getApplication()->enqueueMessage(JText::_('RST_YOU_HAVE_TO_BE_LOGGED_IN'), 'warning');
-			$link = base64_encode((string) JUri::getInstance());
-			$this->app->redirect(JRoute::_('index.php?option=com_users&view=login&return='.$link, false));
+			Factory::getApplication()->enqueueMessage(Text::_('RST_YOU_HAVE_TO_BE_LOGGED_IN'), 'warning');
+			$link = base64_encode((string) Uri::getInstance());
+			$this->app->redirect(Route::_('index.php?option=com_users&view=login&return='.$link, false));
 		}
 		
 		// quick and dirty check so we know if this ticket exists & the user can view it
 		if (!$this->hasPermission()) {
-			throw new Exception(JText::_('RST_CUSTOMER_CANNOT_VIEW_TICKET'), 403);
+			throw new Exception(Text::_('RST_CUSTOMER_CANNOT_VIEW_TICKET'), 403);
 		}
 
 		// load the ticket helper
@@ -78,7 +90,7 @@ class RsticketsproViewTicket extends JViewLegacy
 		$this->priorities	 = $this->get('Priorities');
 		
 		// config
-		$this->globalMessage 	 = JText::_(RSTicketsProHelper::getConfig('global_message'));
+		$this->globalMessage 	 = Text::_(RSTicketsProHelper::getConfig('global_message'));
 		$this->globalMessagePosition = RSTicketsProHelper::getConfig('global_message_position');
 		$this->ticketView	 	 = RSTicketsProHelper::getConfig('ticket_view');
 		$this->dateFormat 	 	 = RSTicketsProHelper::getConfig('date_format');
@@ -145,23 +157,23 @@ class RsticketsproViewTicket extends JViewLegacy
 		RSTicketsProHelper::addHistory($this->ticket->id);
 		
 		// JS Strings
-		JText::script('RST_MAX_UPLOAD_FILES_REACHED');
-		JText::script('RST_DELETE_TICKET_MESSAGE_CONFIRM');
-		JText::script('RST_DELETE_TICKET_ATTACHMENT_CONFIRM');
+		Text::script('RST_MAX_UPLOAD_FILES_REACHED');
+		Text::script('RST_DELETE_TICKET_MESSAGE_CONFIRM');
+		Text::script('RST_DELETE_TICKET_ATTACHMENT_CONFIRM');
 
 		// load jQuery & plugins
 		if (RSTicketsProHelper::getConfig('jquery', 1)) {
-			JHtml::_('jquery.framework');
+			HTMLHelper::_('jquery.framework');
 		}
 		
 		if ($this->allowVoting) {
-			JHtml::_('script', 'com_rsticketspro/jquery.raty.js', array('relative' => true, 'version' => 'auto'));
-			JHtml::_('stylesheet', 'com_rsticketspro/jquery.raty.css', array('relative' => true, 'version' => 'auto'));
+			HTMLHelper::_('script', 'com_rsticketspro/jquery.raty.js', array('relative' => true, 'version' => 'auto'));
+			HTMLHelper::_('stylesheet', 'com_rsticketspro/jquery.raty.css', array('relative' => true, 'version' => 'auto'));
 		}
 		
 		// if trying to print, bring up the print stylesheet
 		if ($this->isPrint) {
-			JHtml::_('stylesheet', 'com_rsticketspro/print.css', array('relative' => true, 'version' => 'auto'),  array('media'=>'print'));
+			HTMLHelper::_('stylesheet', 'com_rsticketspro/print.css', array('relative' => true, 'version' => 'auto'),  array('media'=>'print'));
 		}
 		
 		if ($this->canAssignTickets) {
@@ -182,18 +194,18 @@ class RsticketsproViewTicket extends JViewLegacy
 	
 	protected function addToolbar() {
 		// set title
-		JToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
+		\Joomla\CMS\Toolbar\ToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
 
 		require_once JPATH_COMPONENT.'/helpers/toolbar.php';
 		RSTicketsProToolbarHelper::addToolbar('tickets');
 
-		JToolbarHelper::custom('kbconvert.manual', 'upload', 'upload', JText::_('RST_CONVERT_TO_KB'), false);
-		JToolbarHelper::custom('kbconvert.automatic', 'upload', 'upload', JText::_('RST_CONVERT_TO_KB_AUTOMATIC'), false);
-		JToolbarHelper::cancel('ticket.cancel');
+		\Joomla\CMS\Toolbar\ToolbarHelper::custom('kbconvert.manual', 'upload', 'upload', Text::_('RST_CONVERT_TO_KB'), false);
+		\Joomla\CMS\Toolbar\ToolbarHelper::custom('kbconvert.automatic', 'upload', 'upload', Text::_('RST_CONVERT_TO_KB_AUTOMATIC'), false);
+		\Joomla\CMS\Toolbar\ToolbarHelper::cancel('ticket.cancel');
 	}
 	
 	protected function showDate($date) {
-		return JHtml::_('date', $date, $this->dateFormat);
+		return HTMLHelper::_('date', $date, $this->dateFormat);
 	}
 	
 	protected function getAvatar($id) {

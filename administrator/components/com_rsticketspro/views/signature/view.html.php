@@ -9,7 +9,13 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewSignature extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewSignature extends HtmlView
 {
 	protected $form;
 	
@@ -18,14 +24,14 @@ class RsticketsproViewSignature extends JViewLegacy
 		// only staff members can call this
 		if (!RSTicketsProHelper::isStaff())
 		{
-			throw new Exception(JText::_('RST_CANNOT_CHANGE_SIGNATURE'), 403);
+			throw new Exception(Text::_('RST_CANNOT_CHANGE_SIGNATURE'), 403);
 		}
 		if (!$this->get('isAssigned'))
 		{
-			throw new Exception(JText::_('RST_CANNOT_CHANGE_SIGNATURE_MUST_BE_STAFF'), 403);
+			throw new Exception(Text::_('RST_CANNOT_CHANGE_SIGNATURE_MUST_BE_STAFF'), 403);
 		}
 
-		JFactory::getApplication()->getInput()->set('hidemainmenu', true);
+		Factory::getApplication()->getInput()->set('hidemainmenu', true);
 		
 		$this->addToolbar();
 		
@@ -37,11 +43,11 @@ class RsticketsproViewSignature extends JViewLegacy
 	protected function addToolbar()
 	{
 		// set title
-		JToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
+		\Joomla\CMS\Toolbar\ToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
 
 		RSTicketsProToolbarHelper::addToolbar('tickets');
 		
-		JToolbarHelper::apply('signature.apply');
-		JToolbarHelper::cancel('signature.cancel');
+		\Joomla\CMS\Toolbar\ToolbarHelper::apply('signature.apply');
+		\Joomla\CMS\Toolbar\ToolbarHelper::cancel('signature.cancel');
 	}
 }

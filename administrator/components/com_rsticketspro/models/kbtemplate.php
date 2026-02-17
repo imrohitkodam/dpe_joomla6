@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproModelKbtemplate extends JModelAdmin
+class RsticketsproModelKbtemplate extends \Joomla\CMS\MVC\Model\AdminModel
 {
 	public function __construct() {
 		parent::__construct();

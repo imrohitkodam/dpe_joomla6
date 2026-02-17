@@ -9,10 +9,12 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 class RsticketsproControllerEmail extends JControllerForm
 {
 	public function allowEdit($data = array(), $key = 'id')
 	{
-		return JFactory::getUser()->authorise('email.edit', 'com_rsticketspro');
+		return Factory::getUser()->authorise('email.edit', 'com_rsticketspro');
 	}
 }

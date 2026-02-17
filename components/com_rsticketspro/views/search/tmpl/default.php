@@ -9,7 +9,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::_('behavior.keepalive');
+use Joomla\CMS\HTML\HTMLHelper;
+
+use Joomla\CMS\Language\Text;
+
+HTMLHelper::_('behavior.keepalive');
 
 if ($this->params->get('show_page_heading', 1))
 {
@@ -37,12 +41,12 @@ if ($this->globalMessage && $this->globalMessagePosition === 'top')
 	?>
 	
 	<div class="form-actions">
-		<button type="submit" class="btn btn-primary"><?php echo JText::_('RST_SEARCH'); ?></button>
+		<button type="submit" class="btn btn-primary"><?php echo Text::_('RST_SEARCH'); ?></button>
 		<?php
 		if (!$this->advanced)
 		{
 			?>
-			<a class="btn btn-secondary" href="<?php echo RSTicketsProHelper::route('index.php?option=com_rsticketspro&view=search&advanced=true'); ?>"><?php echo JText::_('RST_OPEN_ADVANCED_SEARCH'); ?></a>
+			<a class="btn btn-secondary" href="<?php echo RSTicketsProHelper::route('index.php?option=com_rsticketspro&view=search&advanced=true'); ?>"><?php echo Text::_('RST_OPEN_ADVANCED_SEARCH'); ?></a>
 			<?php
 		}
 		?>

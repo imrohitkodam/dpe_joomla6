@@ -9,17 +9,27 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewSignature extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\Uri\Uri;
+
+use Joomla\CMS\Router\Route;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewSignature extends HtmlView
 {
 	public function display($tpl = null)
 	{
 		$this->canAccess();
 		
 		$this->form			= $this->get('Form');
-		$this->params		= JFactory::getApplication()->getParams('com_rsticketspro');
+		$this->params		= Factory::getApplication()->getParams('com_rsticketspro');
 		$this->show_footer	= RSTicketsProHelper::getConfig('rsticketspro_link');
 		$this->footer		= RSTicketsProHelper::getFooter();
-		$this->globalMessage 		    = JText::_(RSTicketsProHelper::getConfig('global_message'));
+		$this->globalMessage 		    = Text::_(RSTicketsProHelper::getConfig('global_message'));
 		$this->globalMessagePosition	= RSTicketsProHelper::getConfig('global_message_position');
 		
 		$this->prepareDocument();
@@ -50,23 +60,23 @@ class RsticketsproViewSignature extends JViewLegacy
 	
 	protected function canAccess()
 	{
-		$app	= JFactory::getApplication();
-		$user	= JFactory::getUser();
+		$app	= Factory::getApplication();
+		$user	= Factory::getUser();
 		
 		if ($user->get('guest'))
 		{
-			$app->redirect(JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode((string) JUri::getInstance()), false));
+			$app->redirect(Route::_('index.php?option=com_users&view=login&return=' . base64_encode((string) Uri::getInstance()), false));
 		}
 		
 		if (!RSTicketsProHelper::isStaff())
 		{
-            $app->enqueueMessage(JText::_('RST_CANNOT_CHANGE_SIGNATURE'), 'warning');
+            $app->enqueueMessage(Text::_('RST_CANNOT_CHANGE_SIGNATURE'), 'warning');
 			$app->redirect(RSTicketsProHelper::route('index.php?option=com_rsticketspro&view=tickets', false));
 		}
 		
 		if (!$this->get('isAssigned'))
 		{
-            $app->enqueueMessage(JText::_('RST_CANNOT_CHANGE_SIGNATURE_MUST_BE_STAFF'), 'warning');
+            $app->enqueueMessage(Text::_('RST_CANNOT_CHANGE_SIGNATURE_MUST_BE_STAFF'), 'warning');
             $referer = $app->input->server->get('HTTP_REFERER', '', 'raw');
 
 			if (empty($referer))

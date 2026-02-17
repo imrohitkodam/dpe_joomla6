@@ -9,26 +9,32 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::_('behavior.keepalive');
-JHtml::_('behavior.formvalidator');
+use Joomla\CMS\Router\Route;
+
+use Joomla\CMS\HTML\HTMLHelper;
+
+use Joomla\CMS\Language\Text;
+
+HTMLHelper::_('behavior.keepalive');
+HTMLHelper::_('behavior.formvalidator');
 
 // Load JavaScript message titles
-JText::script('ERROR');
-JText::script('WARNING');
-JText::script('NOTICE');
-JText::script('MESSAGE');
+Text::script('ERROR');
+Text::script('WARNING');
+Text::script('NOTICE');
+Text::script('MESSAGE');
 
-JHtml::_('stylesheet', 'com_rsticketspro/rsticketspro-admin.css', array('relative' => true, 'version' => 'auto'));
+HTMLHelper::_('stylesheet', 'com_rsticketspro/rsticketspro-admin.css', array('relative' => true, 'version' => 'auto'));
 if ($this->ticket)
 {
-	echo '<a href="'.JRoute::_('index.php?option=com_rsticketspro&view=ticket&id='.$this->ticket->id).'">'.JText::sprintf('RST_KB_ARTICLE_CONVERTED_FROM', $this->ticket->subject, $this->ticket->code).'</a>';
+	echo '<a href="'.Route::_('index.php?option=com_rsticketspro&view=ticket&id='.$this->ticket->id).'">'.Text::sprintf('RST_KB_ARTICLE_CONVERTED_FROM', $this->ticket->subject, $this->ticket->code).'</a>';
 }
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_rsticketspro&view=kbarticle&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate form-horizontal rst-d-flex" enctype="multipart/form-data">
+<form action="<?php echo Route::_('index.php?option=com_rsticketspro&view=kbarticle&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate form-horizontal rst-d-flex" enctype="multipart/form-data">
 	<?php
 	if ($this->item->thumb && $this->item->id)
 	{
-		echo '<div class="rst-thumbnail">' . JHtml::_('image', 'components/com_rsticketspro/assets/thumbs/articles/' . $this->item->thumb, '', array('class' => (version_compare(JVERSION, '4.0', '>=') ? 'img-' : '') . 'thumbnail'), false) . '</div>';
+		echo '<div class="rst-thumbnail">' . HTMLHelper::_('image', 'components/com_rsticketspro/assets/thumbs/articles/' . $this->item->thumb, '', array('class' => (version_compare(JVERSION, '4.0', '>=') ? 'img-' : '') . 'thumbnail'), false) . '</div>';
 	}
 	else
 	{
@@ -45,7 +51,7 @@ if ($this->ticket)
 	?>
 	</div>
 	<div>
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo HTMLHelper::_('form.token'); ?>
 		<input type="hidden" name="task" value="" />
 	</div>
 </form>

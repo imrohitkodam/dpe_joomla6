@@ -9,7 +9,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproModelKbrule extends JModelAdmin
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\AdminModel;
+
+class RsticketsproModelKbrule extends \Joomla\CMS\MVC\Model\AdminModel
 {
 	public function getTable($type = 'Kbrules', $prefix = 'RsticketsproTable', $config = array())
 	{
@@ -42,7 +45,7 @@ class RsticketsproModelKbrule extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_rsticketspro.edit.kbrule.data', array());
+		$data = Factory::getApplication()->getUserState('com_rsticketspro.edit.kbrule.data', array());
 
 		if (empty($data))
 		{
@@ -63,11 +66,11 @@ class RsticketsproModelKbrule extends JModelAdmin
 
 	protected function canDelete($record)
 	{
-		return JFactory::getUser()->authorise('kbrule.delete', 'com_rsticketspro');
+		return Factory::getUser()->authorise('kbrule.delete', 'com_rsticketspro');
 	}
 
 	protected function canEditState($record)
 	{
-		return JFactory::getUser()->authorise('kbrule.edit.state', 'com_rsticketspro');
+		return Factory::getUser()->authorise('kbrule.edit.state', 'com_rsticketspro');
 	}
 }

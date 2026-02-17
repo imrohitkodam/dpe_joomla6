@@ -9,7 +9,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproModelEmail extends JModelAdmin
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\AdminModel;
+
+class RsticketsproModelEmail extends \Joomla\CMS\MVC\Model\AdminModel
 {
 	public function getTable($type = 'Emails', $prefix = 'RsticketsproTable', $config = array())
 	{
@@ -50,7 +53,7 @@ class RsticketsproModelEmail extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_rsticketspro.edit.email.data', array());
+		$data = Factory::getApplication()->getUserState('com_rsticketspro.edit.email.data', array());
 
 		if (empty($data))
 		{
@@ -62,6 +65,6 @@ class RsticketsproModelEmail extends JModelAdmin
 
 	protected function canEditState($record)
 	{
-		return JFactory::getUser()->authorise('email.edit.state', 'com_rsticketspro');
+		return Factory::getUser()->authorise('email.edit.state', 'com_rsticketspro');
 	}
 }

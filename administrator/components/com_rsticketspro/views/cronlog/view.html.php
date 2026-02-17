@@ -8,7 +8,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewCronlog extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\HTML\HTMLHelper;
+
+class RsticketsproViewCronlog extends HtmlView
 {
 	protected $items;
 	protected $pagination;
@@ -31,16 +35,16 @@ class RsticketsproViewCronlog extends JViewLegacy
 	protected function addToolbar()
 	{
 		// set title
-		JToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
+		\Joomla\CMS\Toolbar\ToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
 
 		RSTicketsProToolbarHelper::addToolbar('cronlog');
 		
-		JToolbarHelper::deleteList('RST_CONFIRM_DELETE', 'cronlog.delete');
-		JToolbarHelper::custom('cronlog.deleteAll', 'cancel', 'cancel', 'RST_DELETE_ALL', false);
+		\Joomla\CMS\Toolbar\ToolbarHelper::deleteList('RST_CONFIRM_DELETE', 'cronlog.delete');
+		\Joomla\CMS\Toolbar\ToolbarHelper::custom('cronlog.deleteAll', 'cancel', 'cancel', 'RST_DELETE_ALL', false);
 	}
 	
 	protected function showDate($date)
 	{
-		return JHtml::_('date', $date, $this->dateFormat);
+		return HTMLHelper::_('date', $date, $this->dateFormat);
 	}
 }

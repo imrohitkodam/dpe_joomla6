@@ -19,7 +19,7 @@ class JFormFieldStaff extends JFormFieldList
 	protected $userField;
 	
 	protected function getDepartments() {
-		$db		= JFactory::getDbo();
+		$db		= Factory::getDbo();
 		$query 	= $db->getQuery(true);
 		
 		$query->select($db->qn('id'))
@@ -32,7 +32,7 @@ class JFormFieldStaff extends JFormFieldList
 	}
 	
 	protected function getUsers() {
-		$db		= JFactory::getDbo();
+		$db		= Factory::getDbo();
 		$query 	= $db->getQuery(true);
 		$users	= array();
 		
@@ -46,7 +46,7 @@ class JFormFieldStaff extends JFormFieldList
 					$users[$result->department_id] = array();
 				}
 				
-				$users[$result->department_id][] = JFactory::getUser($result->user_id);
+				$users[$result->department_id][] = Factory::getUser($result->user_id);
 			}
 		}
 		
@@ -62,20 +62,20 @@ class JFormFieldStaff extends JFormFieldList
         $this->userField = RSTicketsProHelper::getConfig('show_user_info');
 		
 		if (isset($this->element['unassigned']) && $this->element['unassigned'] == 'true') {
-			$options[] = JHtml::_('select.option', 0, JText::_('RST_UNASSIGNED'));
+			$options[] = HTMLHelper::_('select.option', 0, Text::_('RST_UNASSIGNED'));
 		}
 		
 		foreach ($departments as $department) {
 			// opening <OPTGROUP> tag
 			$options[] = (object) array(
 				'value' => '<OPTGROUP>',
-				'text'  => JText::_($department->name)
+				'text'  => Text::_($department->name)
 			);
 			
 			if (isset($users[$department->id])) {
 			    usort($users[$department->id], array($this, 'sort'));
 				foreach ($users[$department->id] as $user) {
-					$options[] = JHtml::_('select.option', $user->id, $user->get($this->userField));
+					$options[] = HTMLHelper::_('select.option', $user->id, $user->get($this->userField));
 				}
 			}
 			

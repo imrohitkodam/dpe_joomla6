@@ -9,7 +9,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproModelEmails extends JModelList
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\ListModel;
+
+class RsticketsproModelEmails extends \Joomla\CMS\MVC\Model\ListModel
 {	
 	public function __construct($config = array())
 	{
@@ -25,7 +28,7 @@ class RsticketsproModelEmails extends JModelList
 	
 	protected function getListQuery()
 	{
-		$db 	= JFactory::getDbo();
+		$db 	= Factory::getDbo();
 		$query 	= $db->getQuery(true);
 		
 		// get filtering states
@@ -121,7 +124,7 @@ class RsticketsproModelEmails extends JModelList
 	
 	protected function getDefaultLanguage()
 	{
-		return JFactory::getLanguage()->get('tag');
+		return Factory::getLanguage()->get('tag');
 	}
 	
 	protected function populateState($ordering = 'type', $direction = 'asc')

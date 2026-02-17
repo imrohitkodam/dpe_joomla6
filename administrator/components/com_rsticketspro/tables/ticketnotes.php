@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 class RsticketsproTableTicketnotes extends JTable
 {
 	public $id;
@@ -26,8 +28,8 @@ class RsticketsproTableTicketnotes extends JTable
 	{
 		if (!$this->id)
 		{
-			$this->date     = JFactory::getDate()->toSql();
-			$this->user_id  = JFactory::getUser()->id;
+			$this->date     = Factory::getDate()->toSql();
+			$this->user_id  = Factory::getUser()->id;
 		}
 		else
 		{

@@ -25,7 +25,7 @@ class JFormFieldRSUploads extends JFormField
 		$onclick  = $this->element['onclick'] ? ' onclick="' . (string) $this->element['onclick'] . '"' : '';
 
 		// button for "more files"
-		$button = '<button type="button" class="btn btn-secondary" '.$onclick.'>'.JText::_('RST_ADD_MORE_ATTACHMENTS').'</button>';
+		$button = '<button type="button" class="btn btn-secondary" '.$onclick.'>'.Text::_('RST_ADD_MORE_ATTACHMENTS').'</button>';
 		
 		return '<input type="file" name="' . $this->name . '[]" id="' . $this->id . '"' . ' value=""' . $accept . $disabled . $class . $size
 			. $onchange . ' /> '.$button;

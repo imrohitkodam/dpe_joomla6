@@ -9,7 +9,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproModelPredefinedsearch extends JModelAdmin
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\AdminModel;
+
+class RsticketsproModelPredefinedsearch extends \Joomla\CMS\MVC\Model\AdminModel
 {
 	public function getTable($type = 'Searches', $prefix = 'RsticketsproTable', $config = array())
 	{
@@ -31,7 +34,7 @@ class RsticketsproModelPredefinedsearch extends JModelAdmin
 			$form->setFieldAttribute('update', 'filter', 'unset');
 		}
 
-		if (JFactory::getApplication()->isClient('site') && !RSTicketsProHelper::getConfig('use_btn_group_radio'))
+		if (Factory::getApplication()->isClient('site') && !RSTicketsProHelper::getConfig('use_btn_group_radio'))
 		{
 			$form->setFieldAttribute('default', 'class', '');
 			$form->setFieldAttribute('published', 'class', '');
@@ -65,7 +68,7 @@ class RsticketsproModelPredefinedsearch extends JModelAdmin
 			$data['params'] = null;
 		}
 
-		$data['user_id'] = JFactory::getUser()->id;
+		$data['user_id'] = Factory::getUser()->id;
 		
 		return parent::save($data);
 	}
@@ -73,7 +76,7 @@ class RsticketsproModelPredefinedsearch extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_rsticketspro.edit.predefinedsearches.data', array());
+		$data = Factory::getApplication()->getUserState('com_rsticketspro.edit.predefinedsearches.data', array());
 
 		if (empty($data))
 		{
@@ -92,11 +95,11 @@ class RsticketsproModelPredefinedsearch extends JModelAdmin
 	
 	protected function canEditState($record)
 	{
-		return $record->user_id == JFactory::getUser()->id;
+		return $record->user_id == Factory::getUser()->id;
 	}
 	
 	protected function canDelete($record)
 	{
-		return $record->user_id == JFactory::getUser()->id;
+		return $record->user_id == Factory::getUser()->id;
 	}
 }

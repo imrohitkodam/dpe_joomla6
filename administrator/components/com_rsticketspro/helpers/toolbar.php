@@ -9,12 +9,17 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\Helpers\Sidebar;
+
 abstract class RSTicketsProToolbarHelper
 {
 	public static function addToolbar($view = '')
 	{
 		// load language file (.sys because the toolbar has the same options as the components dropdown)
-		JFactory::getLanguage()->load('com_rsticketspro.sys', JPATH_ADMINISTRATOR);
+		Factory::getLanguage()->load('com_rsticketspro.sys', JPATH_ADMINISTRATOR);
 
 		// add toolbar entries
 		// overview
@@ -27,11 +32,11 @@ abstract class RSTicketsProToolbarHelper
 		self::addEntry('PRIORITIES', 'index.php?option=com_rsticketspro&view=priorities', $view == 'priorities');
 		self::addEntry('STATUSES', 'index.php?option=com_rsticketspro&view=statuses', $view == 'statuses');
 		self::addEntry('EMAIL_MESSAGES', 'index.php?option=com_rsticketspro&view=emails', $view == 'emails');
-		if (JFactory::getUser()->authorise('core.admin', 'com_rsticketspro'))
+		if (Factory::getUser()->authorise('core.admin', 'com_rsticketspro'))
 		{
 			self::addEntry('CONFIGURATION', 'index.php?option=com_rsticketspro&view=configuration', $view == 'configuration');
 		}
-		JFactory::getApplication()->triggerEvent('onAfterTicketsMenu');
+		Factory::getApplication()->triggerEvent('onAfterTicketsMenu');
 
 		self::addEntry('KB_CATEGORIES', 'index.php?option=com_rsticketspro&view=kbcategories', $view == 'kbcategories');
 		self::addEntry('KB_ARTICLES', 'index.php?option=com_rsticketspro&view=kbarticles', $view == 'kbarticles');
@@ -40,16 +45,16 @@ abstract class RSTicketsProToolbarHelper
 
 	public static function addEntry($lang_key, $url, $default = false)
 	{
-		JHtmlSidebar::addEntry(JText::_('COM_RSTICKETSPRO_' . $lang_key), JRoute::_($url), $default);
+		Sidebar::addEntry(Text::_('COM_RSTICKETSPRO_' . $lang_key), Route::_($url), $default);
 	}
 
 	public static function addFilter($text, $key, $options, $noDefault = false)
 	{
-		JHtmlSidebar::addFilter($text, $key, $options, $noDefault);
+		Sidebar::addFilter($text, $key, $options, $noDefault);
 	}
 
 	public static function render()
 	{
-		return JHtmlSidebar::render();
+		return Sidebar::render();
 	}
 }

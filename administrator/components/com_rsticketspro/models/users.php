@@ -9,7 +9,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproModelUsers extends JModelList
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\ListModel;
+
+class RsticketsproModelUsers extends \Joomla\CMS\MVC\Model\ListModel
 {
 	public function __construct($config = array())
 	{
@@ -39,7 +42,7 @@ class RsticketsproModelUsers extends JModelList
 		$query 	= $db->getQuery(true);
 
 		// get current user
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		
 		// get current permissions
 		$permissions = RSTicketsProHelper::getCurrentPermissions();
@@ -115,6 +118,6 @@ class RsticketsproModelUsers extends JModelList
 	
 	public function getField()
 	{
-		return JFactory::getApplication()->getInput()->getCmd('field');
+		return Factory::getApplication()->getInput()->getCmd('field');
 	}
 }

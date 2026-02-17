@@ -9,7 +9,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproModelStatus extends JModelAdmin
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\AdminModel;
+
+class RsticketsproModelStatus extends \Joomla\CMS\MVC\Model\AdminModel
 {
 	public function getTable($type = 'Statuses', $prefix = 'RsticketsproTable', $config = array())
 	{
@@ -44,7 +47,7 @@ class RsticketsproModelStatus extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_rsticketspro.edit.status.data', array());
+		$data = Factory::getApplication()->getUserState('com_rsticketspro.edit.status.data', array());
 
 		if (empty($data))
 		{
@@ -61,15 +64,15 @@ class RsticketsproModelStatus extends JModelAdmin
 			return false;
 		}
 
-		return JFactory::getUser()->authorise('status.delete', 'com_rsticketspro');
+		return Factory::getUser()->authorise('status.delete', 'com_rsticketspro');
 	}
 	
 	protected function canEditState($record)
 	{
-		$task = JFactory::getApplication()->getInput()->get('task');
+		$task = Factory::getApplication()->getInput()->get('task');
 		if ($task !== 'saveOrderAjax')
 		{
-			$id = !empty($record->id) ? $record->id : JFactory::getApplication()->input->getInt('id');
+			$id = !empty($record->id) ? $record->id : Factory::getApplication()->getInput()->getInt('id');
 
 			if ($this->isCore($id))
 			{
@@ -77,7 +80,7 @@ class RsticketsproModelStatus extends JModelAdmin
 			}
 		}
 
-		return JFactory::getUser()->authorise('status.edit.state', 'com_rsticketspro');
+		return Factory::getUser()->authorise('status.edit.state', 'com_rsticketspro');
 	}
 	
 	protected function isCore($id)

@@ -8,6 +8,12 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\HTML\HTMLHelper;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
 abstract class RsticketsExport
 {
     public static function buildCSV($data, $fileHash = '')
@@ -45,11 +51,11 @@ abstract class RsticketsExport
             {
                 if ($header == 'time_spent')
                 {
-                    $headers[] =  JText::_('RST_TIME_SPENT');
+                    $headers[] =  Text::_('RST_TIME_SPENT');
                 }
                 else
                 {
-                    $headers[] =   JText::_('RST_TICKET_'.strtoupper($header));
+                    $headers[] =   Text::_('RST_TICKET_'.strtoupper($header));
                 }
             }
 
@@ -58,7 +64,7 @@ abstract class RsticketsExport
         }
 
         // load the dbo object
-        $db  = JFactory::getDbo();
+        $db  = Factory::getDbo();
 
         // Add the data to rows
         foreach ($data as $i => $entry)
@@ -110,11 +116,11 @@ abstract class RsticketsExport
 				 {
                      case 'date':
                      case 'last_reply':
-                        $row[$key] = JHtml::_('date', $value, RSTicketsProHelper::getConfig('date_format'));
+                        $row[$key] = HTMLHelper::_('date', $value, RSTicketsProHelper::getConfig('date_format'));
                      break;
 
                      case 'staff';
-                         $row[$key] = $entry->staff_id ? $value : JText::_('RST_UNASSIGNED');
+                         $row[$key] = $entry->staff_id ? $value : Text::_('RST_UNASSIGNED');
                      break;
 
                      case 'time_spent';
@@ -167,11 +173,11 @@ abstract class RsticketsExport
 
     public static function writeCSV($query, $totalItems, $from, $fileHash, $filename)
 	{
-        if (!is_writable(JFactory::getApplication()->get('tmp_path'))) {
-            throw new Exception(JText::sprintf('COM_RSTICKETSPRO_TMP_PATH_NOT_WRITABLE', JFactory::getApplication()->get('tmp_path')));
+        if (!is_writable(Factory::getApplication()->get('tmp_path'))) {
+            throw new Exception(Text::sprintf('COM_RSTICKETSPRO_TMP_PATH_NOT_WRITABLE', Factory::getApplication()->get('tmp_path')));
         }
 
-        $db	= JFactory::getDbo();
+        $db	= Factory::getDbo();
         $db->setQuery($query, $from, RSTicketsProHelper::getConfig('export_limit'));
         $data = $db->loadObjectList();
 
@@ -179,8 +185,8 @@ abstract class RsticketsExport
 
         // build the file hash if not already created
         if (!$fileHash) {
-            $now 		= JHtml::date('now','D, d M Y H:i:s');
-            $date 		= JHtml::date('now','Y-m-d_H-i-s');
+            $now 		= HTMLHelper::date('now','D, d M Y H:i:s');
+            $date 		= HTMLHelper::date('now','Y-m-d_H-i-s');
             $filename 	= $filename.'-'.$date.'.csv';
             $fileHash 	= md5($filename.$now);
         }
@@ -188,10 +194,10 @@ abstract class RsticketsExport
         // create or append the hashed file and put content
         if ($fileContent) {
             if (!file_put_contents(self::getTmpPath($fileHash), $fileContent, FILE_APPEND)) {
-                throw new Exception(JText::sprintf('COM_RSTICKETSPRO_COULD_NOT_EXPORT_CSV_PATH', self::getTmpPath($fileHash)));
+                throw new Exception(Text::sprintf('COM_RSTICKETSPRO_COULD_NOT_EXPORT_CSV_PATH', self::getTmpPath($fileHash)));
             }
         } else {
-            throw new Exception(JText::_('COM_RSTICKETSPRO_EXPORT_NO_DATA'));
+            throw new Exception(Text::_('COM_RSTICKETSPRO_EXPORT_NO_DATA'));
         }
 
         $newFrom 		= ($from + RSTicketsProHelper::getConfig('export_limit'));
@@ -212,14 +218,14 @@ abstract class RsticketsExport
 
     protected static function getTmpPath($fileHash)
 	{
-        return JFactory::getApplication()->get('tmp_path').'/'.$fileHash;
+        return Factory::getApplication()->get('tmp_path').'/'.$fileHash;
     }
 
     public static function buildCSVHeaders($filename)
 	{
         // disable caching
-        $now = JHtml::date('now','D, d M Y H:i:s');
-        $date = JHtml::date('now','Y-m-d_H-i-s');
+        $now = HTMLHelper::date('now','D, d M Y H:i:s');
+        $date = HTMLHelper::date('now','Y-m-d_H-i-s');
         $filename = $filename.'-'.$date.'.csv';
 
         header("Expires: Tue, 03 Jul 2001 06:00:00 GMT");

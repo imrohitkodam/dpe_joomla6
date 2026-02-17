@@ -20,7 +20,7 @@ class JFormFieldAvatars extends JFormFieldList
 		// Initialize variables.
 		$options = array();
 		
-		$db 	= JFactory::getDbo();
+		$db 	= Factory::getDbo();
 		$query 	= $db->getQuery(true);
 
 		$components = array(
@@ -35,13 +35,13 @@ class JFormFieldAvatars extends JFormFieldList
 			  ->where($db->qn('element').' IN (' . implode(',', $db->q($components)) . ')');
 		$available = $db->setQuery($query)->loadColumn();
 		
-		$options[] = JHtml::_('select.option', '', JText::_('RST_NO_AVATARS_COMPONENT'));
-		$options[] = JHtml::_('select.option', 'gravatar', JText::_('RST_GRAVATAR'));
+		$options[] = HTMLHelper::_('select.option', '', Text::_('RST_NO_AVATARS_COMPONENT'));
+		$options[] = HTMLHelper::_('select.option', 'gravatar', Text::_('RST_GRAVATAR'));
 		
 		foreach ($components as $component)
 		{
 			$disabled = !in_array($component, $available);
-			$options[] = JHtml::_('select.option', substr($component, 4), JText::_('RST_' . substr($component, 4)), 'value', 'text', $disabled);
+			$options[] = HTMLHelper::_('select.option', substr($component, 4), Text::_('RST_' . substr($component, 4)), 'value', 'text', $disabled);
 		}
 		
 		reset($options);

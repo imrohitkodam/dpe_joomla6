@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
 class RsticketsproAdapterNavpills
 {
 	protected $id;
@@ -40,7 +42,7 @@ class RsticketsproAdapterNavpills
 		foreach ($this->titles as $i => $title)
 		{
 			$nav_html .= '<li class="nav-item">';
-			$nav_html .= '<button class="nav-link' . ($title->id == $active->id ? ' active' : '') . '" id="' . $title->id . '-tab" data-bs-toggle="pill" data-bs-target="#' . $title->id . '" type="button" role="tab">' . JText::_($title->label) . '</button>';
+			$nav_html .= '<button class="nav-link' . ($title->id == $active->id ? ' active' : '') . '" id="' . $title->id . '-tab" data-bs-toggle="pill" data-bs-target="#' . $title->id . '" type="button" role="tab">' . Text::_($title->label) . '</button>';
 			$nav_html .= '</li>';
 			
 			$content_html .= '<div class="tab-pane fade' . ($title->id == $active->id ? ' show active' : '') . '" id="' . $title->id . '">';

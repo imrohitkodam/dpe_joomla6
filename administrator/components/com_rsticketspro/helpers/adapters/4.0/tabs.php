@@ -9,6 +9,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\HTML\HTMLHelper;
+
+use Joomla\CMS\Language\Text;
+
 class RsticketsproAdapterTabs
 {
 	protected $id;
@@ -34,15 +38,15 @@ class RsticketsproAdapterTabs
 	{
 		$active = reset($this->titles);
 
-		echo JHtml::_('uitab.startTabSet', $this->id, array('active' => $active->id));
+		echo HTMLHelper::_('uitab.startTabSet', $this->id, array('active' => $active->id));
 
 		foreach ($this->titles as $i => $title)
 		{
-			echo JHtml::_('uitab.addTab', $this->id, $title->id, JText::_($title->label));
+			echo HTMLHelper::_('uitab.addTab', $this->id, $title->id, Text::_($title->label));
 			echo $this->contents[$i];
-			echo JHtml::_('uitab.endTab');
+			echo HTMLHelper::_('uitab.endTab');
 		}
 
-		echo JHtml::_('uitab.endTabSet');
+		echo HTMLHelper::_('uitab.endTabSet');
 	}
 }

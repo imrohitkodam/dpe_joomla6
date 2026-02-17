@@ -9,19 +9,27 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewPredefinedsearches extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\Uri\Uri;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewPredefinedsearches extends HtmlView
 {	
 	public function display($tpl = null)
 	{
 		$this->canAccess();
 		
-		$app				= JFactory::getApplication();
+		$app				= Factory::getApplication();
 		$this->params		= $app->getParams('com_rsticketspro');
 		$this->items 		= $this->get('Items');
 		$this->state 		= $this->get('State');
 		$this->pagination 	= $this->get('Pagination');
 
-		$app->getPathway()->addItem(JText::_('RST_MANAGE_SEARCHES'), RSTicketsProHelper::route('index.php?option=com_rsticketspro&view=predefinedsearches'));
+		$app->getPathway()->addItem(Text::_('RST_MANAGE_SEARCHES'), RSTicketsProHelper::route('index.php?option=com_rsticketspro&view=predefinedsearches'));
 
 		$this->prepareDocument();
 
@@ -51,17 +59,17 @@ class RsticketsproViewPredefinedsearches extends JViewLegacy
 	
 	protected function canAccess()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		
-		if (JFactory::getUser()->get('guest'))
+		if (Factory::getUser()->get('guest'))
 		{
-			$link = base64_encode((string) JUri::getInstance());
+			$link = base64_encode((string) Uri::getInstance());
 			$app->redirect(RSTicketsProHelper::route('index.php?option=com_users&view=login&return='.$link, false));
 		}
 		
 		if (!RSTicketsProHelper::isStaff())
 		{
-		    $app->enqueueMessage(JText::_('RST_CUSTOMER_CANNOT_VIEW_SEARCHES'), 'warning');
+		    $app->enqueueMessage(Text::_('RST_CUSTOMER_CANNOT_VIEW_SEARCHES'), 'warning');
 			$app->redirect(RSTicketsProHelper::route('index.php?option=com_rsticketspro&view=tickets', false));
 		}
 	}

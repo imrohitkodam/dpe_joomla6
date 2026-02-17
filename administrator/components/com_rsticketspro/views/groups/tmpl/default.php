@@ -9,22 +9,30 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-$canEdit  	= JFactory::getUser()->authorise('group.edit', 'com_rsticketspro');
+use Joomla\CMS\Router\Route;
+
+use Joomla\CMS\HTML\HTMLHelper;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
+$canEdit  	= Factory::getUser()->authorise('group.edit', 'com_rsticketspro');
 $listOrder 	= $this->escape($this->state->get('list.ordering'));
 $listDirn 	= $this->escape($this->state->get('list.direction'));
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_rsticketspro&view=groups'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::_('index.php?option=com_rsticketspro&view=groups'); ?>" method="post" name="adminForm" id="adminForm">
 	<?php
 	echo RsticketsproAdapterGrid::sidebar();
 
-	echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+	echo \Joomla\CMS\Layout\LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
 
 	if (empty($this->items))
 	{
 		?>
 		<div class="alert alert-info">
-			<span class="fa fa-info-circle" aria-hidden="true"></span><span class="sr-only"><?php echo JText::_('INFO'); ?></span>
-			<?php echo JText::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
+			<span class="fa fa-info-circle" aria-hidden="true"></span><span class="sr-only"><?php echo Text::_('INFO'); ?></span>
+			<?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
 		</div>
 		<?php
 	}
@@ -34,9 +42,9 @@ $listDirn 	= $this->escape($this->state->get('list.direction'));
 		<table class="table table-striped">
 			<thead>
 			<tr>
-				<th width="1%" nowrap="nowrap"><?php echo JHtml::_('grid.checkall'); ?></th>
-				<th><?php echo JHtml::_('searchtools.sort', 'RST_GROUP', 'name', $listDirn, $listOrder); ?></th>
-				<th width="1%"><?php echo JHtml::_('searchtools.sort', 'ID', 'id', $listDirn, $listOrder); ?></th>
+				<th width="1%" nowrap="nowrap"><?php echo HTMLHelper::_('grid.checkall'); ?></th>
+				<th><?php echo HTMLHelper::_('searchtools.sort', 'RST_GROUP', 'name', $listDirn, $listOrder); ?></th>
+				<th width="1%"><?php echo HTMLHelper::_('searchtools.sort', 'ID', 'id', $listDirn, $listOrder); ?></th>
 			</tr>
 			</thead>
 			<tbody>
@@ -45,12 +53,12 @@ $listDirn 	= $this->escape($this->state->get('list.direction'));
 			{
 				?>
 					<tr>
-						<td width="1%" nowrap="nowrap"><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>
+						<td width="1%" nowrap="nowrap"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
 						<td>
 							<?php
 							if ($canEdit)
 							{
-								echo JHtml::_('link', JRoute::_('index.php?option=com_rsticketspro&task=group.edit&id='.(int) $item->id), $this->escape($item->name));
+								echo HTMLHelper::_('link', Route::_('index.php?option=com_rsticketspro&task=group.edit&id='.(int) $item->id), $this->escape($item->name));
 							}
 							else
 							{
@@ -71,7 +79,7 @@ $listDirn 	= $this->escape($this->state->get('list.direction'));
 	?>
 	
 	<div>
-		<?php echo JHtml::_( 'form.token' ); ?>
+		<?php echo HTMLHelper::_( 'form.token' ); ?>
 		<input type="hidden" name="boxchecked" value="0" />
 		<input type="hidden" name="task" value="" />
 	</div>

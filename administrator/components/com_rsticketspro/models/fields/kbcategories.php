@@ -21,15 +21,15 @@ class JFormFieldKBCategories extends JFormFieldList
 		
 		if (isset($this->element['please']) && $this->element['please'] == 'true')
 		{
-			$options[] = JHtml::_('select.option', '', JText::_('RST_KB_SELECT_CATEGORY'));
+			$options[] = HTMLHelper::_('select.option', '', Text::_('RST_KB_SELECT_CATEGORY'));
 		}
 		
 		if (isset($this->element['show_noparent']) && $this->element['show_noparent'] == 'true')
 		{
-			$options[] = JHtml::_('select.option', 0, JText::_('RST_KB_NO_PARENT'));
+			$options[] = HTMLHelper::_('select.option', 0, Text::_('RST_KB_NO_PARENT'));
 		}
 		
-		$db 	= JFactory::getDbo();
+		$db 	= Factory::getDbo();
 		$query 	= $db->getQuery(true);
 		
 		// Load the list items.
@@ -55,11 +55,11 @@ class JFormFieldKBCategories extends JFormFieldList
 		unset($items);
 		
 		// second pass - get an indent list of the items
-		$list = JHtml::_('menu.treerecurse', 0, '', array(), $children, 9999, 0, 0);
+		$list = HTMLHelper::_('menu.treerecurse', 0, '', array(), $children, 9999, 0, 0);
 		foreach ($list as $item)
 		{
 			// Add the option object to the result set.
-			$options[] = JHtml::_('select.option', $item->id, $item->treename.$item->name);
+			$options[] = HTMLHelper::_('select.option', $item->id, $item->treename.$item->name);
 		}
 		unset($list);
 

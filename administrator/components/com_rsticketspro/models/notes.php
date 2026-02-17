@@ -9,7 +9,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproModelNotes extends JModelList
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\ListModel;
+
+class RsticketsproModelNotes extends \Joomla\CMS\MVC\Model\ListModel
 {
 	public function __construct($config = array())
 	{
@@ -24,12 +27,12 @@ class RsticketsproModelNotes extends JModelList
 	
 	public function getId()
 	{
-		return JFactory::getApplication()->input->getInt('ticket_id');
+		return Factory::getApplication()->getInput()->getInt('ticket_id');
 	}
 	
 	protected function getListQuery()
 	{
-		$db 	= JFactory::getDbo();
+		$db 	= Factory::getDbo();
 		$query 	= $db->getQuery(true);
 		
 		$query->select('*')

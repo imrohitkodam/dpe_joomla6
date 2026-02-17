@@ -9,14 +9,20 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::_('behavior.keepalive');
+use Joomla\CMS\Router\Route;
+
+use Joomla\CMS\HTML\HTMLHelper;
+
+use Joomla\CMS\Language\Text;
+
+HTMLHelper::_('behavior.keepalive');
 RSTicketsProHelper::tooltipLoad();
 // Load JavaScript message titles
-JText::script('ERROR');
-JText::script('WARNING');
-JText::script('NOTICE');
-JText::script('MESSAGE');
-JHtml::_('behavior.formvalidator');
+Text::script('ERROR');
+Text::script('WARNING');
+Text::script('NOTICE');
+Text::script('MESSAGE');
+HTMLHelper::_('behavior.formvalidator');
 ?>
 <script type="text/javascript">
 Joomla.submitbutton = function(task)
@@ -24,12 +30,12 @@ Joomla.submitbutton = function(task)
 	if (task == 'kbtemplate.cancel' || document.formvalidator.isValid(document.getElementById('adminForm'))) {
 		Joomla.submitform(task, document.getElementById('adminForm'));
 	} else {
-		alert('<?php echo $this->escape(JText::_('COM_RSTICKETSPRO_PLEASE_COMPLETE_ALL_FIELDS'));?>');
+		alert('<?php echo $this->escape(Text::_('COM_RSTICKETSPRO_PLEASE_COMPLETE_ALL_FIELDS'));?>');
 	}
 }
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=com_rsticketspro&view=kbtemplate'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate" enctype="multipart/form-data">
+<form action="<?php echo Route::_('index.php?option=com_rsticketspro&view=kbtemplate'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate" enctype="multipart/form-data">
 	<div id="j-sidebar-container" class="span2">
 		<?php echo $this->sidebar; ?>
 	</div>
@@ -46,7 +52,7 @@ Joomla.submitbutton = function(task)
 	</div>
 	
 	<div>
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo HTMLHelper::_('form.token'); ?>
 		<input type="hidden" name="task" value="" />
 	</div>
 </form>

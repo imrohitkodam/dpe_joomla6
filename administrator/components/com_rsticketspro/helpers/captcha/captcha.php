@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 class RsticketsproCaptcha
 {
 	protected $chars = 4;
@@ -30,21 +32,21 @@ class RsticketsproCaptcha
 			$this->code .= substr($possible, mt_rand(0, $count), 1);
 		}
 
-		JFactory::getApplication()->getSession()->set('com_rsticketspro.captcha', $this->code);
+		Factory::getSession()->set('com_rsticketspro.captcha', $this->code);
 
 		return $this->code;
 	}
 
 	public function check($code)
 	{
-		$validCode = (string) JFactory::getApplication()->getSession()->get('com_rsticketspro.captcha');
+		$validCode = (string) Factory::getSession()->get('com_rsticketspro.captcha');
 		if (!RSTicketsProHelper::getConfig('captcha_case_sensitive'))
 		{
 			$validCode = strtolower($validCode);
 			$code = strtolower($code);
 		}
 
-		JFactory::getApplication()->getSession()->clear('com_rsticketspro.captcha');
+		Factory::getSession()->clear('com_rsticketspro.captcha');
 
 		return $validCode === $code;
 	}
@@ -116,7 +118,7 @@ class RsticketsproCaptcha
 		}
 		catch (Exception $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
 		}
 	}
 }

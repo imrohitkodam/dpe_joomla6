@@ -9,15 +9,17 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 class RsticketsproControllerKbarticle extends JControllerForm
 {
 	public function allowAdd($data = array())
 	{
-		return JFactory::getUser()->authorise('kbarticle.create', 'com_rsticketspro');
+		return Factory::getUser()->authorise('kbarticle.create', 'com_rsticketspro');
 	}
 
 	public function allowEdit($data = array(), $key = 'id')
 	{
-		return JFactory::getUser()->authorise('kbarticle.edit', 'com_rsticketspro');
+		return Factory::getUser()->authorise('kbarticle.edit', 'com_rsticketspro');
 	}
 }

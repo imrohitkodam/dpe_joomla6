@@ -9,7 +9,12 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproModelKbcategories extends JModelList
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\MVC\Model\ListModel;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproModelKbcategories extends \Joomla\CMS\MVC\Model\ListModel
 {
 	public function __construct($config = array())
 	{
@@ -25,7 +30,7 @@ class RsticketsproModelKbcategories extends JModelList
 	
 	protected function getListQuery()
 	{
-		$db 	= JFactory::getDbo();
+		$db 	= Factory::getDbo();
 		$query 	= $db->getQuery(true);
 		
 		// get filtering states
@@ -93,7 +98,7 @@ class RsticketsproModelKbcategories extends JModelList
 			}
 
 			// second pass - get an indent list of the items
-			$list = JHtml::_('menu.treerecurse', 0, '', array(), $children, 9999, 0, 0);
+			$list = HTMLHelper::_('menu.treerecurse', 0, '', array(), $children, 9999, 0, 0);
 
 			if ($this->getState('list.limit'))
 			{

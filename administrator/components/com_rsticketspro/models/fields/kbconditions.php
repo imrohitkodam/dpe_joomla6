@@ -26,26 +26,26 @@ class JFormFieldKBConditions extends JFormField
 		// prepare lists
 		// condition types
 		$this->options['types'] = array(
-			JHtml::_('select.option', '', JText::_('RST_PLEASE_SELECT')),
-			JHtml::_('select.option', 'department', JText::_('RST_DEPARTMENT')),
-			JHtml::_('select.option', 'subject', JText::_('RST_TICKET_SUBJECT')),
-			JHtml::_('select.option', 'message', JText::_('RST_TICKET_MESSAGE')),
-			JHtml::_('select.option', 'priority', JText::_('RST_PRIORITY')),
-			JHtml::_('select.option', 'status', JText::_('RST_TICKET_STATUS')),
-			JHtml::_('select.option', 'custom_field', JText::_('RST_CUSTOM_FIELD'))
+			HTMLHelper::_('select.option', '', Text::_('RST_PLEASE_SELECT')),
+			HTMLHelper::_('select.option', 'department', Text::_('RST_DEPARTMENT')),
+			HTMLHelper::_('select.option', 'subject', Text::_('RST_TICKET_SUBJECT')),
+			HTMLHelper::_('select.option', 'message', Text::_('RST_TICKET_MESSAGE')),
+			HTMLHelper::_('select.option', 'priority', Text::_('RST_PRIORITY')),
+			HTMLHelper::_('select.option', 'status', Text::_('RST_TICKET_STATUS')),
+			HTMLHelper::_('select.option', 'custom_field', Text::_('RST_CUSTOM_FIELD'))
 		);
 		// conditions
 		$this->options['conditions'] = array(
-			JHtml::_('select.option', '', JText::_('RST_PLEASE_SELECT')),
-			JHtml::_('select.option', 'eq', JText::_('RST_IS_EQUAL')),
-			JHtml::_('select.option', 'neq', JText::_('RST_IS_NOT_EQUAL')),
-			JHtml::_('select.option', 'like', JText::_('RST_IS_LIKE')),
-			JHtml::_('select.option', 'notlike', JText::_('RST_IS_NOT_LIKE'))
+			HTMLHelper::_('select.option', '', Text::_('RST_PLEASE_SELECT')),
+			HTMLHelper::_('select.option', 'eq', Text::_('RST_IS_EQUAL')),
+			HTMLHelper::_('select.option', 'neq', Text::_('RST_IS_NOT_EQUAL')),
+			HTMLHelper::_('select.option', 'like', Text::_('RST_IS_LIKE')),
+			HTMLHelper::_('select.option', 'notlike', Text::_('RST_IS_NOT_LIKE'))
 		);
 		// connectors
 		$this->options['connectors'] = array(
-			JHtml::_('select.option', 'AND', JText::_('RST_AND')),
-			JHtml::_('select.option', 'OR', JText::_('RST_OR'))
+			HTMLHelper::_('select.option', 'AND', Text::_('RST_AND')),
+			HTMLHelper::_('select.option', 'OR', Text::_('RST_OR'))
 		);
 		
 		// departments
@@ -62,7 +62,7 @@ class JFormFieldKBConditions extends JFormField
 	
 	protected function getDepartments()
 	{
-		$db 	= JFactory::getDbo();
+		$db 	= Factory::getDbo();
 		$query 	= $db->getQuery(true);
 		
 		$query->select($db->qn('id'))
@@ -76,7 +76,7 @@ class JFormFieldKBConditions extends JFormField
 	
 	protected function getPriorities()
 	{
-		$db 	= JFactory::getDbo();
+		$db 	= Factory::getDbo();
 		$query 	= $db->getQuery(true);
 		
 		$query->select($db->qn('id'))
@@ -90,7 +90,7 @@ class JFormFieldKBConditions extends JFormField
 	
 	protected function getStatuses()
 	{
-		$db 	= JFactory::getDbo();
+		$db 	= Factory::getDbo();
 		$query 	= $db->getQuery(true);
 		
 		$query->select($db->qn('id'))
@@ -104,7 +104,7 @@ class JFormFieldKBConditions extends JFormField
 	
 	protected function getCustomFieldValues()
 	{
-		$db 	= JFactory::getDbo();
+		$db 	= Factory::getDbo();
 		$query 	= $db->getQuery(true);
 		
 		$query->select($db->qn('values'))
@@ -124,7 +124,7 @@ class JFormFieldKBConditions extends JFormField
 		
 			foreach ($values as $value)
 			{
-				$list[] = JHtml::_('select.option', $value, $value);
+				$list[] = HTMLHelper::_('select.option', $value, $value);
 			}
 			
 			$customFieldValues[$id] = $list;
@@ -135,7 +135,7 @@ class JFormFieldKBConditions extends JFormField
 	
 	protected function getCustomFields()
 	{
-		$db 	= JFactory::getDbo();
+		$db 	= Factory::getDbo();
 		$query 	= $db->getQuery(true);
 		
 		$query->select($db->qn('id'))
@@ -164,7 +164,7 @@ class JFormFieldKBConditions extends JFormField
 					continue;
 				}
 				
-				$list[] = JHtml::_('select.option', $customField->id, $customField->name);
+				$list[] = HTMLHelper::_('select.option', $customField->id, $customField->name);
 			}
 			
 			$optgroup = new stdClass();
@@ -205,13 +205,13 @@ class JFormFieldKBConditions extends JFormField
 		$hidden_attribs = 'disabled="disabled" style="display: none;"';
 		
 		foreach ($conditions as $i => $condition) {
-			$select_type = JHtml::_('select.genericlist', $this->options['types'], $this->getFormControlName('select_type').'[]', null, 'value', 'text', $condition->type, 'select_type'.$i);
+			$select_type = HTMLHelper::_('select.genericlist', $this->options['types'], $this->getFormControlName('select_type').'[]', null, 'value', 'text', $condition->type, 'select_type'.$i);
 			$select_custom_field_value = '';
 			if ($condition->type == 'custom_field') {
-				$select_custom_field_value = JHtml::_('select.genericlist', $this->customFields, $this->getFormControlName('select_custom_field_value').'[]', null, 'value', 'text', $condition->custom_field, 'select_custom_field_value'.$i);
+				$select_custom_field_value = HTMLHelper::_('select.genericlist', $this->customFields, $this->getFormControlName('select_custom_field_value').'[]', null, 'value', 'text', $condition->custom_field, 'select_custom_field_value'.$i);
 			}
-			$select_condition = JHtml::_('select.genericlist', $this->options['conditions'], $this->getFormControlName('select_condition').'[]', null, 'value', 'text', $condition->condition, 'select_condition'.$i);
-			$select_connector = JHtml::_('select.genericlist', $this->options['connectors'], $this->getFormControlName('select_connector').'[]', null, 'value', 'text', $condition->connector, 'select_connector'.$i);
+			$select_condition = HTMLHelper::_('select.genericlist', $this->options['conditions'], $this->getFormControlName('select_condition').'[]', null, 'value', 'text', $condition->condition, 'select_condition'.$i);
+			$select_connector = HTMLHelper::_('select.genericlist', $this->options['connectors'], $this->getFormControlName('select_connector').'[]', null, 'value', 'text', $condition->connector, 'select_connector'.$i);
 			$select_value 	  = '';
 			
 			$is_like = $condition->condition == 'like' || $condition->condition == 'notlike';
@@ -219,17 +219,17 @@ class JFormFieldKBConditions extends JFormField
 			switch ($condition->type)
 			{
 				case 'department':
-					$select_value  = trim(JHtml::_('select.genericlist', $this->departments, $this->getFormControlName('select_value').'[]', ($is_like ? $hidden_attribs : ''), 'id', 'name', $condition->value, 'select_value'.$i));
+					$select_value  = trim(HTMLHelper::_('select.genericlist', $this->departments, $this->getFormControlName('select_value').'[]', ($is_like ? $hidden_attribs : ''), 'id', 'name', $condition->value, 'select_value'.$i));
 					$select_value .= '<input type="text" name="'.$this->getFormControlName('select_value').'[]" value="'.$this->escape($condition->value).'" '.(!$is_like ? $hidden_attribs : '').' />';
 				break;
 				
 				case 'priority':
-					$select_value  = trim(JHtml::_('select.genericlist', $this->priorities, $this->getFormControlName('select_value').'[]', ($is_like ? $hidden_attribs : ''), 'id', 'name', $condition->value, 'select_value'.$i));
+					$select_value  = trim(HTMLHelper::_('select.genericlist', $this->priorities, $this->getFormControlName('select_value').'[]', ($is_like ? $hidden_attribs : ''), 'id', 'name', $condition->value, 'select_value'.$i));
 					$select_value .= '<input type="text" name="'.$this->getFormControlName('select_value').'[]" value="'.$this->escape($condition->value).'" '.(!$is_like ? $hidden_attribs : '').' />';
 				break;
 				
 				case 'status':
-					$select_value  = trim(JHtml::_('select.genericlist', $this->statuses, $this->getFormControlName('select_value').'[]', ($is_like ? $hidden_attribs : ''), 'id', 'name', $condition->value, 'select_value'.$i));
+					$select_value  = trim(HTMLHelper::_('select.genericlist', $this->statuses, $this->getFormControlName('select_value').'[]', ($is_like ? $hidden_attribs : ''), 'id', 'name', $condition->value, 'select_value'.$i));
 					$select_value .= '<input type="text" name="'.$this->getFormControlName('select_value').'[]" value="'.$this->escape($condition->value).'" '.(!$is_like ? $hidden_attribs : '').' />';
 				break;
 				
@@ -243,11 +243,11 @@ class JFormFieldKBConditions extends JFormField
 				
 				case 'custom_field':
 					$values = isset($this->customFieldValues[$condition->custom_field]) ? $this->customFieldValues[$condition->custom_field] : array();
-					$select_value  = trim(JHtml::_('select.genericlist', $values, $this->getFormControlName('select_value').'[]', ($is_like ? $hidden_attribs : ''), 'value', 'text', $condition->value, 'select_value'.$i));
+					$select_value  = trim(HTMLHelper::_('select.genericlist', $values, $this->getFormControlName('select_value').'[]', ($is_like ? $hidden_attribs : ''), 'value', 'text', $condition->value, 'select_value'.$i));
 					$select_value .= '<input type="text" name="'.$this->getFormControlName('select_value').'[]" value="'.$this->escape($condition->value).'" '.(!$is_like ? $hidden_attribs : '').' />';
 				break;
 			}
-			$html .= '<p><span class="rst_condition_if">'.JText::_('RST_IF').'</span> '.$select_type.'<span>&nbsp;</span><span class="responseSpan2">'.$select_custom_field_value.'</span><span>&nbsp;</span>'.$select_condition.'<span>&nbsp;</span><span class="responseSpan">'.$select_value.'</span><span>&nbsp;</span>'.$select_connector.'<span>&nbsp;</span><span>&nbsp;</span><a href="javascript: void(0);" class="btn btn-danger deleteConditionLink"><span class="icon icon-minus"></span></a></p>';
+			$html .= '<p><span class="rst_condition_if">'.Text::_('RST_IF').'</span> '.$select_type.'<span>&nbsp;</span><span class="responseSpan2">'.$select_custom_field_value.'</span><span>&nbsp;</span>'.$select_condition.'<span>&nbsp;</span><span class="responseSpan">'.$select_value.'</span><span>&nbsp;</span>'.$select_connector.'<span>&nbsp;</span><span>&nbsp;</span><a href="javascript: void(0);" class="btn btn-danger deleteConditionLink"><span class="icon icon-minus"></span></a></p>';
 		}
 		
 		$html .= '</div>';

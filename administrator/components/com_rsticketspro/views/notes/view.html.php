@@ -9,7 +9,17 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewNotes extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+
+use Joomla\CMS\HTML\HTMLHelper;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewNotes extends HtmlView
 {
 	protected $id;
 	protected $items;
@@ -23,14 +33,14 @@ class RsticketsproViewNotes extends JViewLegacy
 	{
 		if (!$this->hasPermission())
 		{
-			throw new Exception(JText::_('RST_STAFF_CANNOT_VIEW_NOTES'), 403);
+			throw new Exception(Text::_('RST_STAFF_CANNOT_VIEW_NOTES'), 403);
 		}
 		
 		$this->id 			= $this->get('Id');
 		$this->items 		= $this->get('Items');
 		$this->pagination 	= $this->get('Pagination');
 		$this->state 		= $this->get('State');
-		$this->userId		= JFactory::getUser()->id;
+		$this->userId		= Factory::getUser()->id;
 		
 		$this->dateFormat 	= RSTicketsProHelper::getConfig('date_format');
 		$this->userField	= RSTicketsProHelper::getConfig('show_user_info');
@@ -40,12 +50,12 @@ class RsticketsproViewNotes extends JViewLegacy
 	
 	protected function showDate($date)
 	{
-		return JHtml::_('date', $date, $this->dateFormat);
+		return HTMLHelper::_('date', $date, $this->dateFormat);
 	}
 	
 	protected function showUser($user_id) {
 		if ($user_id) {
-			return JFactory::getUser($user_id)->{$this->userField};
+			return Factory::getUser($user_id)->{$this->userField};
 		} else {
 			return '-';
 		}
@@ -55,7 +65,7 @@ class RsticketsproViewNotes extends JViewLegacy
 		// get id
 		$id = $this->get('Id');
 		// get model
-		$model = JModelLegacy::getInstance('Ticket', 'RsticketsproModel', array(
+		$model = BaseDatabaseModel::getInstance('Ticket', 'RsticketsproModel', array(
 			'option' => 'com_rsticketspro',
 			'table_path' => JPATH_ADMINISTRATOR.'/components/com_rsticketspro/tables'
 		));

@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
 class RsticketsproTableCustomfields extends JTable
 {
 	public $id;
@@ -35,7 +37,7 @@ class RsticketsproTableCustomfields extends JTable
 		{
 			if (in_array($this->type, array('select', 'multipleselect', 'checkbox', 'radio')) && !strlen($this->values))
 			{
-				throw new Exception(JText::_('RST_CUSTOM_FIELD_VALUES_ERROR'));
+				throw new Exception(Text::_('RST_CUSTOM_FIELD_VALUES_ERROR'));
 			}
 
 			// this needs to be filtered
@@ -60,7 +62,7 @@ class RsticketsproTableCustomfields extends JTable
 			$db->setQuery($query);
 			if ($db->loadResult())
 			{
-				throw new Exception(JText::sprintf('RST_CUSTOM_FIELD_UNIQUE_NAME_ERROR', $this->name));
+				throw new Exception(Text::sprintf('RST_CUSTOM_FIELD_UNIQUE_NAME_ERROR', $this->name));
 			}
 
 			if (!$this->id && !$this->ordering)

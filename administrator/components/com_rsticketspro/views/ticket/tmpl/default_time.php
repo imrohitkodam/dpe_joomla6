@@ -9,8 +9,12 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-JText::script('COM_RSTICKETSPRO_ARE_YOU_SURE_YOU_WANT_TO_CLEAR_TIME_TRACKING');
-JText::script('COM_RSTICKETSPRO_ARE_YOU_SURE_YOU_WANT_TO_DELETE_TIME_TRACKING_RECORD');
+use Joomla\CMS\Router\Route;
+
+use Joomla\CMS\Language\Text;
+
+Text::script('COM_RSTICKETSPRO_ARE_YOU_SURE_YOU_WANT_TO_CLEAR_TIME_TRACKING');
+Text::script('COM_RSTICKETSPRO_ARE_YOU_SURE_YOU_WANT_TO_DELETE_TIME_TRACKING_RECORD');
 
 if ($this->timeSpentTracking)
 {
@@ -48,14 +52,14 @@ if ($this->timeSpentTracking)
 		if ($this->useTimeCounter)
 		{
 			?>
-			<a href="<?php echo JRoute::_('index.php?option=com_rsticketspro&task=ticket.toggleTime&id='.$this->ticket->id.'&tstate='.($this->ticketTimeState == 1 ? 0 : 1)); ?>"<?php echo ($this->ticketTimeState == 0 ? ' onclick="return confirm(Joomla.JText._(\'COM_RSTICKETSPRO_TIME_BUTTON_CONFIRM_START\'));"' : '');?> class="btn btn-<?php echo ($this->ticketTimeState ? 'danger' : 'success');?>"><?php echo JText::_('COM_RSTICKETSPRO_TIME_BUTTON'.($this->ticketTimeState ? '_STOP' : '_START'));?></a>
+			<a href="<?php echo Route::_('index.php?option=com_rsticketspro&task=ticket.toggleTime&id='.$this->ticket->id.'&tstate='.($this->ticketTimeState == 1 ? 0 : 1)); ?>"<?php echo ($this->ticketTimeState == 0 ? ' onclick="return confirm(Joomla.JText._(\'COM_RSTICKETSPRO_TIME_BUTTON_CONFIRM_START\'));"' : '');?> class="btn btn-<?php echo ($this->ticketTimeState ? 'danger' : 'success');?>"><?php echo Text::_('COM_RSTICKETSPRO_TIME_BUTTON'.($this->ticketTimeState ? '_STOP' : '_START'));?></a>
 			<?php
 		}
 
 		if (!empty($this->ticketIntervals) && $this->canDeleteTimeHistory)
 		{
 			?>
-			<a href="<?php echo JRoute::_('index.php?option=com_rsticketspro&task=ticket.clearTimeTracking&id='.$this->ticket->id); ?>" class="btn btn-danger" onclick="return confirm(Joomla.JText._('COM_RSTICKETSPRO_ARE_YOU_SURE_YOU_WANT_TO_CLEAR_TIME_TRACKING'));"><?php echo JText::_('COM_RSTICKETSPRO_TIME_TRACKING_HISTORY_CLEAR');?></a>
+			<a href="<?php echo Route::_('index.php?option=com_rsticketspro&task=ticket.clearTimeTracking&id='.$this->ticket->id); ?>" class="btn btn-danger" onclick="return confirm(Joomla.JText._('COM_RSTICKETSPRO_ARE_YOU_SURE_YOU_WANT_TO_CLEAR_TIME_TRACKING'));"><?php echo Text::_('COM_RSTICKETSPRO_TIME_TRACKING_HISTORY_CLEAR');?></a>
 			<?php
 		}
 		?>
@@ -69,10 +73,10 @@ if ($this->timeSpentTracking)
 		<table class="table table-bordered table-condensed table-hover">
 			<thead>
 			<tr>
-				<th><?php echo JText::_('COM_RSTICKETSPRO_TIME_TRACKING_HISTORY_START');?></th>
-				<th><?php echo JText::_('COM_RSTICKETSPRO_TIME_TRACKING_HISTORY_END');?></th>
-				<th><?php echo JText::_('COM_RSTICKETSPRO_TIME_TRACKING_HISTORY_DURATION');?></th>
-				<th><?php echo JText::_('COM_RSTICKETSPRO_TIME_TRACKING_HISTORY_STAFF_MEMBER');?></th>
+				<th><?php echo Text::_('COM_RSTICKETSPRO_TIME_TRACKING_HISTORY_START');?></th>
+				<th><?php echo Text::_('COM_RSTICKETSPRO_TIME_TRACKING_HISTORY_END');?></th>
+				<th><?php echo Text::_('COM_RSTICKETSPRO_TIME_TRACKING_HISTORY_DURATION');?></th>
+				<th><?php echo Text::_('COM_RSTICKETSPRO_TIME_TRACKING_HISTORY_STAFF_MEMBER');?></th>
 				<th>&nbsp;</th>
 			</tr>
 			</thead>
@@ -89,7 +93,7 @@ if ($this->timeSpentTracking)
 						<?php echo $this->showDate($interval->start);?>
 					</td>
 					<td>
-						<?php echo ($is_running ? JText::_('COM_RSTICKETSPRO_TIME_TRACKING_HISTORY_TRACKING') : $this->showDate($interval->end));?>
+						<?php echo ($is_running ? Text::_('COM_RSTICKETSPRO_TIME_TRACKING_HISTORY_TRACKING') : $this->showDate($interval->end));?>
 					</td>
 					<td>
 						<?php echo $this->showTotal($interval->duration);?>
@@ -102,7 +106,7 @@ if ($this->timeSpentTracking)
 						if ($interval->can_delete && !$is_running)
 						{
 							?>
-							<a href="<?php echo JRoute::_('index.php?option=com_rsticketspro&task=ticket.clearTimeTrackingEntry&ticket_id='.$this->ticket->id.'&entry='.$interval->id); ?>" onclick="return confirm(Joomla.JText._('COM_RSTICKETSPRO_ARE_YOU_SURE_YOU_WANT_TO_DELETE_TIME_TRACKING_RECORD'));" class="btn btn-small btn-danger" ><?php echo JText::_('COM_RSTICKETSPRO_TIME_TRACKING_HISTORY_RECORD_DELETE'); ?></a>
+							<a href="<?php echo Route::_('index.php?option=com_rsticketspro&task=ticket.clearTimeTrackingEntry&ticket_id='.$this->ticket->id.'&entry='.$interval->id); ?>" onclick="return confirm(Joomla.JText._('COM_RSTICKETSPRO_ARE_YOU_SURE_YOU_WANT_TO_DELETE_TIME_TRACKING_RECORD'));" class="btn btn-small btn-danger" ><?php echo Text::_('COM_RSTICKETSPRO_TIME_TRACKING_HISTORY_RECORD_DELETE'); ?></a>
 							<?php
 						}
 						?>
@@ -114,7 +118,7 @@ if ($this->timeSpentTracking)
 			</tbody>
 			<tfoot>
 			<tr>
-				<td colspan="2"><?php echo JText::_('COM_RSTICKETSPRO_TIME_TRACKING_TOTAL'); ?></td>
+				<td colspan="2"><?php echo Text::_('COM_RSTICKETSPRO_TIME_TRACKING_TOTAL'); ?></td>
 				<td colspan="3"><?php echo $this->showTotal($total); ?></td>
 			</tr>
 			</tfoot>
@@ -124,16 +128,16 @@ if ($this->timeSpentTracking)
 	else
 	{
 		?>
-		<div class="alert alert-warning"><?php echo JText::_('COM_RSTICKETSPRO_TIME_TRACKING_NO_HISTORY_ENTRIES'); ?></div>
+		<div class="alert alert-warning"><?php echo Text::_('COM_RSTICKETSPRO_TIME_TRACKING_NO_HISTORY_ENTRIES'); ?></div>
 		<?php
 	}
 }
 
 if ($this->timeSpentInput)
 {
-	$this->form->setFieldAttribute('time_spent', 'description', JText::_('RST_TIME_UNIT_'.RSTicketsProHelper::getConfig('time_spent_unit')));
+	$this->form->setFieldAttribute('time_spent', 'description', Text::_('RST_TIME_UNIT_'.RSTicketsProHelper::getConfig('time_spent_unit')));
 	echo $this->form->getField('time_spent')->renderField();
 ?>
-	<button type="button" onclick="Joomla.submitbutton('ticket.savetimespent')" class="btn btn-primary"><?php echo JText::_('RST_UPDATE'); ?></button>
+	<button type="button" onclick="Joomla.submitbutton('ticket.savetimespent')" class="btn btn-primary"><?php echo Text::_('RST_UPDATE'); ?></button>
 <?php
 }

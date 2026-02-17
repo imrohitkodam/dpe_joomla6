@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
 echo '<div class="form-horizontal">';
 
 // subject
@@ -16,7 +18,7 @@ echo $this->form->getField('subject')->renderField();
 
 // department
 echo $this->form->getField('department_id')->renderField();
-echo '<input type="hidden" name="hidden_department_id" value="' . $this->escape(JText::_($this->ticket->department->name)) . '">';
+echo '<input type="hidden" name="hidden_department_id" value="' . $this->escape(Text::_($this->ticket->department->name)) . '">';
 
 // date
 echo $this->form->getField('date')->renderField();
@@ -45,7 +47,7 @@ if ($this->showAltEmail)
 if (!empty($this->permissions->update_ticket))
 {
 	?>
-	<button type="button" onclick="Joomla.submitbutton('ticket.updateinfo')" class="btn btn-primary"><?php echo JText::_('RST_UPDATE'); ?></button>
+	<button type="button" onclick="Joomla.submitbutton('ticket.updateinfo')" class="btn btn-primary"><?php echo Text::_('RST_UPDATE'); ?></button>
 	<?php
 }
 

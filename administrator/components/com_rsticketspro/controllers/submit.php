@@ -8,10 +8,16 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\MVC\Controller\BaseController;
+
+use Joomla\CMS\Router\Route;
+
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
 
-class RsticketsproControllerSubmit extends JControllerLegacy
+class RsticketsproControllerSubmit extends BaseController
 {
 	protected $option  = 'com_rsticketspro';
 	protected $context = 'submit';
@@ -23,23 +29,23 @@ class RsticketsproControllerSubmit extends JControllerLegacy
 
 	public function showForm() 
 	{
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 		
-		$this->setRedirect(JRoute::_('index.php?option=com_rsticketspro&view=submit', false));
+		$this->setRedirect(Route::_('index.php?option=com_rsticketspro&view=submit', false));
 	}
 	
 	public function cancel()
 	{
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 		
-		$this->setRedirect(JRoute::_('index.php?option=com_rsticketspro&view=tickets', false));
+		$this->setRedirect(Route::_('index.php?option=com_rsticketspro&view=tickets', false));
 	}
 	
 	public function save()
 	{
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
-		$app      = JFactory::getApplication();
+		$app      = Factory::getApplication();
 		$input    = $app->input;
 		$data     = $input->get('jform', array(), 'array');
 
@@ -80,11 +86,11 @@ class RsticketsproControllerSubmit extends JControllerLegacy
 			$app->setUserState($context . '.data', null);
 			$app->setUserState($context . '.fields', null);
 
-			$this->setMessage(JText::_('RST_TICKET_SUBMIT_OK', 'info'));
+			$this->setMessage(Text::_('RST_TICKET_SUBMIT_OK', 'info'));
 
 			$sucess = ++$successCount;
 			//DPE Hack
-			$session = Factory::getApplication()->getSession();
+			$session = Factory::getSession();
 			$ticketId = $session->get('ticketIdForUCMLog');
 			PluginHelper::importPlugin('tjucmdpe');
 			Factory::getApplication()->triggerEvent('onAfterTicketCreateSaveTimeSave',array($ticketId,$data));
@@ -99,10 +105,10 @@ class RsticketsproControllerSubmit extends JControllerLegacy
 			// DPE - Hack - After saving ticket wants to redirect user on ticket list view.
 			if ($app->isClient('site'))
 			{
-				return !empty($redirect) ? $this->setRedirect($redirect) : $this->setRedirect(JRoute::_('index.php?option=com_dpe&view=rsticketspro', false));
+				return !empty($redirect) ? $this->setRedirect($redirect) : $this->setRedirect(Route::_('index.php?option=com_dpe&view=rsticketspro', false));
 			}
 		}
 		
-		$this->setRedirect(JRoute::_('index.php?option=com_rsticketspro&view=submit', false));
+		$this->setRedirect(Route::_('index.php?option=com_rsticketspro&view=submit', false));
 	}
 }

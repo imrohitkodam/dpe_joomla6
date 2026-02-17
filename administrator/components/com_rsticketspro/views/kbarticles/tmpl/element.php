@@ -8,19 +8,25 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Router\Route;
+
+use Joomla\CMS\HTML\HTMLHelper;
+
+use Joomla\CMS\Language\Text;
 $listOrder 	= $this->escape($this->state->get('list.ordering'));
 $listDirn 	= $this->escape($this->state->get('list.direction')); ?>
 
-<form action="<?php echo JRoute::_('index.php?option=com_rsticketspro&view=kbarticles&layout=element'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::_('index.php?option=com_rsticketspro&view=kbarticles&layout=element'); ?>" method="post" name="adminForm" id="adminForm">
 	<?php
-	echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+	echo \Joomla\CMS\Layout\LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
 
 	if (empty($this->items))
 	{
 		?>
 		<div class="alert alert-info">
-			<span class="fa fa-info-circle" aria-hidden="true"></span><span class="sr-only"><?php echo JText::_('INFO'); ?></span>
-			<?php echo JText::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
+			<span class="fa fa-info-circle" aria-hidden="true"></span><span class="sr-only"><?php echo Text::_('INFO'); ?></span>
+			<?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
 		</div>
 		<?php
 	}
@@ -30,11 +36,11 @@ $listDirn 	= $this->escape($this->state->get('list.direction')); ?>
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th width="20"><?php echo JHtml::_('grid.checkall'); ?></th>
-					<th><?php echo JHtml::_('searchtools.sort', 'RST_KB_ARTICLE_NAME', 'a.name', $listDirn, $listOrder); ?></th>
-					<th><?php echo JHtml::_('searchtools.sort', 'RST_KB_CATEGORY_NAME', 'c.name', $listDirn, $listOrder); ?></th>
-					<th width="1%" class="text-center" align="center"><?php echo JHtml::_('searchtools.sort', 'RST_PRIVATE', 'a.private', $listDirn, $listOrder); ?></th>
-					<th width="1%" class="text-center" align="center"><?php echo JHtml::_('searchtools.sort', 'JPUBLISHED', 'a.published', $listDirn, $listOrder); ?></th>
+					<th width="20"><?php echo HTMLHelper::_('grid.checkall'); ?></th>
+					<th><?php echo HTMLHelper::_('searchtools.sort', 'RST_KB_ARTICLE_NAME', 'a.name', $listDirn, $listOrder); ?></th>
+					<th><?php echo HTMLHelper::_('searchtools.sort', 'RST_KB_CATEGORY_NAME', 'c.name', $listDirn, $listOrder); ?></th>
+					<th width="1%" class="text-center" align="center"><?php echo HTMLHelper::_('searchtools.sort', 'RST_PRIVATE', 'a.private', $listDirn, $listOrder); ?></th>
+					<th width="1%" class="text-center" align="center"><?php echo HTMLHelper::_('searchtools.sort', 'JPUBLISHED', 'a.published', $listDirn, $listOrder); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -43,8 +49,8 @@ $listDirn 	= $this->escape($this->state->get('list.direction')); ?>
 			{
 				?>
 				<tr>
-					<td><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>
-					<td><a onclick="window.parent.elSelectEvent('<?php echo $item->id; ?>', this.innerText);" href="javascript: void(0);"><?php echo $item->name != '' ? $this->escape($item->name) : JText::_('RST_NO_TITLE'); ?></a></td>
+					<td><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
+					<td><a onclick="window.parent.elSelectEvent('<?php echo $item->id; ?>', this.innerText);" href="javascript: void(0);"><?php echo $item->name != '' ? $this->escape($item->name) : Text::_('RST_NO_TITLE'); ?></a></td>
 					<td>
 						<?php
 						if ($item->category_id)
@@ -53,12 +59,12 @@ $listDirn 	= $this->escape($this->state->get('list.direction')); ?>
 						}
 						else
 						{
-							echo JText::_('RST_KB_NO_PARENT');
+							echo Text::_('RST_KB_NO_PARENT');
 						}
 						?>
 					</td>
-					<td class="text-center" align="center"><?php echo $item->private ? JText::_('JYES') : JText::_('JNO'); ?></td>
-					<td class="text-center" align="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'kbarticles.'); ?></td>
+					<td class="text-center" align="center"><?php echo $item->private ? Text::_('JYES') : Text::_('JNO'); ?></td>
+					<td class="text-center" align="center"><?php echo HTMLHelper::_('jgrid.published', $item->published, $i, 'kbarticles.'); ?></td>
 				</tr>
 				<?php
 			}
@@ -70,7 +76,7 @@ $listDirn 	= $this->escape($this->state->get('list.direction')); ?>
 	}
 	?>
 	
-	<?php echo JHtml::_( 'form.token' ); ?>
+	<?php echo HTMLHelper::_( 'form.token' ); ?>
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="tmpl" value="component" />

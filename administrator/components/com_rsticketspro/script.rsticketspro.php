@@ -10,10 +10,11 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Installer\Installer;
-use Joomla\Filesystem\Folder;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\Filesystem\Folder;
+use Joomla\CMS\Installer\Installer;
+use Joomla\CMS\Version;
 
 class com_rsticketsproInstallerScript
 {
@@ -30,7 +31,7 @@ class com_rsticketsproInstallerScript
 	public function uninstall($parent)
 	{
 		// Get Dbo
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 		
 		// Get a new installer
 		foreach ($this->plugins as $plugin)
@@ -52,8 +53,10 @@ class com_rsticketsproInstallerScript
 	
 	
 	public function preflight($type, $parent) {		
-		if (version_compare(JVERSION, '3.9.0', 'lt')) {
-			Factory::getApplication()->enqueueMessage('Please upgrade to at least Joomla! 3.9.0 before continuing!', 'error');
+		$jversion = new Version();
+		
+		if (!$jversion->isCompatible('6.0.0')) {
+			Factory::getApplication()->enqueueMessage('Please upgrade to at least Joomla! 6.0.0 before continuing!', 'error');
 			return false;
 		}
 		
@@ -67,7 +70,7 @@ class com_rsticketsproInstallerScript
 			return true;
 		}
 		
-		$db 			= Factory::getDbo();
+		$db 			= Factory::getContainer()->get('DatabaseDriver');
 		$this->source 	= $parent->getParent()->getPath('source');
 
 		$messages = array(
@@ -157,7 +160,7 @@ class com_rsticketsproInstallerScript
 	}
 	
 	protected function updateProcess() {
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 		
 		// #__rsticketspro_kb_content updates
 		$columns = $db->getTableColumns('#__rsticketspro_kb_content');

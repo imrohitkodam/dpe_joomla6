@@ -9,7 +9,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewGroup extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewGroup extends HtmlView
 {
 	protected $form;
 	protected $item;
@@ -17,7 +21,7 @@ class RsticketsproViewGroup extends JViewLegacy
 	
 	public function display($tpl = null)
 	{
-		JFactory::getApplication()->getInput()->set('hidemainmenu', true);
+		Factory::getApplication()->getInput()->set('hidemainmenu', true);
 
 		$this->addToolbar();
 
@@ -31,14 +35,14 @@ class RsticketsproViewGroup extends JViewLegacy
 	protected function addToolbar()
 	{
 		// set title
-		JToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
+		\Joomla\CMS\Toolbar\ToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
 
 		RSTicketsProToolbarHelper::addToolbar('groups');
 		
-		JToolbarHelper::apply('group.apply');
-		JToolbarHelper::save('group.save');
-		JToolbarHelper::save2new('group.save2new');
-		JToolbarHelper::save2copy('group.save2copy');
-		JToolbarHelper::cancel('group.cancel');
+		\Joomla\CMS\Toolbar\ToolbarHelper::apply('group.apply');
+		\Joomla\CMS\Toolbar\ToolbarHelper::save('group.save');
+		\Joomla\CMS\Toolbar\ToolbarHelper::save2new('group.save2new');
+		\Joomla\CMS\Toolbar\ToolbarHelper::save2copy('group.save2copy');
+		\Joomla\CMS\Toolbar\ToolbarHelper::cancel('group.cancel');
 	}
 }

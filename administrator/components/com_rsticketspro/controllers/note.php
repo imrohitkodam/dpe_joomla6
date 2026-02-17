@@ -9,12 +9,14 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 class RsticketsproControllerNote extends JControllerForm
 {
 	protected function getRedirectToListAppend()
 	{
 		$append  = parent::getRedirectToListAppend();
-		$append	.= '&ticket_id=' . JFactory::getApplication()->input->getInt('ticket_id');
+		$append	.= '&ticket_id=' . Factory::getApplication()->getInput()->getInt('ticket_id');
 
 		return $append;
 	}
@@ -22,7 +24,7 @@ class RsticketsproControllerNote extends JControllerForm
 	protected function getRedirectToItemAppend($recordId = null, $urlVar = 'id')
 	{
 		$append = parent::getRedirectToItemAppend($recordId, $urlVar);
-		$append	.= '&ticket_id=' . JFactory::getApplication()->input->getInt('ticket_id');
+		$append	.= '&ticket_id=' . Factory::getApplication()->getInput()->getInt('ticket_id');
 		
 		return $append;
 	}
@@ -40,7 +42,7 @@ class RsticketsproControllerNote extends JControllerForm
 		
 		$model  = $this->getModel();
 		$table  = $model->getTable();
-		$userId = JFactory::getUser()->id;
+		$userId = Factory::getUser()->id;
 		
 		// load data
 		$table->load($data[$key]);

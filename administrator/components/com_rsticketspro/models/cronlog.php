@@ -8,7 +8,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproModelCronlog extends JModelList
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\ListModel;
+
+class RsticketsproModelCronlog extends \Joomla\CMS\MVC\Model\ListModel
 {
 	public function __construct($config = array())
 	{
@@ -24,7 +27,7 @@ class RsticketsproModelCronlog extends JModelList
 	
 	protected function getListQuery()
 	{
-		$db 	= JFactory::getDbo();
+		$db 	= Factory::getDbo();
 		$query 	= $db->getQuery(true);
 		
 		// get filtering states
@@ -60,7 +63,7 @@ class RsticketsproModelCronlog extends JModelList
 	{
 		foreach ($pks as $i => $pk)
 		{
-			$db		= JFactory::getDbo();
+			$db		= Factory::getDbo();
 			$query 	= $db->getQuery(true);
 
 			$query->delete()

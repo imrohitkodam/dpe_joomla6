@@ -9,12 +9,14 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
 // set description if required
 if (isset($this->fieldset->description) && !empty($this->fieldset->description)) { ?>
-	<?php echo JText::_($this->fieldset->description); ?>
+	<?php echo Text::_($this->fieldset->description); ?>
 <?php } ?>
 <?php
-$legend = $this->item->id ? JText::_('RST_EDIT_GROUP') : JText::_('RST_ADD_NEW_GROUP');
+$legend = $this->item->id ? Text::_('RST_EDIT_GROUP') : Text::_('RST_ADD_NEW_GROUP');
 $this->field->startFieldset($legend);
 foreach ($this->fields as $field) {
 	$this->field->showField($field->hidden ? '' : $field->label, $field->input);

@@ -9,7 +9,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewKbresults extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewKbresults extends HtmlView
 {
 	public function display($tpl = null)
 	{
@@ -34,6 +38,6 @@ class RsticketsproViewKbresults extends JViewLegacy
 		));
 
 		// end application
-		JFactory::getApplication()->close();
+		Factory::getApplication()->close();
 	}
 }

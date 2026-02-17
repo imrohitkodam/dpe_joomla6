@@ -9,15 +9,17 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 class RsticketsproControllerCustomfield extends JControllerForm
 {
 	public function allowAdd($data = array())
 	{
-		return JFactory::getUser()->authorise('customfield.create', 'com_rsticketspro');
+		return Factory::getUser()->authorise('customfield.create', 'com_rsticketspro');
 	}
 
 	public function allowEdit($data = array(), $key = 'id')
 	{
-		return JFactory::getUser()->authorise('customfield.edit', 'com_rsticketspro');
+		return Factory::getUser()->authorise('customfield.edit', 'com_rsticketspro');
 	}
 }

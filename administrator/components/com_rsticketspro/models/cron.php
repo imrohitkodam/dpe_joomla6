@@ -8,7 +8,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproModelCron extends JModelAdmin
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\AdminModel;
+
+class RsticketsproModelCron extends \Joomla\CMS\MVC\Model\AdminModel
 {
 	public function getTable($type = 'Crons', $prefix = 'RsticketsproTable', $config = array())
 	{
@@ -30,7 +33,7 @@ class RsticketsproModelCron extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$app  = JFactory::getApplication();
+		$app  = Factory::getApplication();
 		$data = $app->getUserState('com_rsticketspro.edit.cron.data', array());
 
 		if (empty($data))

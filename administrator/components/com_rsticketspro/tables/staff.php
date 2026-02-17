@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
 class RsticketsproTableStaff extends JTable
 {
 	public $id = null;
@@ -52,12 +54,12 @@ class RsticketsproTableStaff extends JTable
 		{
 			if (!$this->user_id)
 			{
-				throw new Exception(JText::_('RST_STAFF_USER_ERROR'));
+				throw new Exception(Text::_('RST_STAFF_USER_ERROR'));
 			}
 
 			if (empty($this->department_id))
 			{
-				throw new Exception(JText::_('RST_STAFF_DEPARTMENT_ERROR'));
+				throw new Exception(Text::_('RST_STAFF_DEPARTMENT_ERROR'));
 			}
 
 			$db 	= $this->getDbo();
@@ -74,7 +76,7 @@ class RsticketsproTableStaff extends JTable
 
 			if ($db->setQuery($query)->loadResult())
 			{
-				throw new Exception(JText::_('RST_STAFF_USER_EXISTS'));
+				throw new Exception(Text::_('RST_STAFF_USER_EXISTS'));
 			}
 		}
 		catch (Exception $e)

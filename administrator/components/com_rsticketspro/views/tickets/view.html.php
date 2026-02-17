@@ -9,13 +9,21 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewTickets extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\HTML\HTMLHelper;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewTickets extends HtmlView
 {
 	public function display($tpl = null)
 	{
 		$this->addToolbar();
 
-		$this->globalMessage            = JText::_(RSTicketsProHelper::getConfig('global_message'));
+		$this->globalMessage            = Text::_(RSTicketsProHelper::getConfig('global_message'));
 		$this->globalMessagePosition	= RSTicketsProHelper::getConfig('global_message_position');
 		$this->state 		    = $this->get('State');
 		$this->filterForm       = $this->get('FilterForm');
@@ -52,7 +60,7 @@ class RsticketsproViewTickets extends JViewLegacy
 	protected function addToolbar()
 	{
 		// set title
-		JToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
+		\Joomla\CMS\Toolbar\ToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
 
 		RSTicketsProToolbarHelper::addToolbar('tickets');
 		
@@ -61,7 +69,7 @@ class RsticketsproViewTickets extends JViewLegacy
 		{
 			if ($permissions->add_ticket || $permissions->add_ticket_staff || $permissions->add_ticket_customers)
 			{
-				JToolbarHelper::addNew('submit.showform');
+				\Joomla\CMS\Toolbar\ToolbarHelper::addNew('submit.showform');
 			}
 
 			if (!empty($permissions->export_tickets))
@@ -81,17 +89,17 @@ class RsticketsproViewTickets extends JViewLegacy
 				}
 				else
 				{
-					JToolbarHelper::modal('rsticketsproBulkModal', 'icon-move', 'RST_BULK_ACTIONS');
+					\Joomla\CMS\Toolbar\ToolbarHelper::modal('rsticketsproBulkModal', 'icon-move', 'RST_BULK_ACTIONS');
 				}
 			}
 		}
 
-		JToolbarHelper::custom('search.advanced', 'search', 'search', JText::_('RST_OPEN_ADVANCED_SEARCH'), false);
+		\Joomla\CMS\Toolbar\ToolbarHelper::custom('search.advanced', 'search', 'search', Text::_('RST_OPEN_ADVANCED_SEARCH'), false);
 	}
 	
 	protected function showDate($date)
 	{
-		return JHtml::_('date', $date, $this->dateFormat);
+		return HTMLHelper::_('date', $date, $this->dateFormat);
 	}
 
 	public function showTotal($duration)
@@ -126,7 +134,7 @@ class RsticketsproViewTickets extends JViewLegacy
 
 			if ($css)
 			{
-				JFactory::getDocument()->addStyleDeclaration($css);
+				Factory::getDocument()->addStyleDeclaration($css);
 			}
 		}
 	}

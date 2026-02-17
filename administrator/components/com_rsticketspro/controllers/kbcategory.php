@@ -9,15 +9,17 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 class RsticketsproControllerKbcategory extends JControllerForm
 {
 	public function allowAdd($data = array())
 	{
-		return JFactory::getUser()->authorise('kbcategory.create', 'com_rsticketspro');
+		return Factory::getUser()->authorise('kbcategory.create', 'com_rsticketspro');
 	}
 
 	public function allowEdit($data = array(), $key = 'id')
 	{
-		return JFactory::getUser()->authorise('kbcategory.edit', 'com_rsticketspro');
+		return Factory::getUser()->authorise('kbcategory.edit', 'com_rsticketspro');
 	}
 }

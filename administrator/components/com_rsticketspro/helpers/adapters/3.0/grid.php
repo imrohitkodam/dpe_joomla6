@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\HTML\Helpers\Sidebar;
+
 abstract class RsticketsproAdapterGrid
 {
 	public static function row()
@@ -24,7 +26,7 @@ abstract class RsticketsproAdapterGrid
 	public static function sidebar()
 	{
 		return '<div id="j-sidebar-container" class="' . static::column(2) . '">' .
-			JHtmlSidebar::render() .
+			Sidebar::render() .
 			'</div>' .
 			'<div id="j-main-container" class="' . static::column(10) . '">';
 	}

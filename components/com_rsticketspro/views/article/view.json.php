@@ -9,7 +9,13 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewArticle extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewArticle extends HtmlView
 {
 	protected $item;
 	
@@ -22,7 +28,7 @@ class RsticketsproViewArticle extends JViewLegacy
 
 		if (!$this->item->id || !$this->item->published || (!RSTicketsProHelper::isStaff() && $this->item->private))
 		{
-			throw new Exception(JText::_('RST_CANNOT_VIEW_ARTICLE'));
+			throw new Exception(Text::_('RST_CANNOT_VIEW_ARTICLE'));
 		}
 		
 		if (!RSTicketsProHelper::getConfig('allow_rich_editor'))
@@ -34,6 +40,6 @@ class RsticketsproViewArticle extends JViewLegacy
 		echo json_encode(array('text' => $this->item->text));
 		
 		// end application
-		JFactory::getApplication()->close();
+		Factory::getApplication()->close();
 	}
 }

@@ -9,14 +9,18 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewStatus extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewStatus extends HtmlView
 {
 	protected $form;
 	protected $item;
 	
 	public function display($tpl = null)
 	{
-		JFactory::getApplication()->getInput()->set('hidemainmenu', true);
+		Factory::getApplication()->getInput()->set('hidemainmenu', true);
 
 		$this->addToolbar();
 		
@@ -29,14 +33,14 @@ class RsticketsproViewStatus extends JViewLegacy
 	protected function addToolbar()
 	{
 		// set title
-		JToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
+		\Joomla\CMS\Toolbar\ToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
 
 		RSTicketsProToolbarHelper::addToolbar('statuses');
 		
-		JToolbarHelper::apply('status.apply');
-		JToolbarHelper::save('status.save');
-		JToolbarHelper::save2new('status.save2new');
-		JToolbarHelper::save2copy('status.save2copy');
-		JToolbarHelper::cancel('status.cancel');
+		\Joomla\CMS\Toolbar\ToolbarHelper::apply('status.apply');
+		\Joomla\CMS\Toolbar\ToolbarHelper::save('status.save');
+		\Joomla\CMS\Toolbar\ToolbarHelper::save2new('status.save2new');
+		\Joomla\CMS\Toolbar\ToolbarHelper::save2copy('status.save2copy');
+		\Joomla\CMS\Toolbar\ToolbarHelper::cancel('status.cancel');
 	}
 }

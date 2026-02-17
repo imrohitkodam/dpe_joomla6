@@ -9,9 +9,15 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.model');
 
-class RsticketsproModelKnowledgebasebox extends JModelLegacy
+class RsticketsproModelKnowledgebasebox extends BaseDatabaseModel
 {
 	var $_data = null;
 	var $_total = 0;
@@ -21,9 +27,9 @@ class RsticketsproModelKnowledgebasebox extends JModelLegacy
 	function __construct()
 	{
 		parent::__construct();
-		$this->_db = JFactory::getDbo();
+		$this->_db = Factory::getDbo();
 		
-		$mainframe = JFactory::getApplication();
+		$mainframe = Factory::getApplication();
 		$option    = 'com_rsticketspro';
 		
 		// Get pagination request variables
@@ -36,20 +42,20 @@ class RsticketsproModelKnowledgebasebox extends JModelLegacy
 		$this->setState($option.'.kbbox.limit', $limit);
 		$this->setState($option.'.kbbox.limitstart', $limitstart);
 		
-		$this->category_id = $mainframe->input->getInt('category_id', 0);
+		$this->category_id = $mainframe->getInput()->getInt('category_id', 0);
 	}
 	
 	function getKBCategories()
 	{
-		$mainframe      = JFactory::getApplication();
+		$mainframe      = Factory::getApplication();
 		$category_id    = $this->category_id;
 		
 		$query = "SELECT * FROM #__rsticketspro_kb_categories WHERE `published`='1' AND `parent_id`='".$category_id."'";
 		
-		$sortColumn = $mainframe->input->getString('filter_order', 'ordering');
+		$sortColumn = $mainframe->getInput()->getString('filter_order', 'ordering');
 		$sortColumn = $this->_db->escape($sortColumn);
 		
-		$sortOrder = $mainframe->input->getString('filter_order_Dir', 'ASC');
+		$sortOrder = $mainframe->getInput()->getString('filter_order_Dir', 'ASC');
 		$sortOrder = $this->_db->escape($sortOrder);
 		
 		$query .= " ORDER BY `".$sortColumn."` ".$sortOrder;
@@ -65,8 +71,8 @@ class RsticketsproModelKnowledgebasebox extends JModelLegacy
 		
 		$query = "SELECT * FROM #__rsticketspro_kb_content WHERE `published`='1' AND `category_id`='".$category_id."'";
 		
-		$filter_word = JFactory::getApplication()->getInput()->getCmd('search', '');
-		$category_state = JFactory::getApplication()->input->getInt('category_state', -1);
+		$filter_word = Factory::getApplication()->getInput()->getCmd('search', '');
+		$category_state = Factory::getApplication()->getInput()->getInt('category_state', -1);
 		if (!empty($filter_word))
 		{
 			$categories = array();
@@ -86,10 +92,10 @@ class RsticketsproModelKnowledgebasebox extends JModelLegacy
 		
 		$this->_total = $this->_getListCount($query);
 		
-		$sortColumn = JFactory::getApplication()->input->getString('filter_order', 'ordering');
+		$sortColumn = Factory::getApplication()->getInput()->getString('filter_order', 'ordering');
 		$sortColumn = $this->_db->escape($sortColumn);
 		
-		$sortOrder = JFactory::getApplication()->input->getString('filter_order_Dir', 'ASC');
+		$sortOrder = Factory::getApplication()->getInput()->getString('filter_order_Dir', 'ASC');
 		$sortOrder = $this->_db->escape($sortOrder);
 		
 		$query .= " ORDER BY `".$sortColumn."` ".$sortOrder;
@@ -119,7 +125,7 @@ class RsticketsproModelKnowledgebasebox extends JModelLegacy
 		$category_id = $this->category_id;
 		
 		if ($category_id == 0)
-			return JText::_('RST_KB_NO_PARENT');
+			return Text::_('RST_KB_NO_PARENT');
 		
 		$row = JTable::getInstance('RSTicketsPro_KB_Categories','Table');
 		$row->load($category_id);
@@ -142,7 +148,7 @@ class RsticketsproModelKnowledgebasebox extends JModelLegacy
 	
 	function getKBArticle()
 	{
-		$content_id = JFactory::getApplication()->input->getInt('content_id', 0);
+		$content_id = Factory::getApplication()->getInput()->getInt('content_id', 0);
 		
 		$row = JTable::getInstance('RSTicketsPro_KB_Content','Table');
 		$row->load($content_id);

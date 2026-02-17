@@ -9,7 +9,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewKnowledgebase extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\HTML\HTMLHelper;
+
+class RsticketsproViewKnowledgebase extends HtmlView
 {
 	protected $buttons;
 	// version info
@@ -19,7 +23,7 @@ class RsticketsproViewKnowledgebase extends JViewLegacy
 	public function display($tpl = null) {
 		$this->addToolbar();
 
-		JHtml::stylesheet('com_rsticketspro/dashboard.css', array('relative' => true));
+		HTMLHelper::stylesheet('com_rsticketspro/dashboard.css', array('relative' => true));
 		
 		$this->buttons  = $this->get('Buttons');
 		$this->code		= $this->get('code');
@@ -32,7 +36,7 @@ class RsticketsproViewKnowledgebase extends JViewLegacy
 	
 	protected function addToolbar() {		
 		// set title
-		JToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
+		\Joomla\CMS\Toolbar\ToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
 		
 		require_once JPATH_COMPONENT.'/helpers/toolbar.php';
 		RSTicketsProToolbarHelper::addToolbar('knowledgebase');

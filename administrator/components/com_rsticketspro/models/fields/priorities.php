@@ -21,15 +21,15 @@ class JFormFieldPriorities extends JFormFieldList
 		
 		if (isset($this->element['please']) && $this->element['please'] == 'true')
 		{
-			$options[] = JHtml::_('select.option', '', JText::_('RST_PLEASE_SELECT_PRIORITY'));
+			$options[] = HTMLHelper::_('select.option', '', Text::_('RST_PLEASE_SELECT_PRIORITY'));
 		}
 		
 		if (isset($this->element['all']) && $this->element['all'] == 'true')
 		{
-			$options[] = JHtml::_('select.option', 0, JText::_('RST_ALL_PRIORITIES'));
+			$options[] = HTMLHelper::_('select.option', 0, Text::_('RST_ALL_PRIORITIES'));
 		}
 		
-		$db 	= JFactory::getDbo();
+		$db 	= Factory::getDbo();
 		$query 	= $db->getQuery(true);
 		$query->select($db->qn('id'))
 			  ->select($db->qn('name'))
@@ -47,7 +47,7 @@ class JFormFieldPriorities extends JFormFieldList
 		foreach ($priorities as $priority)
 		{
 			// Add the option object to the result set.
-			$options[] = JHtml::_('select.option', $priority->id, JText::_($priority->name));
+			$options[] = HTMLHelper::_('select.option', $priority->id, Text::_($priority->name));
 		}
 
 		reset($options);

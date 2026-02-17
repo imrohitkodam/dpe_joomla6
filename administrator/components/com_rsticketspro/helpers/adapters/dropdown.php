@@ -9,6 +9,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\HTML\HTMLHelper;
+
+use Joomla\CMS\Factory;
+
 class RSDropdown
 {
 	protected $context = '';
@@ -37,8 +41,8 @@ class RSDropdown
 	public function show($i, $item) {
 		static $init = false;
 		if (!$init) {
-			JHtml::_('dropdown.init');
-			JFactory::getDocument()->addScriptDeclaration("
+			HTMLHelper::_('dropdown.init');
+			Factory::getDocument()->addScriptDeclaration("
 			// This fixes Joomla! jQuery.attr() bug.
 			jQuery(document).ready(function($){
 				contextAction = function (cbId, task) {
@@ -63,33 +67,33 @@ class RSDropdown
 		// Create dropdown items
 		if ($this->editable) {
 			$context = $this->context.'.';
-			JHtml::_('dropdown.edit', $item->id, $context);
+			HTMLHelper::_('dropdown.edit', $item->id, $context);
 		}
 
 		// Custom items
 		if ($this->customItems) {
 			foreach ($this->customItems as $customItem) {
-				JHtml::_('dropdown.addCustomItem', $customItem->label, $customItem->link, $customItem->linkAttributes, $customItem->className, $customItem->ajaxLoad, $customItem->jsCallBackFunc);
+				HTMLHelper::_('dropdown.addCustomItem', $customItem->label, $customItem->link, $customItem->linkAttributes, $customItem->className, $customItem->ajaxLoad, $customItem->jsCallBackFunc);
 			}
 		}
 
 		if (isset($item->published)) {
-			JHtml::_('dropdown.divider');
+			HTMLHelper::_('dropdown.divider');
 			$context = $pluralcontext.'.';
 			if ($item->published) {
-				JHtml::_('dropdown.unpublish', 'cb' . $i, $context);
+				HTMLHelper::_('dropdown.unpublish', 'cb' . $i, $context);
 			} else {
-				JHtml::_('dropdown.publish', 'cb' . $i, $context);
+				HTMLHelper::_('dropdown.publish', 'cb' . $i, $context);
 			}
 		}
 
 		if ($this->deletable) {
 			$context = $pluralcontext.'.';
-			JHtml::_('dropdown.trash', 'cb' . $i, $context);
+			HTMLHelper::_('dropdown.trash', 'cb' . $i, $context);
 		}
 
 		// Render dropdown list
-		$html = JHtml::_('dropdown.render');
+		$html = HTMLHelper::_('dropdown.render');
 		if ($this->customItems) {
 			// prepare the placeholders
 			$placeholders = array_keys(get_object_vars($item));

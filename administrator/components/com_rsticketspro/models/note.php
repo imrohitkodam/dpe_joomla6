@@ -9,7 +9,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproModelNote extends JModelAdmin
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\AdminModel;
+
+class RsticketsproModelNote extends \Joomla\CMS\MVC\Model\AdminModel
 {
 	public function getTable($type = 'Ticketnotes', $prefix = 'RsticketsproTable', $config = array())
 	{
@@ -33,7 +36,7 @@ class RsticketsproModelNote extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$app  = JFactory::getApplication();
+		$app  = Factory::getApplication();
 		$data = $app->getUserState('com_rsticketspro.edit.note.data', array());
 		
 		if (empty($data))
@@ -52,7 +55,7 @@ class RsticketsproModelNote extends JModelAdmin
 	}
 	
 	public function getTicketId() {
-		return JFactory::getApplication()->input->getInt('ticket_id');
+		return Factory::getApplication()->getInput()->getInt('ticket_id');
 	}
 	
 	protected function canDelete($record)
@@ -65,7 +68,7 @@ class RsticketsproModelNote extends JModelAdmin
 		}
 		if (is_null($userId))
 		{
-			$userId = JFactory::getUser()->id;
+			$userId = Factory::getUser()->id;
 		}
 
 		return ($permissions->delete_note && $record->user_id == $userId) || ($permissions->delete_note_staff && $record->user_id != $userId);
@@ -76,9 +79,9 @@ class RsticketsproModelNote extends JModelAdmin
 		if (!empty($data['id'])) {
 			$validData['user_id'] = null;
 		} else {
-			$validData['user_id'] = JFactory::getUser()->id;
+			$validData['user_id'] = Factory::getUser()->id;
 		}
-		$validData['ticket_id'] = JFactory::getApplication()->input->getInt('ticket_id');
+		$validData['ticket_id'] = Factory::getApplication()->getInput()->getInt('ticket_id');
 		return $validData;
 	}
 }

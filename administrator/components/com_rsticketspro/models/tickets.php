@@ -9,7 +9,13 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproModelTickets extends JModelList
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\ListModel;
+
+use Joomla\CMS\Factory;
+use Joomla\Registry\Registry;
+
+class RsticketsproModelTickets extends \Joomla\CMS\MVC\Model\ListModel
 {
 	protected $params = null;
 	protected $_permissions = array();
@@ -28,14 +34,15 @@ class RsticketsproModelTickets extends JModelList
 			}
 		}
 
+
 		parent::__construct($config);
 
-		$app = JFactory::getApplication();
-		$this->params = new JRegistry();
+		$app = Factory::getApplication();
+		$this->params = new Registry();
 
 		if ($app->isClient('site'))
 		{
-			$active = JFactory::getApplication()->getMenu()->getActive();
+			$active = Factory::getApplication()->getMenu()->getActive();
 			if ($active && $active->component === 'com_rsticketspro')
 			{
 				$this->params = $active->getParams();
@@ -97,7 +104,7 @@ class RsticketsproModelTickets extends JModelList
 	}
 
 	protected function setSearch($values=array()) {
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 
 		if (isset($values['search'])) {
 			$app->setUserState($this->context.'.filter.search', $values['search']);
@@ -165,7 +172,7 @@ class RsticketsproModelTickets extends JModelList
 			'from' => '',
 			'to' => ''
 		);
-		JFactory::getApplication()->setUserState($this->context.'.limitstart', 0);
+		Factory::getApplication()->setUserState($this->context.'.limitstart', 0);
 		$this->setSearch($values);
 	}
 
@@ -198,7 +205,7 @@ class RsticketsproModelTickets extends JModelList
 	public function getSearches() {
 		$db 	= $this->getDbo();
 		$query	= $db->getQuery(true);
-		$user 	= JFactory::getUser();
+		$user 	= Factory::getUser();
 
 		$query->select('*')
 			->from($db->qn('#__rsticketspro_searches'))
@@ -218,10 +225,10 @@ class RsticketsproModelTickets extends JModelList
 	}
 
 	public function getPermissions() {
-		$mainframe = JFactory::getApplication();
+		$mainframe = Factory::getApplication();
 		if ($mainframe->isClient('administrator') && empty($this->_permissions))
 		{
-			$mainframe->enqueueMessage(JText::_('RST_PERMISSIONS_ERROR'), 'warning');
+			$mainframe->enqueueMessage(Text::_('RST_PERMISSIONS_ERROR'), 'warning');
 			$mainframe->redirect(RSTicketsProHelper::route('index.php?option=com_rsticketspro', false));
 		}
 
@@ -232,7 +239,7 @@ class RsticketsproModelTickets extends JModelList
 	{
 		if (empty($this->_permissions->export_tickets))
 		{
-			throw new Exception(JText::_('RST_STAFF_CANNOT_EXPORT_TICKETS'));
+			throw new Exception(Text::_('RST_STAFF_CANNOT_EXPORT_TICKETS'));
 		}
 
 		require_once JPATH_ADMINISTRATOR . '/components/com_rsticketspro/helpers/export.php';
@@ -241,16 +248,16 @@ class RsticketsproModelTickets extends JModelList
 		$query  		= $this->getListQuery();
 		$totalItems  	= (int) $this->getTotal();
 
-		$filename 		= JText::_('COM_RSTICKETSPRO_TICKETS');
+		$filename 		= Text::_('COM_RSTICKETSPRO_TICKETS');
 
 		return RsticketsExport::writeCSV($query, $totalItems, $from, $fileHash, $filename);
 	}
 
 	protected function getListQuery() {
-		$db 	= JFactory::getDbo();
-		$app	= JFactory::getApplication();
+		$db 	= Factory::getDbo();
+		$app	= Factory::getApplication();
 		$query 	= $db->getQuery(true);
-		$user   = JFactory::getUser();
+		$user   = Factory::getUser();
 
 		// get filtering states
 		$search  	 	= $this->getState('filter.search');
@@ -435,12 +442,12 @@ class RsticketsproModelTickets extends JModelList
 
 		if ($from || $to)
 		{
-			$offset = JFactory::getApplication()->get('offset');
+			$offset = Factory::getApplication()->get('offset');
 			if ($from)
 			{
 				try
 				{
-					$query->where($db->qn('t.date') . ' >= ' . $db->q(JFactory::getDate($from . ' 00:00:00', $offset)->toSql()));
+					$query->where($db->qn('t.date') . ' >= ' . $db->q(Factory::getDate($from . ' 00:00:00', $offset)->toSql()));
 				}
 				catch (Exception $e)
 				{
@@ -451,7 +458,7 @@ class RsticketsproModelTickets extends JModelList
 			{
 				try
 				{
-					$query->where($db->qn('t.date') . ' <= ' . $db->q(JFactory::getDate($to . ' 23:59:59', $offset)->toSql()));
+					$query->where($db->qn('t.date') . ' <= ' . $db->q(Factory::getDate($to . ' 23:59:59', $offset)->toSql()));
 				}
 				catch (Exception $e)
 				{
@@ -495,7 +502,7 @@ class RsticketsproModelTickets extends JModelList
 	}
 
 	protected function quoteImplode($array) {
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		foreach ($array as $k => $v) {
 			$array[$k] = $db->q($v);
 		}
@@ -565,7 +572,7 @@ class RsticketsproModelTickets extends JModelList
 	}
 
 	public function getStart() {
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		if ($app->isClient('site')) {
 			return $app->getInput()->get('limitstart', 0, 'uint');
 		} else {

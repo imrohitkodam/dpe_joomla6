@@ -18,7 +18,7 @@ class JFormFieldStatuses extends JFormFieldList
 		// Initialize variables.
 		$options = parent::getOptions();
 		
-		$db 	= JFactory::getDbo();
+		$db 	= Factory::getDbo();
 		$query 	= $db->getQuery(true);
 		$query->select($db->qn('id'))
 			  ->select($db->qn('name'))
@@ -34,7 +34,7 @@ class JFormFieldStatuses extends JFormFieldList
 		
 		$statuses = $db->loadObjectList();
 		foreach ($statuses as $status) {
-			$tmp = JHtml::_('select.option', $status->id, JText::_($status->name));
+			$tmp = HTMLHelper::_('select.option', $status->id, Text::_($status->name));
 
 			// Add the option object to the result set.
 			$options[] = $tmp;

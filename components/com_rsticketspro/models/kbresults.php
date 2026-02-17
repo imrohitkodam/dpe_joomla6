@@ -9,13 +9,17 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproModelKbresults extends JModelLegacy
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproModelKbresults extends BaseDatabaseModel
 {
 	public function getItems()
 	{
 		$this->is_staff = RSTicketsProHelper::isStaff();
 
-		if (!$value = JFactory::getApplication()->input->getString('filter_search',''))
+		if (!$value = Factory::getApplication()->getInput()->getString('filter_search',''))
 		{
 			return array();
 		}

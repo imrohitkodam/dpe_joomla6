@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
 class RsticketsproTableDepartments extends JTable
 {
 	public $id = null;
@@ -85,19 +87,19 @@ class RsticketsproTableDepartments extends JTable
 			$db->setQuery($query);
 			if ($db->loadResult())
 			{
-				throw new Exception(JText::sprintf('RST_DEPARTMENT_UNIQUE_PREFIX_ERROR', $this->prefix));
+				throw new Exception(Text::sprintf('RST_DEPARTMENT_UNIQUE_PREFIX_ERROR', $this->prefix));
 			}
 
 			if (!$this->email_use_global)
 			{
 				if (!strlen($this->email_address))
 				{
-					throw new Exception(JText::_('RST_DEPARTMENT_FROM_EMAIL_ERROR'));
+					throw new Exception(Text::_('RST_DEPARTMENT_FROM_EMAIL_ERROR'));
 				}
 
 				if (!strlen($this->email_address_fullname))
 				{
-					throw new Exception(JText::_('RST_DEPARTMENT_FROM_NAME_ERROR'));
+					throw new Exception(Text::_('RST_DEPARTMENT_FROM_NAME_ERROR'));
 				}
 			}
 

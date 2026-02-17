@@ -7,6 +7,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\HTML\HTMLHelper;
+
 JFormHelper::loadFieldClass('list');
 
 use Joomla\CMS\Language\LanguageHelper;
@@ -22,7 +24,7 @@ class JFormFieldRsticketsprolang extends JFormFieldList
 
 		foreach ($languages as $language => $properties)
 		{
-			$options[] = JHtml::_('select.option', $language, $properties['name']);
+			$options[] = HTMLHelper::_('select.option', $language, $properties['name']);
 		}
 
 		reset($options);

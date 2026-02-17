@@ -9,7 +9,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproModelDashboard extends JModelLegacy
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproModelDashboard extends BaseDatabaseModel
 {
 	public function getCategories($id = 0)
 	{
@@ -33,8 +37,8 @@ class RsticketsproModelDashboard extends JModelLegacy
 	public function getTickets()
 	{
 		$query		= $this->_db->getQuery(true);
-		$user_id	= (int) JFactory::getUser()->get('id');
-		$limit		= (int) JFactory::getApplication()->getParams('com_rsticketspro')->get('tickets_limit', 3);
+		$user_id	= (int) Factory::getUser()->get('id');
+		$limit		= (int) Factory::getApplication()->getParams('com_rsticketspro')->get('tickets_limit', 3);
 		
 		$query->select($this->_db->qn('t.id'))
 			->select($this->_db->qn('t.subject'))

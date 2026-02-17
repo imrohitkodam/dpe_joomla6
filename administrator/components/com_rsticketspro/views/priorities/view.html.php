@@ -9,7 +9,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewPriorities extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewPriorities extends HtmlView
 {
 	protected $items;
 	protected $pagination;
@@ -31,28 +35,28 @@ class RsticketsproViewPriorities extends JViewLegacy
 	protected function addToolbar()
 	{
 		// set title
-		JToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
+		\Joomla\CMS\Toolbar\ToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
 
 		RSTicketsProToolbarHelper::addToolbar('priorities');
 
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		if ($user->authorise('priority.create', 'com_rsticketspro'))
 		{
-			JToolbarHelper::addNew('priority.add');
+			\Joomla\CMS\Toolbar\ToolbarHelper::addNew('priority.add');
 		}
 		if ($user->authorise('priority.edit', 'com_rsticketspro'))
 		{
-			JToolbarHelper::editList('priority.edit');
+			\Joomla\CMS\Toolbar\ToolbarHelper::editList('priority.edit');
 		}
 		if ($user->authorise('priority.edit.state', 'com_rsticketspro'))
 		{
-			JToolbarHelper::publish('priorities.publish', 'JTOOLBAR_PUBLISH', true);
-			JToolbarHelper::unpublish('priorities.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+			\Joomla\CMS\Toolbar\ToolbarHelper::publish('priorities.publish', 'JTOOLBAR_PUBLISH', true);
+			\Joomla\CMS\Toolbar\ToolbarHelper::unpublish('priorities.unpublish', 'JTOOLBAR_UNPUBLISH', true);
 		}
 		if ($user->authorise('priority.delete', 'com_rsticketspro'))
 		{
-			JToolbarHelper::deleteList('RST_CONFIRM_DELETE', 'priorities.delete');
+			\Joomla\CMS\Toolbar\ToolbarHelper::deleteList('RST_CONFIRM_DELETE', 'priorities.delete');
 		}
 	}
 }

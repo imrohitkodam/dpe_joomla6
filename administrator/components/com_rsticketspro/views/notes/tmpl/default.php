@@ -9,27 +9,33 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::_('behavior.keepalive');
+use Joomla\CMS\Router\Route;
+
+use Joomla\CMS\HTML\HTMLHelper;
+
+use Joomla\CMS\Language\Text;
+
+HTMLHelper::_('behavior.keepalive');
 
 $listOrder 	= $this->escape($this->state->get('list.ordering'));
 $listDirn 	= $this->escape($this->state->get('list.direction'));
 
-JText::script('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST');
-JText::script('RST_DELETE_TICKET_NOTE_CONFIRM');
+Text::script('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST');
+Text::script('RST_DELETE_TICKET_NOTE_CONFIRM');
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_rsticketspro&view=notes&ticket_id='.$this->id.'&tmpl=component'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::_('index.php?option=com_rsticketspro&view=notes&ticket_id='.$this->id.'&tmpl=component'); ?>" method="post" name="adminForm" id="adminForm">
 	<div class="rst_button_spacer">
 	<?php
 	if ($this->permissions->add_note)
 	{
 		?>
-		<button type="button" class="btn btn-success" onclick="Joomla.submitbutton('note.add');"><i class="icon-plus"></i> <?php echo JText::_('RST_TICKET_ADD_NOTE'); ?></button>
+		<button type="button" class="btn btn-success" onclick="Joomla.submitbutton('note.add');"><i class="icon-plus"></i> <?php echo Text::_('RST_TICKET_ADD_NOTE'); ?></button>
 		<?php
 	}
 	if ($this->permissions->delete_note || $this->permissions->delete_note_staff)
 	{
 		?>
-		<button type="button" class="btn btn-danger" onclick="if (document.adminForm.boxchecked.value === '0') { alert(Joomla.JText._('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST')); } else { if (confirm(Joomla.JText._('RST_DELETE_TICKET_NOTE_CONFIRM'))) { Joomla.submitbutton('notes.delete'); } }"><i class="icon-delete"></i> <?php echo JText::_('RST_TICKET_DELETE_NOTE'); ?></button>
+		<button type="button" class="btn btn-danger" onclick="if (document.adminForm.boxchecked.value === '0') { alert(Joomla.JText._('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST')); } else { if (confirm(Joomla.JText._('RST_DELETE_TICKET_NOTE_CONFIRM'))) { Joomla.submitbutton('notes.delete'); } }"><i class="icon-delete"></i> <?php echo Text::_('RST_TICKET_DELETE_NOTE'); ?></button>
 		<?php
 	}
 	?>
@@ -39,8 +45,8 @@ JText::script('RST_DELETE_TICKET_NOTE_CONFIRM');
 	{
 		?>
 		<div class="alert alert-info">
-			<span class="fa fa-info-circle" aria-hidden="true"></span><span class="sr-only"><?php echo JText::_('INFO'); ?></span>
-			<?php echo JText::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
+			<span class="fa fa-info-circle" aria-hidden="true"></span><span class="sr-only"><?php echo Text::_('INFO'); ?></span>
+			<?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
 		</div>
 		<?php
 	}
@@ -50,10 +56,10 @@ JText::script('RST_DELETE_TICKET_NOTE_CONFIRM');
 		<table class="table table-striped table-condensed">
 			<thead>
 			<tr>
-				<th width="1%" nowrap="nowrap"><?php echo JHtml::_('grid.checkall'); ?></th>
-				<th><?php echo JHtml::_('grid.sort', 'RST_HISTORY_DATE', 'date', $listDirn, $listOrder); ?></th>
-				<th><?php echo JText::_('RST_NOTES_USER'); ?></th>
-				<th><?php echo JText::_('RST_TICKET_NOTE'); ?></th>
+				<th width="1%" nowrap="nowrap"><?php echo HTMLHelper::_('grid.checkall'); ?></th>
+				<th><?php echo HTMLHelper::_('grid.sort', 'RST_HISTORY_DATE', 'date', $listDirn, $listOrder); ?></th>
+				<th><?php echo Text::_('RST_NOTES_USER'); ?></th>
+				<th><?php echo Text::_('RST_TICKET_NOTE'); ?></th>
 			</tr>
 			</thead>
 			<tbody>
@@ -64,7 +70,7 @@ JText::script('RST_DELETE_TICKET_NOTE_CONFIRM');
 				$canEdit   = ($this->permissions->update_note && $item->user_id == $this->userId) || ($this->permissions->update_note_staff && $item->user_id != $this->userId);
 				?>
 				<tr>
-					<td width="1%" nowrap="nowrap"><?php echo JHtml::_('grid.id', $i, $item->id, !$canDelete); ?></td>
+					<td width="1%" nowrap="nowrap"><?php echo HTMLHelper::_('grid.id', $i, $item->id, !$canDelete); ?></td>
 					<td width="1%" nowrap="nowrap"><?php echo $this->showDate($item->date); ?></td>
 					<td width="1%" nowrap="nowrap"><?php echo $this->escape($this->showUser($item->user_id)); ?></td>
 					<td>
@@ -73,7 +79,7 @@ JText::script('RST_DELETE_TICKET_NOTE_CONFIRM');
 						if ($canEdit)
 						{
 							?>
-							<p><a class="btn btn-secondary btn-mini btn-sm" href="<?php echo JRoute::_('index.php?option=com_rsticketspro&task=note.edit&tmpl=component&ticket_id='.$this->id.'&id='.(int) $item->id); ?>"><?php echo JText::_('RST_TICKET_EDIT_NOTE'); ?></a></p>
+							<p><a class="btn btn-secondary btn-mini btn-sm" href="<?php echo Route::_('index.php?option=com_rsticketspro&task=note.edit&tmpl=component&ticket_id='.$this->id.'&id='.(int) $item->id); ?>"><?php echo Text::_('RST_TICKET_EDIT_NOTE'); ?></a></p>
 							<?php
 						}
 						?>
@@ -88,7 +94,7 @@ JText::script('RST_DELETE_TICKET_NOTE_CONFIRM');
 		echo $this->pagination->getListFooter();
 	}
 
-	echo JHtml::_( 'form.token' );
+	echo HTMLHelper::_( 'form.token' );
 	?>
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="task" value="" />

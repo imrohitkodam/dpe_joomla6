@@ -9,7 +9,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewKbarticle extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewKbarticle extends HtmlView
 {
 	protected $item;
 	
@@ -29,6 +33,6 @@ class RsticketsproViewKbarticle extends JViewLegacy
 		echo json_encode($this->item);
 		
 		// end application
-		JFactory::getApplication()->close();
+		Factory::getApplication()->close();
 	}
 }

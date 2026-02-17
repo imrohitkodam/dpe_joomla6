@@ -21,7 +21,7 @@ class JFormFieldRSCheckboxes extends JFormFieldList
 
 		static $init;
 		if (!$init) {
-			JHtml::_('formbehavior.chosen', 'select');
+			HTMLHelper::_('formbehavior.chosen', 'select');
 			$init = true;
 		}
 	}

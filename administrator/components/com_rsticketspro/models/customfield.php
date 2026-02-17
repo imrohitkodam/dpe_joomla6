@@ -9,7 +9,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproModelCustomfield extends JModelAdmin
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\AdminModel;
+
+class RsticketsproModelCustomfield extends \Joomla\CMS\MVC\Model\AdminModel
 {
 	public function getTable($type = 'Customfields', $prefix = 'RsticketsproTable', $config = array())
 	{
@@ -44,7 +47,7 @@ class RsticketsproModelCustomfield extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$app  = JFactory::getApplication();
+		$app  = Factory::getApplication();
 		$data = $app->getUserState('com_rsticketspro.edit.customfield.data', array());
 		
 		if (empty($data))
@@ -70,11 +73,11 @@ class RsticketsproModelCustomfield extends JModelAdmin
 
 	protected function canDelete($record)
 	{
-		return JFactory::getUser()->authorise('customfield.delete', 'com_rsticketspro');
+		return Factory::getUser()->authorise('customfield.delete', 'com_rsticketspro');
 	}
 
 	protected function canEditState($record)
 	{
-		return JFactory::getUser()->authorise('customfield.edit.state', 'com_rsticketspro');
+		return Factory::getUser()->authorise('customfield.edit.state', 'com_rsticketspro');
 	}
 }

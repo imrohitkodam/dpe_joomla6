@@ -9,7 +9,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproModelKbconvert extends JModelAdmin
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\AdminModel;
+
+class RsticketsproModelKbconvert extends \Joomla\CMS\MVC\Model\AdminModel
 {
 	public function getForm($data = array(), $loadData = true)
 	{
@@ -25,9 +28,9 @@ class RsticketsproModelKbconvert extends JModelAdmin
 	
 	protected function loadFormData()
 	{
-		$app 			= JFactory::getApplication();
+		$app 			= Factory::getApplication();
 		$modelTicket 	= $this->getInstance('Ticket', 'RsticketsproModel');
-		$ticketId		= $app->input->getInt('ticket_id');
+		$ticketId		= $app->getInput()->getInt('ticket_id');
 		$ticket			= $modelTicket->getTicket($ticketId);
 		$data = array(
 			'name'		=> $ticket->subject,

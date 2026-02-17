@@ -9,15 +9,23 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::_('behavior.keepalive');
+use Joomla\CMS\Router\Route;
+
+use Joomla\CMS\HTML\HTMLHelper;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
+HTMLHelper::_('behavior.keepalive');
 
 if ($this->isStaff)
 {
-	JHtml::_('script', 'com_rsticketspro/tickets.js', array('relative' => true, 'version' => 'auto'));
+	HTMLHelper::_('script', 'com_rsticketspro/tickets.js', array('relative' => true, 'version' => 'auto'));
 }
 
-JText::script('RST_DELETE_TICKETS_CONFIRM');
-JText::script('RST_DELETE_TICKET_CONFIRM');
+Text::script('RST_DELETE_TICKETS_CONFIRM');
+Text::script('RST_DELETE_TICKET_CONFIRM');
 
 $listOrder 	= $this->escape($this->state->get('list.ordering'));
 $listDirn 	= $this->escape($this->state->get('list.direction'));
@@ -40,13 +48,13 @@ if (!empty($this->permissions->export_tickets))
 	$script[] = "return false;";
 	$script[] = "}";
 
-	JHtml::_('script', 'com_rsticketspro/export.js', array('relative' => true, 'version' => 'auto'));
+	HTMLHelper::_('script', 'com_rsticketspro/export.js', array('relative' => true, 'version' => 'auto'));
 }
 
 $script[] = "Joomla.submitform(task, document.getElementById('adminForm'));";
 $script[] = "}";
 
-JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
+Factory::getDocument()->addScriptDeclaration(implode("\n", $script));
 
 if ($this->params->get('show_page_heading', 1))
 {
@@ -75,17 +83,17 @@ if ($this->isSearching || ($this->isStaff && $this->hasSearches))
 			if ($this->isStaff)
 			{
 				?>
-				<a href="<?php echo JRoute::_('index.php?option=com_rsticketspro&task=predefinedsearch.add'); ?>" class="btn btn-success rst_search"><?php echo JText::_('RST_SAVE_SEARCH'); ?></a>
+				<a href="<?php echo Route::_('index.php?option=com_rsticketspro&task=predefinedsearch.add'); ?>" class="btn btn-success rst_search"><?php echo Text::_('RST_SAVE_SEARCH'); ?></a>
 				<?php
 			}
 			?>
-			<a href="<?php echo JRoute::_('index.php?option=com_rsticketspro&task=resetsearch'); ?>" class="btn btn-danger"><?php echo JText::_('RST_RESET_SEARCH'); ?></a>
+			<a href="<?php echo Route::_('index.php?option=com_rsticketspro&task=resetsearch'); ?>" class="btn btn-danger"><?php echo Text::_('RST_RESET_SEARCH'); ?></a>
 			<?php
 		}
 		if ($this->isStaff && $this->hasSearches)
 		{
 			?>
-			<a href="<?php echo JRoute::_('index.php?option=com_rsticketspro&view=predefinedsearches'); ?>" class="btn btn-secondary rst_manage_searches"><?php echo JText::_('RST_MANAGE_SEARCHES'); ?></a>
+			<a href="<?php echo Route::_('index.php?option=com_rsticketspro&view=predefinedsearches'); ?>" class="btn btn-secondary rst_manage_searches"><?php echo Text::_('RST_MANAGE_SEARCHES'); ?></a>
 			|
 			<?php
 			foreach ($this->searches as $search)
@@ -93,7 +101,7 @@ if ($this->isSearching || ($this->isStaff && $this->hasSearches))
 				if (!$search->current)
 				{
 					?>
-					<a href="<?php echo JRoute::_('index.php?option=com_rsticketspro&task=predefinedsearch.perform&id='.$search->id); ?>" class="btn btn-secondary btn-mini btn-sm <?php echo RSTicketsProHelper::tooltipClass();?>" title="<?php echo RSTicketsProHelper::tooltipText(JText::sprintf('RST_SEARCH_CLICK_DESC', $this->escape($search->name))); ?>"><?php echo $this->escape($search->name); ?></a>
+					<a href="<?php echo Route::_('index.php?option=com_rsticketspro&task=predefinedsearch.perform&id='.$search->id); ?>" class="btn btn-secondary btn-mini btn-sm <?php echo RSTicketsProHelper::tooltipClass();?>" title="<?php echo RSTicketsProHelper::tooltipText(Text::sprintf('RST_SEARCH_CLICK_DESC', $this->escape($search->name))); ?>"><?php echo $this->escape($search->name); ?></a>
 					<?php
 				}
 				else
@@ -114,12 +122,12 @@ if ($this->isSearching || ($this->isStaff && $this->hasSearches))
 			<div class="com-rsticketspro-bar" style="width: 0%;">0%</div>
 		</div>
 		<p>
-			<button type="button" class="btn btn-success" onclick="Joomla.submitbutton('tickets.exportcsv');"><?php echo JText::_('COM_RSTICKETSPRO_EXPORT');?></button>
+			<button type="button" class="btn btn-success" onclick="Joomla.submitbutton('tickets.exportcsv');"><?php echo Text::_('COM_RSTICKETSPRO_EXPORT');?></button>
 		</p>
 		<?php } ?>
 		<?php if ($this->isStaff) { ?>
 		<div id="bulk_actions" style="display: none;">
-			<p><strong><?php echo JText::_('RST_BULK_ACTIONS'); ?></strong></p>
+			<p><strong><?php echo Text::_('RST_BULK_ACTIONS'); ?></strong></p>
 			<?php
 			if ($this->permissions->move_ticket)
 			{
@@ -148,7 +156,7 @@ if ($this->isSearching || ($this->isStaff && $this->hasSearches))
 			?>
 
 			<p>
-				<button type="button" id="rst_update_button" class="btn btn-primary" onclick="Joomla.submitbutton('ticket.bulkupdate');"><?php echo JText::_('RST_UPDATE'); ?></button>
+				<button type="button" id="rst_update_button" class="btn btn-primary" onclick="Joomla.submitbutton('ticket.bulkupdate');"><?php echo Text::_('RST_UPDATE'); ?></button>
 			</p>
 		</div>
 		<?php } ?>
@@ -165,7 +173,7 @@ if ($this->isSearching || ($this->isStaff && $this->hasSearches))
 					if ($this->params->get('show_offset', 1))
 					{
 						?>
-						<th id="rst_head_item_no" width="1%" class="<?php echo RsticketsproAdapterGrid::show('desktop', 'table-cell'); ?>"><?php echo JText::_('#'); ?></th>
+						<th id="rst_head_item_no" width="1%" class="<?php echo RsticketsproAdapterGrid::show('desktop', 'table-cell'); ?>"><?php echo Text::_('#'); ?></th>
 						<?php
 					}
 					
@@ -173,7 +181,7 @@ if ($this->isSearching || ($this->isStaff && $this->hasSearches))
 					{
 						?>
 						<th id="rst_head_check_all" class="text-center" width="1%">
-							<?php echo JHtml::_('grid.checkall'); ?>
+							<?php echo HTMLHelper::_('grid.checkall'); ?>
 						</th>
 						<?php
 					}
@@ -182,7 +190,7 @@ if ($this->isSearching || ($this->isStaff && $this->hasSearches))
 					{
 						?>
 						<th id="rst_head_date" nowrap="nowrap" class="<?php echo RsticketsproAdapterGrid::hide('phone', 'table-cell'); ?>">
-							<?php echo JHtml::_('grid.sort', 'RST_TICKET_DATE', 'date', $listDirn, $listOrder, 'none'); ?>
+							<?php echo HTMLHelper::_('grid.sort', 'RST_TICKET_DATE', 'date', $listDirn, $listOrder, 'none'); ?>
 						</th>
 						<?php
 					}
@@ -191,7 +199,7 @@ if ($this->isSearching || ($this->isStaff && $this->hasSearches))
 					{
 						?>
 						<th id="rst_head_last_reply" nowrap="nowrap" class="<?php echo RsticketsproAdapterGrid::show('desktop', 'table-cell'); ?>">
-							<?php echo JHtml::_('grid.sort', 'RST_TICKET_LAST_REPLY', 'last_reply', $listDirn, $listOrder, 'none'); ?>
+							<?php echo HTMLHelper::_('grid.sort', 'RST_TICKET_LAST_REPLY', 'last_reply', $listDirn, $listOrder, 'none'); ?>
 						</th>
 						<?php
 					}
@@ -200,14 +208,14 @@ if ($this->isSearching || ($this->isStaff && $this->hasSearches))
 					{
 						?>
 						<th id="rst_head_flag" nowrap="nowrap" width="1%" class="<?php echo RsticketsproAdapterGrid::show('desktop', 'table-cell'); ?>">
-							<?php echo JText::_('RST_FLAGGED'); ?>
+							<?php echo Text::_('RST_FLAGGED'); ?>
 						</th>
 						<?php
 						if ($this->permissions->delete_ticket)
 						{
 							?>
 							<th id="rst_head_delete" nowrap="nowrap" width="5%" class="<?php echo RsticketsproAdapterGrid::hide('phone', 'table-cell'); ?>">
-								<?php echo JText::_('RST_DELETE'); ?>
+								<?php echo Text::_('RST_DELETE'); ?>
 							</th>
 						<?php
 						}
@@ -217,10 +225,10 @@ if ($this->isSearching || ($this->isStaff && $this->hasSearches))
 						<?php
 						if ($this->params->get('show_code', 1))
 						{
-							echo JHtml::_('grid.sort', 'RST_TICKET_CODE', 'code', $listDirn, $listOrder, 'none') . ' ';
+							echo HTMLHelper::_('grid.sort', 'RST_TICKET_CODE', 'code', $listDirn, $listOrder, 'none') . ' ';
 						}
 
-						echo JHtml::_('grid.sort', 'RST_TICKET_SUBJECT', 'subject', $listDirn, $listOrder, 'none');
+						echo HTMLHelper::_('grid.sort', 'RST_TICKET_SUBJECT', 'subject', $listDirn, $listOrder, 'none');
 						?>
 						</th>
 						
@@ -229,7 +237,7 @@ if ($this->isSearching || ($this->isStaff && $this->hasSearches))
 						{
 							?>
 							<th id="rst_head_customer" nowrap="nowrap">
-								<?php echo JHtml::_('grid.sort', 'RST_TICKET_CUSTOMER', 'customer', $listDirn, $listOrder, 'none'); ?>
+								<?php echo HTMLHelper::_('grid.sort', 'RST_TICKET_CUSTOMER', 'customer', $listDirn, $listOrder, 'none'); ?>
 							</th>
 							<?php
 						}
@@ -238,7 +246,7 @@ if ($this->isSearching || ($this->isStaff && $this->hasSearches))
 						{
 							?>
 							<th id="rst_head_priority" nowrap="nowrap" width="1%" class="<?php echo RsticketsproAdapterGrid::hide('phone', 'table-cell'); ?>">
-								<?php echo JHtml::_('grid.sort', 'RST_TICKET_PRIORITY', 'priority', $listDirn, $listOrder, 'none'); ?>
+								<?php echo HTMLHelper::_('grid.sort', 'RST_TICKET_PRIORITY', 'priority', $listDirn, $listOrder, 'none'); ?>
 							</th>
 							<?php
 						}
@@ -247,7 +255,7 @@ if ($this->isSearching || ($this->isStaff && $this->hasSearches))
 						{
 							?>
 							<th id="rst_head_status" nowrap="nowrap" width="1%" class="<?php echo RsticketsproAdapterGrid::hide('phone', 'table-cell'); ?>">
-								<?php echo JHtml::_('grid.sort', 'RST_TICKET_STATUS', 'status', $listDirn, $listOrder, 'none'); ?>
+								<?php echo HTMLHelper::_('grid.sort', 'RST_TICKET_STATUS', 'status', $listDirn, $listOrder, 'none'); ?>
 							</th>
 							<?php
 						}
@@ -256,7 +264,7 @@ if ($this->isSearching || ($this->isStaff && $this->hasSearches))
 						{
 							?>
 							<th id="rst_head_sort" nowrap="nowrap" class="<?php echo RsticketsproAdapterGrid::show('desktop', 'table-cell'); ?>">
-								<?php echo JHtml::_('grid.sort', 'RST_TICKET_STAFF', 'staff', $listDirn, $listOrder, 'none'); ?>
+								<?php echo HTMLHelper::_('grid.sort', 'RST_TICKET_STAFF', 'staff', $listDirn, $listOrder, 'none'); ?>
 							</th>
 							<?php
 						}
@@ -265,7 +273,7 @@ if ($this->isSearching || ($this->isStaff && $this->hasSearches))
 						{
 							?>
 							<th id="rst_head_sort" nowrap="nowrap" class="<?php echo RsticketsproAdapterGrid::show('desktop', 'table-cell'); ?>">
-								<?php echo JHtml::_('grid.sort', 'RST_TIME_SPENT', 'time_spent', $listDirn, $listOrder, 'none'); ?>
+								<?php echo HTMLHelper::_('grid.sort', 'RST_TIME_SPENT', 'time_spent', $listDirn, $listOrder, 'none'); ?>
 							</th>
 							<?php
 						}
@@ -286,7 +294,7 @@ if ($this->isSearching || ($this->isStaff && $this->hasSearches))
 							<?php } ?>
 
 							<?php if ($this->isStaff) { ?>
-							<td class="rst_cell_checkbox text-center"><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>
+							<td class="rst_cell_checkbox text-center"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
 							<?php } ?>
 
 							<?php if ($this->params->get('show_date', 1)) { ?>
@@ -302,7 +310,7 @@ if ($this->isSearching || ($this->isStaff && $this->hasSearches))
 
 							<?php if ($this->permissions->delete_ticket) { ?>
 							<td class="rst_cell_delete_ticket text-center <?php echo RsticketsproAdapterGrid::hide('phone', 'table-cell'); ?>">
-								<a class="btn btn-small btn-sm btn-danger rst_button_delete_ticket <?php echo RSTicketsProHelper::tooltipClass();?>" title="<?php echo RSTicketsProHelper::tooltipText(JText::_('RST_TICKET_DELETE_DESC')); ?>" href="<?php echo JRoute::_('index.php?option=com_rsticketspro&task=ticket.delete&cid=' . $item->id . '&return=1&' . JSession::getFormToken() . '=1'); ?>" onclick="return confirm(Joomla.JText._('RST_DELETE_TICKET_CONFIRM'));">&#10006;</a>
+								<a class="btn btn-small btn-sm btn-danger rst_button_delete_ticket <?php echo RSTicketsProHelper::tooltipClass();?>" title="<?php echo RSTicketsProHelper::tooltipText(Text::_('RST_TICKET_DELETE_DESC')); ?>" href="<?php echo Route::_('index.php?option=com_rsticketspro&task=ticket.delete&cid=' . $item->id . '&return=1&' . JSession::getFormToken() . '=1'); ?>" onclick="return confirm(Joomla.JText._('RST_DELETE_TICKET_CONFIRM'));">&#10006;</a>
 							</td>
 							<?php } ?>
 
@@ -331,15 +339,15 @@ if ($this->isSearching || ($this->isStaff && $this->hasSearches))
 							<?php } ?>
 
 							<?php if ($this->params->get('show_priority', 1)) { ?>
-							<td class="rst_priority_cell <?php echo RsticketsproAdapterGrid::hide('phone', 'table-cell'); ?>"><?php echo JText::_($item->priority); ?></td>
+							<td class="rst_priority_cell <?php echo RsticketsproAdapterGrid::hide('phone', 'table-cell'); ?>"><?php echo Text::_($item->priority); ?></td>
 							<?php } ?>
 
 							<?php if ($this->params->get('show_status', 1)) { ?>
-							<td class="rst_cell_status <?php echo RsticketsproAdapterGrid::hide('phone', 'table-cell'); ?>"><?php echo JText::_($item->status); ?></td>
+							<td class="rst_cell_status <?php echo RsticketsproAdapterGrid::hide('phone', 'table-cell'); ?>"><?php echo Text::_($item->status); ?></td>
 							<?php } ?>
 
 							<?php if ($this->params->get('show_staff', 1)) { ?>
-							<td class="rst_cell_assigned <?php echo RsticketsproAdapterGrid::show('desktop', 'table-cell'); ?>"><?php echo $item->staff_id ? $this->escape($item->staff) : '<em>'.JText::_('RST_UNASSIGNED').'</em>'; ?></td>
+							<td class="rst_cell_assigned <?php echo RsticketsproAdapterGrid::show('desktop', 'table-cell'); ?>"><?php echo $item->staff_id ? $this->escape($item->staff) : '<em>'.Text::_('RST_UNASSIGNED').'</em>'; ?></td>
 							<?php } ?>
 
 							<?php if ($this->params->get('show_time_spent', 0) && RSTicketsProHelper::getConfig('enable_time_spent')) { ?>

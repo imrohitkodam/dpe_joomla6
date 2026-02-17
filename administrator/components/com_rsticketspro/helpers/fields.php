@@ -9,6 +9,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
 class RSTicketsProFieldHelper
 {
 	protected static function isCode($value)
@@ -81,7 +85,7 @@ class RSTicketsProFieldHelper
 
 		if (!$editable)
 		{
-			$template = '<div class="rst_custom_field_label">' . JText::_($field->label) . '</div><div class="rst_custom_field_value">%s</div>';
+			$template = '<div class="rst_custom_field_label">' . Text::_($field->label) . '</div><div class="rst_custom_field_value">%s</div>';
 		}
 
 		$form = self::generateDummyForm();
@@ -299,7 +303,7 @@ class RSTicketsProFieldHelper
 					$jfield->setForm($form);
 					if (is_callable(array($jfield, 'setDatabase')))
 					{
-						$jfield->setDatabase(JFactory::getDbo());
+						$jfield->setDatabase(Factory::getDbo());
 					}
 
 					// Sanity check for value
@@ -313,10 +317,10 @@ class RSTicketsProFieldHelper
 							}
 							else
 							{
-								$offset = JFactory::getUser()->getParam('timezone', JFactory::getApplication()->get('offset'));
+								$offset = Factory::getUser()->getParam('timezone', Factory::getApplication()->get('offset'));
 							}
 
-							$value = JFactory::getDate($value, $offset)->format($originalFormat);
+							$value = Factory::getDate($value, $offset)->format($originalFormat);
 						}
 						catch (Exception $e)
 						{

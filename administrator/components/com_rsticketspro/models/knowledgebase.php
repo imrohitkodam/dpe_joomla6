@@ -9,7 +9,15 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproModelKnowledgebase extends JModelLegacy
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+
+use Joomla\CMS\Router\Route;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproModelKnowledgebase extends BaseDatabaseModel
 {
 	protected $config;
 	
@@ -30,7 +38,7 @@ class RsticketsproModelKnowledgebase extends JModelLegacy
 	}
 	
 	public function getButtons() {
-		JFactory::getLanguage()->load('com_rsticketspro.sys', JPATH_ADMINISTRATOR);
+		Factory::getLanguage()->load('com_rsticketspro.sys', JPATH_ADMINISTRATOR);
 		
 		/* $button = array(
 				'access', 'id', 'link', 'target', 'onclick', 'title', 'image', 'alt', 'text'
@@ -38,33 +46,33 @@ class RsticketsproModelKnowledgebase extends JModelLegacy
 		
 		$buttons = array(
 			array(
-				'link' => JRoute::_('index.php?option=com_rsticketspro'),
+				'link' => Route::_('index.php?option=com_rsticketspro'),
 				'image' =>'com_rsticketspro/admin/dashboard/back.png',
-				'text' => JText::_('COM_RSTICKETSPRO_BACK_TO_RSTICKETSPRO'),
+				'text' => Text::_('COM_RSTICKETSPRO_BACK_TO_RSTICKETSPRO'),
 				'access' => true
 			),
 			array(
-				'link' => JRoute::_('index.php?option=com_rsticketspro&view=kbcategories'),
+				'link' => Route::_('index.php?option=com_rsticketspro&view=kbcategories'),
 				'image' =>'com_rsticketspro/admin/dashboard/kbcategories.png',
-				'text' => JText::_('COM_RSTICKETSPRO_KB_CATEGORIES'),
+				'text' => Text::_('COM_RSTICKETSPRO_KB_CATEGORIES'),
 				'access' => true
 			),
 			array(
-				'link' => JRoute::_('index.php?option=com_rsticketspro&view=kbarticles'),
+				'link' => Route::_('index.php?option=com_rsticketspro&view=kbarticles'),
 				'image' =>'com_rsticketspro/admin/dashboard/kbcontent.png',
-				'text' => JText::_('COM_RSTICKETSPRO_KB_ARTICLES'),
+				'text' => Text::_('COM_RSTICKETSPRO_KB_ARTICLES'),
 				'access' => true
 			),
 			array(
-				'link' => JRoute::_('index.php?option=com_rsticketspro&view=kbrules'),
+				'link' => Route::_('index.php?option=com_rsticketspro&view=kbrules'),
 				'image' =>'com_rsticketspro/admin/dashboard/kbrules.png',
-				'text' => JText::_('COM_RSTICKETSPRO_KB_CONVERSION_RULES'),
+				'text' => Text::_('COM_RSTICKETSPRO_KB_CONVERSION_RULES'),
 				'access' => true
 			),
 			array(
-				'link' => JRoute::_('index.php?option=com_rsticketspro&view=kbtemplate'),
+				'link' => Route::_('index.php?option=com_rsticketspro&view=kbtemplate'),
 				'image' =>'com_rsticketspro/admin/dashboard/kbtemplate.png',
-				'text' => JText::_('COM_RSTICKETSPRO_KB_TEMPLATE'),
+				'text' => Text::_('COM_RSTICKETSPRO_KB_TEMPLATE'),
 				'access' => true
 			)
 		);

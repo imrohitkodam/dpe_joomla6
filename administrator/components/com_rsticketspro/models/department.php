@@ -9,7 +9,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproModelDepartment extends JModelAdmin
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\AdminModel;
+
+class RsticketsproModelDepartment extends \Joomla\CMS\MVC\Model\AdminModel
 {
 	public function getTable($type = 'Departments', $prefix = 'RsticketsproTable', $config = array())
 	{
@@ -45,7 +48,7 @@ class RsticketsproModelDepartment extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_rsticketspro.edit.department.data', array());
+		$data = Factory::getApplication()->getUserState('com_rsticketspro.edit.department.data', array());
 
 		if (empty($data))
 		{
@@ -76,11 +79,11 @@ class RsticketsproModelDepartment extends JModelAdmin
 
 	protected function canDelete($record)
 	{
-		return JFactory::getUser()->authorise('department.delete', 'com_rsticketspro');
+		return Factory::getUser()->authorise('department.delete', 'com_rsticketspro');
 	}
 
 	protected function canEditState($record)
 	{
-		return JFactory::getUser()->authorise('department.edit.state', 'com_rsticketspro');
+		return Factory::getUser()->authorise('department.edit.state', 'com_rsticketspro');
 	}
 }

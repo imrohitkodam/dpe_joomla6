@@ -9,7 +9,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewStaffs extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewStaffs extends HtmlView
 {
 	protected $items;
 	protected $pagination;
@@ -31,23 +35,23 @@ class RsticketsproViewStaffs extends JViewLegacy
 	protected function addToolbar()
 	{
 		// set title
-		JToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
+		\Joomla\CMS\Toolbar\ToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
 
 		RSTicketsProToolbarHelper::addToolbar('staffs');
 
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		if ($user->authorise('staff.create', 'com_rsticketspro'))
 		{
-			JToolbarHelper::addNew('staff.add');
+			\Joomla\CMS\Toolbar\ToolbarHelper::addNew('staff.add');
 		}
 		if ($user->authorise('staff.edit', 'com_rsticketspro'))
 		{
-			JToolbarHelper::editList('staff.edit');
+			\Joomla\CMS\Toolbar\ToolbarHelper::editList('staff.edit');
 		}
 		if ($user->authorise('staff.delete', 'com_rsticketspro'))
 		{
-			JToolbarHelper::deleteList('RST_CONFIRM_DELETE', 'staffs.delete');
+			\Joomla\CMS\Toolbar\ToolbarHelper::deleteList('RST_CONFIRM_DELETE', 'staffs.delete');
 		}
 	}
 }

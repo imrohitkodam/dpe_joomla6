@@ -9,27 +9,33 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Router\Route;
+
+use Joomla\CMS\HTML\HTMLHelper;
+
+use Joomla\CMS\Language\Text;
+
 $listOrder 	= $this->escape($this->state->get('list.ordering'));
 $listDirn 	= $this->escape($this->state->get('list.direction'));
 $saveOrder	= $listOrder == 'ordering';
 if ($saveOrder)
 {
 	$saveOrderingUrl = 'index.php?option=com_rsticketspro&task=predefinedsearches.saveOrderAjax&tmpl=component';
-	JHtml::_('sortablelist.sortable', 'articleList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
+	HTMLHelper::_('sortablelist.sortable', 'articleList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
 }
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_rsticketspro&view=predefinedsearches'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::_('index.php?option=com_rsticketspro&view=predefinedsearches'); ?>" method="post" name="adminForm" id="adminForm">
 	<?php
 	echo RsticketsproAdapterGrid::sidebar();
 
-	echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+	echo \Joomla\CMS\Layout\LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
 
 	if (empty($this->items))
 	{
 		?>
 		<div class="alert alert-info">
-			<span class="fa fa-info-circle" aria-hidden="true"></span><span class="sr-only"><?php echo JText::_('INFO'); ?></span>
-			<?php echo JText::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
+			<span class="fa fa-info-circle" aria-hidden="true"></span><span class="sr-only"><?php echo Text::_('INFO'); ?></span>
+			<?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
 		</div>
 		<?php
 	}
@@ -39,12 +45,12 @@ if ($saveOrder)
 		<table class="table table-striped" id="articleList">
 			<thead>
 			<tr>
-				<th width="1%" nowrap="nowrap"><?php echo JHtml::_('grid.checkall'); ?></th>
-				<th><?php echo JHtml::_('searchtools.sort', 'RST_SEARCH_NAME', 'name', $listDirn, $listOrder); ?></th>
-				<th width="1%" nowrap="nowrap"><?php echo JText::_('RST_DEFAULT_SEARCH_SHORT'); ?></th>
-				<th width="1%" nowrap="nowrap"><?php echo JHtml::_('searchtools.sort', 'JPUBLISHED', 'published', $listDirn, $listOrder); ?></th>
-				<th width="1%" class="nowrap text-center"><?php echo JHtml::_('searchtools.sort', '', 'ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING', 'icon-menu-2'); ?></th>
-				<th width="1%"><?php echo JHtml::_('searchtools.sort', 'ID', 'id', $listDirn, $listOrder); ?></th>
+				<th width="1%" nowrap="nowrap"><?php echo HTMLHelper::_('grid.checkall'); ?></th>
+				<th><?php echo HTMLHelper::_('searchtools.sort', 'RST_SEARCH_NAME', 'name', $listDirn, $listOrder); ?></th>
+				<th width="1%" nowrap="nowrap"><?php echo Text::_('RST_DEFAULT_SEARCH_SHORT'); ?></th>
+				<th width="1%" nowrap="nowrap"><?php echo HTMLHelper::_('searchtools.sort', 'JPUBLISHED', 'published', $listDirn, $listOrder); ?></th>
+				<th width="1%" class="nowrap text-center"><?php echo HTMLHelper::_('searchtools.sort', '', 'ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING', 'icon-menu-2'); ?></th>
+				<th width="1%"><?php echo HTMLHelper::_('searchtools.sort', 'ID', 'id', $listDirn, $listOrder); ?></th>
 			</tr>
 			</thead>
 			<tbody <?php if ($saveOrder) { ?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($listDirn); ?>" data-nested="false"<?php } ?>>
@@ -53,12 +59,12 @@ if ($saveOrder)
 		{
 			?>
 			<tr data-draggable-group="1">
-				<td width="1%" nowrap="nowrap"><?php echo JHtml::_('grid.id', $i, $item->id); ?></td>
+				<td width="1%" nowrap="nowrap"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
 				<td>
-					<a href="<?php echo JRoute::_('index.php?option=com_rsticketspro&task=predefinedsearch.edit&id='.(int) $item->id); ?>"><?php echo $this->escape($item->name); ?></a>
+					<a href="<?php echo Route::_('index.php?option=com_rsticketspro&task=predefinedsearch.edit&id='.(int) $item->id); ?>"><?php echo $this->escape($item->name); ?></a>
 				</td>
-				<td width="1%" nowrap="nowrap" align="center"><?php echo JHtml::_('jgrid.published', $item->default, $i, 'predefinedsearches.', false); ?></td>
-				<td width="1%" nowrap="nowrap" align="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'predefinedsearches.'); ?></td>
+				<td width="1%" nowrap="nowrap" align="center"><?php echo HTMLHelper::_('jgrid.published', $item->default, $i, 'predefinedsearches.', false); ?></td>
+				<td width="1%" nowrap="nowrap" align="center"><?php echo HTMLHelper::_('jgrid.published', $item->published, $i, 'predefinedsearches.'); ?></td>
 				<td class="order text-center">
 					<?php
 					$disableClassName = '';
@@ -66,7 +72,7 @@ if ($saveOrder)
 
 					if (!$saveOrder)
 					{
-						$disabledLabel    = JText::_('JORDERINGDISABLED');
+						$disabledLabel    = Text::_('JORDERINGDISABLED');
 						$disableClassName = 'inactive';
 					}
 					?>
@@ -88,7 +94,7 @@ if ($saveOrder)
 	?>
 	
 	<div>
-		<?php echo JHtml::_( 'form.token' ); ?>
+		<?php echo HTMLHelper::_( 'form.token' ); ?>
 		<input type="hidden" name="boxchecked" value="0" />
 		<input type="hidden" name="task" value="" />
 	</div>

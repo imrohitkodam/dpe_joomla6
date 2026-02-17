@@ -9,13 +9,17 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewKnowledgebase extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewKnowledgebase extends HtmlView
 {
 	protected $hot_hits = 0;
 	
 	public function display($tpl = null)
 	{
-		$mainframe		= JFactory::getApplication();
+		$mainframe		= Factory::getApplication();
 		$this->params	= $mainframe->getParams('com_rsticketspro');
 		$layout			= $this->getLayout();
 		
@@ -34,7 +38,7 @@ class RsticketsproViewKnowledgebase extends JViewLegacy
 			$this->filter_tag		= $this->get('filtertag');
 			$this->category			= $this->model->getCategory();
 			$this->parent_category	= $this->model->getCategory(array('inherited' => false, 'id' => $this->category->parent_id));
-			$this->cid				= $mainframe->input->getInt('cid', 0);
+			$this->cid				= $mainframe->getInput()->getInt('cid', 0);
 			$this->show_thumbs		= RSTicketsProHelper::getConfig('kb_show_thumbs');
 			$this->subcats_limit	= $this->params->get('subcategories_list', -1);
 			$this->is_filter_active = (strlen($this->filter_word) > 0);
@@ -102,7 +106,7 @@ class RsticketsproViewKnowledgebase extends JViewLegacy
 		// Pathway
 		if ($path = $this->get('path'))
 		{
-			$pathway = JFactory::getApplication()->getPathway();
+			$pathway = Factory::getApplication()->getPathway();
 
 			foreach ($path as $item)
 			{

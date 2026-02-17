@@ -9,7 +9,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewTicketmessage extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewTicketmessage extends HtmlView
 {
 	protected $form;
 	protected $item;
@@ -18,7 +22,7 @@ class RsticketsproViewTicketmessage extends JViewLegacy
 	{
 		$this->form	= $this->get('Form');
 		$this->item	= $this->get('Item');
-		$this->saved = JFactory::getApplication()->input->getInt('saved');
+		$this->saved = Factory::getApplication()->getInput()->getInt('saved');
 		
 		parent::display($tpl);
 	}

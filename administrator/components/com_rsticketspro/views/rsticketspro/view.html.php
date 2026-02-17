@@ -9,7 +9,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewRsticketspro extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproViewRsticketspro extends HtmlView
 {
 	protected $buttons;
 	// version info
@@ -30,13 +34,13 @@ class RsticketsproViewRsticketspro extends JViewLegacy
 	
 	protected function addToolbar()
 	{
-		if (JFactory::getUser()->authorise('core.admin', 'com_rsticketspro'))
+		if (Factory::getUser()->authorise('core.admin', 'com_rsticketspro'))
 		{
-			JToolbarHelper::preferences('com_rsticketspro');
+			\Joomla\CMS\Toolbar\ToolbarHelper::preferences('com_rsticketspro');
 		}
 
 		// set title
-		JToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
+		\Joomla\CMS\Toolbar\ToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
 
 		RSTicketsProToolbarHelper::addToolbar('rsticketspro');
 	}

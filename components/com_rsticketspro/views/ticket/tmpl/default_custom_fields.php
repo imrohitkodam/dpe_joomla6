@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
 foreach ($this->ticket->fields as $field)
 {
 	echo RSTicketsProHelper::showCustomField($field, array(), !empty($this->permissions->update_ticket_custom_fields));
@@ -17,6 +19,6 @@ foreach ($this->ticket->fields as $field)
 if (!empty($this->permissions->update_ticket_custom_fields))
 {
 	?>
-	<p><button type="button" onclick="Joomla.submitbutton('ticket.updatefields')" class="btn btn-primary"><?php echo JText::_('RST_UPDATE'); ?></button></p>
+	<p><button type="button" onclick="Joomla.submitbutton('ticket.updatefields')" class="btn btn-primary"><?php echo Text::_('RST_UPDATE'); ?></button></p>
 	<?php
 }

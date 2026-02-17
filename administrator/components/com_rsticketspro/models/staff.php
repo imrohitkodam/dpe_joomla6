@@ -9,7 +9,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproModelStaff extends JModelAdmin
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\AdminModel;
+
+class RsticketsproModelStaff extends \Joomla\CMS\MVC\Model\AdminModel
 {
 	public function getTable($type = 'Staff', $prefix = 'RsticketsproTable', $config = array())
 	{
@@ -31,7 +34,7 @@ class RsticketsproModelStaff extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_rsticketspro.edit.staff.data', array());
+		$data = Factory::getApplication()->getUserState('com_rsticketspro.edit.staff.data', array());
 
 		if (empty($data))
 		{
@@ -48,6 +51,6 @@ class RsticketsproModelStaff extends JModelAdmin
 
 	protected function canDelete($record)
 	{
-		return JFactory::getUser()->authorise('staff.delete', 'com_rsticketspro');
+		return Factory::getUser()->authorise('staff.delete', 'com_rsticketspro');
 	}
 }

@@ -9,7 +9,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproModelPriority extends JModelAdmin
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\AdminModel;
+
+class RsticketsproModelPriority extends \Joomla\CMS\MVC\Model\AdminModel
 {
 	public function getTable($type = 'Priorities', $prefix = 'RsticketsproTable', $config = array())
 	{
@@ -44,7 +47,7 @@ class RsticketsproModelPriority extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_rsticketspro.edit.priority.data', array());
+		$data = Factory::getApplication()->getUserState('com_rsticketspro.edit.priority.data', array());
 
 		if (empty($data))
 		{
@@ -56,11 +59,11 @@ class RsticketsproModelPriority extends JModelAdmin
 
 	protected function canDelete($record)
 	{
-		return JFactory::getUser()->authorise('priority.delete', 'com_rsticketspro');
+		return Factory::getUser()->authorise('priority.delete', 'com_rsticketspro');
 	}
 
 	protected function canEditState($record)
 	{
-		return JFactory::getUser()->authorise('priority.edit.state', 'com_rsticketspro');
+		return Factory::getUser()->authorise('priority.edit.state', 'com_rsticketspro');
 	}
 }

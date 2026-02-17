@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 class RsticketsproControllerTicketmessage extends JControllerForm
 {
 	// this is for the redirect...
@@ -42,7 +44,7 @@ class RsticketsproControllerTicketmessage extends JControllerForm
 			}
 			
 			$messageUserId = $tableMessage->user_id;
-			$meId		   = JFactory::getUser()->id;
+			$meId		   = Factory::getUser()->id;
 			$isStaff 	   = RSTicketsProHelper::isStaff($meId);
 			$permissions   = RSTicketsProHelper::getCurrentPermissions();
 			

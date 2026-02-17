@@ -9,7 +9,15 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproModelKnowledgebase extends JModelLegacy
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+
+use Joomla\CMS\Uri\Uri;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproModelKnowledgebase extends BaseDatabaseModel
 {
 	protected $_total = 0;
 	protected $_pagination = null;
@@ -19,8 +27,8 @@ class RsticketsproModelKnowledgebase extends JModelLegacy
 	public function __construct()
 	{
 		parent::__construct();
-		$mainframe = JFactory::getApplication();
-		$this->_db = JFactory::getDbo();
+		$mainframe = Factory::getApplication();
+		$this->_db = Factory::getDbo();
 		
 		$this->params   = $mainframe->getParams('com_rsticketspro');
 		$this->is_staff = RSTicketsProHelper::isStaff();
@@ -35,7 +43,7 @@ class RsticketsproModelKnowledgebase extends JModelLegacy
 		$this->setState('com_rsticketspro.categories.limit', $limit);
 		$this->setState('com_rsticketspro.categories.limitstart', $limitstart);
 		
-		$this->category_id = $mainframe->input->getInt('cid', 0);
+		$this->category_id = $mainframe->getInput()->getInt('cid', 0);
 	}
 	
 	public function getCategories($options = array('inherited' => true, 'id' => 0))
@@ -89,8 +97,8 @@ class RsticketsproModelKnowledgebase extends JModelLegacy
 		
 		if ((!$this->is_staff && $row->private) || !$row->published)
 		{
-			$mainframe = JFactory::getApplication();
-			$mainframe->enqueueMessage(JText::_('RST_CANNOT_VIEW_CATEGORY'), 'warning');
+			$mainframe = Factory::getApplication();
+			$mainframe->enqueueMessage(Text::_('RST_CANNOT_VIEW_CATEGORY'), 'warning');
 			$mainframe->redirect('index.php?option=com_rsticketspro&view=knowledgebase');
 		}
 		
@@ -238,18 +246,18 @@ class RsticketsproModelKnowledgebase extends JModelLegacy
 	
 	public function getFilterWord()
 	{
-		return JFactory::getApplication()->getUserStateFromRequest('com_rsticketspro.kbcontent.filter', 'search', '');
+		return Factory::getApplication()->getUserStateFromRequest('com_rsticketspro.kbcontent.filter', 'search', '');
 	}
 	
 	public function getFilterTag()
 	{
-		return JFactory::getApplication()->getUserStateFromRequest('com_rsticketspro.kbcontent.filter'.md5(JUri::getInstance()), 'tag', '');
+		return Factory::getApplication()->getUserStateFromRequest('com_rsticketspro.kbcontent.filter'.md5(Uri::getInstance()), 'tag', '');
 	}
 	
 	public function getSortColumn()
 	{
 		$allowed 	= array('ordering', 'hits', 'created', 'modified', 'name');
-		$order 		= JFactory::getApplication()->getUserStateFromRequest('com_rsticketspro.kbcontent.filter_order', 'filter_order', $this->params->get('order_by', 'ordering'));
+		$order 		= Factory::getApplication()->getUserStateFromRequest('com_rsticketspro.kbcontent.filter_order', 'filter_order', $this->params->get('order_by', 'ordering'));
 		
 		if (!in_array($order, $allowed))
 		{
@@ -262,7 +270,7 @@ class RsticketsproModelKnowledgebase extends JModelLegacy
 	public function getSortOrder()
 	{
 		$allowed = array('ASC', 'DESC');
-		$dir 	 = JFactory::getApplication()->getUserStateFromRequest('com_rsticketspro.kbcontent.filter_order_Dir', 'filter_order_Dir', $this->params->get('order_dir', 'ASC'));
+		$dir 	 = Factory::getApplication()->getUserStateFromRequest('com_rsticketspro.kbcontent.filter_order_Dir', 'filter_order_Dir', $this->params->get('order_dir', 'ASC'));
 		
 		if (!in_array(strtoupper($dir), $allowed))
 		{
@@ -289,7 +297,7 @@ class RsticketsproModelKnowledgebase extends JModelLegacy
 	
 	public function getResultsWord()
 	{
-		return JFactory::getApplication()->getUserStateFromRequest('com_rsticketspro.kbresults.search', 'search', '');
+		return Factory::getApplication()->getUserStateFromRequest('com_rsticketspro.kbresults.search', 'search', '');
 	}
 	
 	public function getResultsTotal()

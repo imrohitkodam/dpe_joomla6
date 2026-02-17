@@ -9,9 +9,13 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Router\Route;
+
+use Joomla\CMS\Language\Text;
+
 $this->field->startFieldset();
 ?>
-<p><?php echo JText::_('COM_RSTICKETSPRO_PERMISSIONS_NO_LONGER_HERE'); ?></p>
-<p><a class="btn btn-primary" href="<?php echo JRoute::_('index.php?option=com_config&view=component&component=com_rsticketspro'); ?>"><?php echo JText::_('COM_RSTICKETSPRO_GO_TO_GLOBAL_CONFIGURATION'); ?></a></p>
+<p><?php echo Text::_('COM_RSTICKETSPRO_PERMISSIONS_NO_LONGER_HERE'); ?></p>
+<p><a class="btn btn-primary" href="<?php echo Route::_('index.php?option=com_config&view=component&component=com_rsticketspro'); ?>"><?php echo Text::_('COM_RSTICKETSPRO_GO_TO_GLOBAL_CONFIGURATION'); ?></a></p>
 <?php
 $this->field->endFieldset();

@@ -9,7 +9,9 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproViewPredefinedsearches extends JViewLegacy
+use Joomla\CMS\MVC\View\HtmlView;
+
+class RsticketsproViewPredefinedsearches extends HtmlView
 {
 	protected $items;
 	protected $pagination;
@@ -31,17 +33,17 @@ class RsticketsproViewPredefinedsearches extends JViewLegacy
 	protected function addToolbar()
 	{
 		// set title
-		JToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
+		\Joomla\CMS\Toolbar\ToolbarHelper::title('RSTickets! Pro', 'rsticketspro');
 
 		RSTicketsProToolbarHelper::addToolbar('tickets');
 		
-		JToolbarHelper::addNew('predefinedsearch.add');
-		JToolbarHelper::editList('predefinedsearch.edit');
-		JToolbarHelper::divider();
-		JToolbarHelper::publish('predefinedsearches.publish', 'JTOOLBAR_PUBLISH', true);
-		JToolbarHelper::unpublish('predefinedsearches.unpublish', 'JTOOLBAR_UNPUBLISH', true);
-		JToolbarHelper::divider();
-		JToolbarHelper::deleteList('RST_CONFIRM_DELETE', 'predefinedsearches.delete');
-		JToolbarHelper::cancel('predefinedsearches.cancel');
+		\Joomla\CMS\Toolbar\ToolbarHelper::addNew('predefinedsearch.add');
+		\Joomla\CMS\Toolbar\ToolbarHelper::editList('predefinedsearch.edit');
+		\Joomla\CMS\Toolbar\ToolbarHelper::divider();
+		\Joomla\CMS\Toolbar\ToolbarHelper::publish('predefinedsearches.publish', 'JTOOLBAR_PUBLISH', true);
+		\Joomla\CMS\Toolbar\ToolbarHelper::unpublish('predefinedsearches.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+		\Joomla\CMS\Toolbar\ToolbarHelper::divider();
+		\Joomla\CMS\Toolbar\ToolbarHelper::deleteList('RST_CONFIRM_DELETE', 'predefinedsearches.delete');
+		\Joomla\CMS\Toolbar\ToolbarHelper::cancel('predefinedsearches.cancel');
 	}
 }

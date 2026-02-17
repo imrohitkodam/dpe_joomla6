@@ -9,23 +9,31 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproControllerKbconvert extends JControllerLegacy
+use Joomla\CMS\MVC\Controller\BaseController;
+
+use Joomla\CMS\Router\Route;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproControllerKbconvert extends BaseController
 {
 	public function cancel()
 	{
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 		
-		$input 		= JFactory::getApplication()->input;
+		$input 		= Factory::getApplication()->input;
 		$data  		= $input->get('jform', array(), 'array');
 		$ticketId 	= $data['ticket_id'];
-		$this->setRedirect(JRoute::_('index.php?option=com_rsticketspro&view=ticket&id=' . $ticketId, false));
+		$this->setRedirect(Route::_('index.php?option=com_rsticketspro&view=ticket&id=' . $ticketId, false));
 	}
 	
 	public function save()
 	{
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 		
-		$input 		= JFactory::getApplication()->input;
+		$input 		= Factory::getApplication()->input;
 		$data  		= $input->get('jform', array(), 'array');
 		$ticketId 	= $data['ticket_id'];
 		
@@ -36,49 +44,49 @@ class RsticketsproControllerKbconvert extends JControllerLegacy
 		}
 		else
 		{
-			$this->setMessage(JText::_('RST_KB_ARTICLE_SAVED_OK', 'info'));
+			$this->setMessage(Text::_('RST_KB_ARTICLE_SAVED_OK', 'info'));
 		}
 		
-		$this->setRedirect(JRoute::_('index.php?option=com_rsticketspro&view=ticket&id=' . $ticketId, false));
+		$this->setRedirect(Route::_('index.php?option=com_rsticketspro&view=ticket&id=' . $ticketId, false));
 	}
 	
 	public function manual()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
-		$ticketId = JFactory::getApplication()->input->getInt('id');
+		$ticketId = Factory::getApplication()->getInput()->getInt('id');
 		$model 	  = $this->getModel('ticket');
 		
 		// small check to determine if it's already been converted
 		if ($article = $model->isConvertedToKB($ticketId))
 		{
-			$url = JRoute::_('index.php?option=com_rsticketspro&task=kbarticle.edit&id='.$article->id);
-			$this->setRedirect(JRoute::_('index.php?option=com_rsticketspro&view=ticket&id='.$ticketId, false), JText::sprintf('RST_KB_ALREADY_CONVERTED', $url, $article->name), 'notice');
+			$url = Route::_('index.php?option=com_rsticketspro&task=kbarticle.edit&id='.$article->id);
+			$this->setRedirect(Route::_('index.php?option=com_rsticketspro&view=ticket&id='.$ticketId, false), Text::sprintf('RST_KB_ALREADY_CONVERTED', $url, $article->name), 'notice');
 		}
 		else
 		{
-			$this->setRedirect(JRoute::_('index.php?option=com_rsticketspro&view=kbconvert&ticket_id=' . $ticketId, false));
+			$this->setRedirect(Route::_('index.php?option=com_rsticketspro&view=kbconvert&ticket_id=' . $ticketId, false));
 		}
 	}
 	
 	public function automatic()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 		
-		$db		  = JFactory::getDbo();
-		$ticketId = JFactory::getApplication()->input->getInt('id');
+		$db		  = Factory::getDbo();
+		$ticketId = Factory::getApplication()->getInput()->getInt('id');
 		$model 	  = $this->getModel('ticket');
 
-		$this->setMessage(JText::_('RST_KB_NO_RULE'), 'notice');
-		$this->setRedirect(JRoute::_('index.php?option=com_rsticketspro&view=ticket&id=' . $ticketId, false));
+		$this->setMessage(Text::_('RST_KB_NO_RULE'), 'notice');
+		$this->setRedirect(Route::_('index.php?option=com_rsticketspro&view=ticket&id=' . $ticketId, false));
 		
 		// small check to determine if it's already been converted
 		if ($article = $model->isConvertedToKB($ticketId))
 		{
-			$url = JRoute::_('index.php?option=com_rsticketspro&task=kbarticle.edit&id=' . $article->id);
-			$this->setMessage(JText::sprintf('RST_KB_ALREADY_CONVERTED', $url, $article->name), 'notice');
+			$url = Route::_('index.php?option=com_rsticketspro&task=kbarticle.edit&id=' . $article->id);
+			$this->setMessage(Text::sprintf('RST_KB_ALREADY_CONVERTED', $url, $article->name), 'notice');
 			return false;
 		}
 
@@ -355,7 +363,7 @@ class RsticketsproControllerKbconvert extends JControllerLegacy
 					try
 					{
 						RSTicketsProTicketHelper::convert($ticket, $ticketMessages, $params);
-						$this->setMessage(JText::sprintf('RST_KB_ARTICLE_SAVED_OK_AUTOMATIC', $rule->name));
+						$this->setMessage(Text::sprintf('RST_KB_ARTICLE_SAVED_OK_AUTOMATIC', $rule->name));
 						return true;
 					}
 					catch (Exception $e)

@@ -9,32 +9,38 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproControllerRemovedata extends JControllerLegacy
+use Joomla\CMS\MVC\Controller\BaseController;
+
+use Joomla\CMS\Language\Text;
+
+use Joomla\CMS\Factory;
+
+class RsticketsproControllerRemovedata extends BaseController
 {
 	public function process()
     {
-        JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+        JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
-        $id     = JFactory::getApplication()->input->getInt('id');
-        $me     = JFactory::getUser();
-        $user   = JFactory::getUser($id);
+        $id     = Factory::getApplication()->getInput()->getInt('id');
+        $me     = Factory::getUser();
+        $user   = Factory::getUser($id);
 
         try
         {
             if ($me->id == $user->id)
             {
-                throw new Exception(JText::_('COM_RSTICKETSPRO_CANNOT_ANONYMISE_LOGGED_IN_USER'));
+                throw new Exception(Text::_('COM_RSTICKETSPRO_CANNOT_ANONYMISE_LOGGED_IN_USER'));
             }
 
             if ($user->authorise('core.admin'))
             {
-                throw new Exception(JText::_('COM_RSTICKETSPRO_CANNOT_ANONYMISE_SUPER_USER'));
+                throw new Exception(Text::_('COM_RSTICKETSPRO_CANNOT_ANONYMISE_SUPER_USER'));
             }
 
             RSTicketsProHelper::anonymise($id);
 
             jexit(json_encode(array(
-                'message' => array(JText::_('COM_RSTICKETSPRO_DATA_HAS_BEEN_SUCCESSFULLY_ANONYMISED'))
+                'message' => array(Text::_('COM_RSTICKETSPRO_DATA_HAS_BEEN_SUCCESSFULLY_ANONYMISED'))
             )));
         }
         catch (Exception $e)
