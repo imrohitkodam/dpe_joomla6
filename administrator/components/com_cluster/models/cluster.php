@@ -143,7 +143,7 @@ class ClusterModelCluster extends AdminModel
 		$item = parent::getItem($pk);
 
 		// @TODO This will not required once we decide the rendering mechanisam
-		if (property_exists((string)$item, 'params'))
+		if (property_exists($item, 'params'))
 		{
 			$registry = new Registry($item->params);
 			$item->params = $registry->toString();

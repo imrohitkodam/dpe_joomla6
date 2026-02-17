@@ -18,7 +18,6 @@ HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
 HTMLHelper::_('behavior.formvalidator');
 HTMLHelper::_('behavior.keepalive');
-HTMLHelper::_('formbehavior.chosen', 'select');
 $app = Factory::getApplication();
 $input = $app->input;
 

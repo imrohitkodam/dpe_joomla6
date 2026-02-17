@@ -18,7 +18,6 @@ HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
 HTMLHelper::_('bootstrap.tooltip');
 HTMLHelper::_('behavior.multiselect');
-HTMLHelper::_('formbehavior.chosen', 'select');
 
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
@@ -32,16 +31,16 @@ if ($saveOrder)
 ?>
 
 <div class="tj-page">
-	<div class="row-fluid">
+	<div class="row">
 		<form action="<?php echo Route::_('index.php?option=com_cluster&view=clusters'); ?>" method="post" name="adminForm" id="adminForm">
 			<?php
 			if (!empty( $this->sidebar))
 			{
 				?>
-				<div id="j-sidebar-container" class="span2">
+				<div id="j-sidebar-container" class="col-md-2">
 					<?php  echo $this->sidebar; ?>
 				</div>
-				<div id="j-main-container" class="span10">
+				<div id="j-main-container" class="col-md-10">
 			<?php
 			}
 			else
@@ -123,7 +122,7 @@ if ($saveOrder)
 
 						$canChange  = $this->canChangeStatus;
 						?>
-						<tr class="row
+						<tr class="
 							<?php echo $i % 2; ?>" sortable-group-id="
 							<?php echo $item->id; ?>">
 						<td class="order nowrap center hidden-phone">

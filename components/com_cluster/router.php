@@ -11,12 +11,14 @@ defined('_JEXEC') or die;
 
 JLoader::registerPrefix('Cluster', JPATH_SITE . '/components/com_cluster/');
 
+use Joomla\CMS\Component\Router\RouterBase;
+
 /**
  * Class ClusterRouter
  *
  * @since  1.0.0
  */
-class ClusterRouter extends JComponentRouterBase
+class ClusterRouter extends RouterBase
 {
 	/**
 	 * Build method for URLs

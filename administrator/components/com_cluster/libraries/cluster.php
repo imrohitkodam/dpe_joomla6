@@ -264,4 +264,55 @@ class ClusterCluster
 
 		return false;
 	}
+	/**
+	 * Set the object properties based on a named array/hash.
+	 *
+	 * @param   mixed  $properties  Either an associative array or another object.
+	 *
+	 * @return  boolean
+	 *
+	 * @since   1.0.0
+	 */
+	public function setProperties($properties)
+	{
+		if (is_array($properties) || is_object($properties))
+		{
+			foreach ((array) $properties as $k => $v)
+			{
+				// Use the set function which might be overridden.
+				$this->$k = $v;
+			}
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Returns an associative array of object properties.
+	 *
+	 * @param   boolean  $public  If true, returns only the public properties.
+	 *
+	 * @return  array
+	 *
+	 * @since   1.0.0
+	 */
+	public function getProperties($public = true)
+	{
+		$vars = get_object_vars($this);
+
+		if ($public)
+		{
+			foreach ($vars as $key => $value)
+			{
+				if ('_' == substr($key, 0, 1))
+				{
+					unset($vars[$key]);
+				}
+			}
+		}
+
+		return $vars;
+	}
 }
