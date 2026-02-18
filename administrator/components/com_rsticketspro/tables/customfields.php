@@ -11,7 +11,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
 
-class RsticketsproTableCustomfields extends JTable
+class RsticketsproTableCustomfields extends \Joomla\CMS\Table\Table
 {
 	public $id;
 	public $department_id;
@@ -43,7 +43,7 @@ class RsticketsproTableCustomfields extends JTable
 			// this needs to be filtered
 			if (strlen($this->name))
 			{
-				$this->name = JFilterOutput::stringURLSafe($this->name);
+				$this->name = \Joomla\CMS\Filter\OutputFilter::stringURLSafe($this->name);
 			}
 
 			// check if there's a custom field with the same name

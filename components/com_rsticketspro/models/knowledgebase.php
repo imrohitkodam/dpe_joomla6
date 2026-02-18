@@ -10,11 +10,11 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Filter\OutputFilter;
+use Joomla\CMS\Pagination\Pagination;
 use Joomla\CMS\Uri\Uri;
-
 use Joomla\CMS\Language\Text;
-
 use Joomla\CMS\Factory;
 
 class RsticketsproModelKnowledgebase extends BaseDatabaseModel
@@ -68,8 +68,8 @@ class RsticketsproModelKnowledgebase extends BaseDatabaseModel
 	public function getCategory($options = array('inherited' => true, 'id' => 0))
 	{
 		$category_id	= $options['inherited'] ? $this->category_id : $options['id'];
-		$row			= JTable::getInstance('Kbcategories', 'RsticketsproTable');
-		$category		= JTable::getInstance('Kbcategories', 'RsticketsproTable');
+		$row			= Table::getInstance('Kbcategories', 'RsticketsproTable');
+		$category		= Table::getInstance('Kbcategories', 'RsticketsproTable');
 
 		$row->load($category_id);
 		
@@ -209,7 +209,7 @@ class RsticketsproModelKnowledgebase extends BaseDatabaseModel
 		
 		if ($results)
 		{
-			$category = JTable::getInstance('Kbcategories', 'RsticketsproTable');
+			$category = Table::getInstance('Kbcategories', 'RsticketsproTable');
 			
 			foreach ($results as $i => $result)
 			{
@@ -289,7 +289,7 @@ class RsticketsproModelKnowledgebase extends BaseDatabaseModel
 	{
 		if (empty($this->_pagination))
 		{
-			$this->_pagination = new JPagination($this->getContentTotal(), $this->getState('com_rsticketspro.categories.limitstart'), $this->getState('com_rsticketspro.categories.limit'));
+			$this->_pagination = new Pagination($this->getContentTotal(), $this->getState('com_rsticketspro.categories.limitstart'), $this->getState('com_rsticketspro.categories.limit'));
 		}
 
 		return $this->_pagination;
@@ -309,7 +309,7 @@ class RsticketsproModelKnowledgebase extends BaseDatabaseModel
 	{
 		if (empty($this->_pagination))
 		{
-			$this->_pagination = new JPagination($this->getResultsTotal(), $this->getState('com_rsticketspro.categories.limitstart'), $this->getState('com_rsticketspro.categories.limit'));
+			$this->_pagination = new Pagination($this->getResultsTotal(), $this->getState('com_rsticketspro.categories.limitstart'), $this->getState('com_rsticketspro.categories.limit'));
 		}
 		return $this->_pagination;
 	}
@@ -318,7 +318,7 @@ class RsticketsproModelKnowledgebase extends BaseDatabaseModel
 	{
 		$return		= array();
 		$parent_id	= $this->category_id;
-		$row		= JTable::getInstance('Kbcategories', 'RsticketsproTable');
+		$row		= Table::getInstance('Kbcategories', 'RsticketsproTable');
 		
 		while ($parent_id > 0)
 		{
@@ -327,7 +327,7 @@ class RsticketsproModelKnowledgebase extends BaseDatabaseModel
 			
 			$obj = new stdClass();
 			$obj->name = $row->name;
-			$obj->link = RSTicketsProHelper::route('index.php?option=com_rsticketspro&view=knowledgebase&cid='.$row->id.':'.JFilterOutput::stringURLSafe($row->name));
+			$obj->link = RSTicketsProHelper::route('index.php?option=com_rsticketspro&view=knowledgebase&cid='.$row->id.':'.OutputFilter::stringURLSafe($row->name));
 			
 			$return[] = $obj;
 		}

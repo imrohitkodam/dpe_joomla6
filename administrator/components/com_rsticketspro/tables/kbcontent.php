@@ -9,13 +9,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\Filesystem\File;
-
-use Joomla\CMS\Language\Text;
-
+use Joomla\CMS\Filter\OutputFilter;
+use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
 
-class RsticketsproTableKbcontent extends JTable
+class RsticketsproTableKbcontent extends \Joomla\CMS\Table\Table
 {
 	public $id = null;
 	public $name = '';
@@ -63,7 +61,7 @@ class RsticketsproTableKbcontent extends JTable
 			$this->alias = $this->name;
 		}
 
-		$this->alias = JFilterOutput::stringURLSafe($this->alias);
+		$this->alias = OutputFilter::stringURLSafe($this->alias);
 
 		if (trim(str_replace('-', '', $this->alias)) == '') {
 			$this->alias = Factory::getDate()->format('Y-m-d-H-i-s');
@@ -115,7 +113,7 @@ class RsticketsproTableKbcontent extends JTable
 			$this->deleteThumb();
 			$this->deleteTags();
 			
-			JPluginHelper::importPlugin('finder');
+			\Joomla\CMS\Plugin\PluginHelper::importPlugin('finder');
 			Factory::getApplication()->triggerEvent('onFinderAfterDelete', array('com_rsticketspro.article', $this));
 		}
 		
@@ -125,7 +123,7 @@ class RsticketsproTableKbcontent extends JTable
 	public function store($updateNulls = true)
 	{
 		// Verify that the alias is unique
-        $table = JTable::getInstance('Kbcontent', 'RsticketsproTable');
+        $table = Table::getInstance('Kbcontent', 'RsticketsproTable');
 
         if ($table->load(array('alias' => $this->alias, 'category_id' => (int) $this->category_id)) && ($table->id != $this->id || $this->id == 0)) {
             // Is the existing category trashed?
@@ -134,7 +132,7 @@ class RsticketsproTableKbcontent extends JTable
             return false;
         }
 		
-		JPluginHelper::importPlugin('finder');
+		\Joomla\CMS\Plugin\PluginHelper::importPlugin('finder');
 		Factory::getApplication()->triggerEvent('onFinderAfterSave', array('com_rsticketspro.article', $this, true));
 		
 		return parent::store($updateNulls);
@@ -142,7 +140,7 @@ class RsticketsproTableKbcontent extends JTable
 	
 	public function publish($pks = null, $value = 1, $userid = 0) 
 	{
-		JPluginHelper::importPlugin('finder');
+		\Joomla\CMS\Plugin\PluginHelper::importPlugin('finder');
 		Factory::getApplication()->triggerEvent('onFinderChangeState', array('com_rsticketspro.article', $pks, $value));
 		
 		return parent::publish($pks, $value, $userid);

@@ -9,9 +9,9 @@
 
 defined('JPATH_PLATFORM') or die;
 
-JFormHelper::loadFieldClass('hidden');
+\Joomla\CMS\Form\FormHelper::loadFieldClass('hidden');
 
-class JFormFieldDummy extends JFormFieldHidden
+class JFormFieldDummy extends \Joomla\CMS\Form\Field\HiddenField
 {
 	protected $type = 'Dummy';
 	

@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproControllerKbarticles extends JControllerAdmin
+class RsticketsproControllerKbarticles extends \Joomla\CMS\MVC\Controller\AdminController
 {
 	public function getModel($name = 'Kbarticle', $prefix = 'RsticketsproModel', $config = array('ignore_request' => true))
 	{

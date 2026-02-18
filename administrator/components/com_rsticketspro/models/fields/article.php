@@ -17,7 +17,7 @@ use Joomla\CMS\Factory;
 
 jimport('joomla.form.formfield');
 
-class JFormFieldArticle extends JFormField
+class JFormFieldArticle extends \Joomla\CMS\Form\FormField
 {
    /**
 	* Element name

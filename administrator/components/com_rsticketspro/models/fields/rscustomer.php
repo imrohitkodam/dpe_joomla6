@@ -9,9 +9,9 @@
 
 defined('JPATH_PLATFORM') or die;
 
-JFormHelper::loadFieldClass('user');
+\Joomla\CMS\Form\FormHelper::loadFieldClass('user');
 
-class JFormFieldRSCustomer extends JFormFieldUser
+class JFormFieldRSCustomer extends \Joomla\CMS\Form\FormFieldUser
 {
 	public $type = 'RSCustomer';
 	

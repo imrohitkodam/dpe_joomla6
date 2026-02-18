@@ -12,7 +12,7 @@ use Joomla\CMS\Language\Text;
 
 use Joomla\CMS\Factory;
 
-class RsticketsproControllerCronlog extends JControllerAdmin
+class RsticketsproControllerCronlog extends \Joomla\CMS\MVC\Controller\AdminController
 {
 	public function getModel($name = 'Cronlog', $prefix = 'RsticketsproModel', $config = array('ignore_request' => true))
 	{

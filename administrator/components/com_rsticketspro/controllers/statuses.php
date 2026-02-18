@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproControllerStatuses extends JControllerAdmin
+class RsticketsproControllerStatuses extends \Joomla\CMS\MVC\Controller\AdminController
 {
 	public function getModel($name = 'Status', $prefix = 'RsticketsproModel', $config = array('ignore_request' => true))
 	{

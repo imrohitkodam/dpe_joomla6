@@ -15,7 +15,7 @@ use Joomla\CMS\Language\Text;
 
 use Joomla\CMS\Factory;
 
-class RsticketsproControllerSignature extends JControllerForm
+class RsticketsproControllerSignature extends \Joomla\CMS\MVC\Controller\FormController
 {
 	protected $view_item = 'signature';
 	protected $view_list = 'tickets';

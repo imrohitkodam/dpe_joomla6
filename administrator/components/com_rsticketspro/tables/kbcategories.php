@@ -15,7 +15,7 @@ use Joomla\CMS\Language\Text;
 
 use Joomla\CMS\Factory;
 
-class RsticketsproTableKbcategories extends JTable
+class RsticketsproTableKbcategories extends \Joomla\CMS\Table\Table
 {
 	public $id = null;
 	
@@ -79,7 +79,7 @@ class RsticketsproTableKbcategories extends JTable
 				$this->alias = $this->name;
 			}
 
-			$this->alias = JFilterOutput::stringURLSafe($this->alias);
+			$this->alias = \Joomla\CMS\Filter\OutputFilter::stringURLSafe($this->alias);
 
 			if (trim(str_replace('-', '', $this->alias)) == '') {
 				$this->alias = Factory::getDate()->format('Y-m-d-H-i-s');
@@ -102,7 +102,7 @@ class RsticketsproTableKbcategories extends JTable
 	public function store($updateNulls = true)
 	{
 		// Verify that the alias is unique
-        $table = JTable::getInstance('Kbcategories', 'RsticketsproTable');
+        $table = \Joomla\CMS\Table\Table::getInstance('Kbcategories', 'RsticketsproTable');
 
         if ($table->load(array('alias' => $this->alias, 'parent_id' => (int) $this->parent_id)) && ($table->id != $this->id || $this->id == 0)) {
             // Is the existing category trashed?

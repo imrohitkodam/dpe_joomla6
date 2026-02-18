@@ -9,9 +9,9 @@
 
 defined('JPATH_PLATFORM') or die;
 
-JFormHelper::loadFieldClass('color');
+\Joomla\CMS\Form\FormHelper::loadFieldClass('color');
 
-class JFormFieldColors extends JFormFieldColor 
+class JFormFieldColors extends \Joomla\CMS\Form\FormFieldColor 
 {
 	/**
 	* Element name

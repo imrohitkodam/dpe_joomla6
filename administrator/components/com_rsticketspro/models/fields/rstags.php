@@ -9,9 +9,13 @@
 
 defined('JPATH_PLATFORM') or die;
 
-JFormHelper::loadFieldClass('list');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
-class JFormFieldRSTags extends JFormFieldTag
+\Joomla\CMS\Form\FormHelper::loadFieldClass('list');
+
+class JFormFieldRSTags extends \Joomla\CMS\Form\Field\TagField
 {
 	public $type = 'RSTags';
 	
@@ -47,10 +51,10 @@ class JFormFieldRSTags extends JFormFieldTag
 			$fancy_attr .= ' allow-custom';
 			
 			foreach ($all_options as $option) {
-				$select_options[] = JHTML::_('select.option', $option, $option);
+				$select_options[] = HTMLHelper::_('select.option', $option, $option);
 			}
 			
-			$select = JHTML::_('select.genericlist', $select_options, $this->name, trim($select_attr), 'value', 'text', $selected_options);
+			$select = HTMLHelper::_('select.genericlist', $select_options, $this->name, trim($select_attr), 'value', 'text', $selected_options);
 			
 			$html[] = '<joomla-field-fancy-select ' . trim($fancy_attr) . '>' . $select .'</joomla-field-fancy-select>';
 			$html[] = '<input name="rstags[]" type="hidden" value=""/>';
@@ -66,10 +70,10 @@ class JFormFieldRSTags extends JFormFieldTag
 			$select_attr .= !empty($this->element['class']) ? ' class="' . $this->element['class'] . '"' : '';
 
 			foreach ($all_options as $option) {
-				$select_options[] = JHTML::_('select.option', $option, $option);
+				$select_options[] = HTMLHelper::_('select.option', $option, $option);
 			}
 			
-			$select = JHTML::_('select.genericlist', $select_options, $this->name, trim($select_attr), 'value', 'text', $selected_options);
+			$select = HTMLHelper::_('select.genericlist', $select_options, $this->name, trim($select_attr), 'value', 'text', $selected_options);
 			
 			return $select;
 		}

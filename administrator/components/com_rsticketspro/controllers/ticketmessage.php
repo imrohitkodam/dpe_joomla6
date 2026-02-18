@@ -11,7 +11,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 
-class RsticketsproControllerTicketmessage extends JControllerForm
+class RsticketsproControllerTicketmessage extends \Joomla\CMS\MVC\Controller\FormController
 {
 	// this is for the redirect...
 	protected $view_list = 'tickets';

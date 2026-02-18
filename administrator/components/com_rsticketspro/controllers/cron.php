@@ -10,7 +10,9 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 
-class RsticketsproControllerCron extends JControllerForm
+use Joomla\CMS\MVC\Controller\FormController;
+
+class RsticketsproControllerCron extends FormController
 {
 	public function preview()
 	{

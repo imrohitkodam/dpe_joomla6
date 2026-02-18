@@ -11,7 +11,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
 
-class RsticketsproTableStaff extends JTable
+class RsticketsproTableStaff extends \Joomla\CMS\Table\Table
 {
 	public $id = null;
 	
@@ -102,7 +102,7 @@ class RsticketsproTableStaff extends JTable
 			
 			foreach ($this->department_id as $department_id)
 			{
-				$row = JTable::getInstance('Stafftodepartment', 'RsticketsproTable');
+				$row = \Joomla\CMS\Table\Table::getInstance('Stafftodepartment', 'RsticketsproTable');
 				$row->save(array(
 					'id' => null,
 					'user_id' => $this->user_id,

@@ -10,8 +10,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
-
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Form;
 
 class RSTicketsProFieldHelper
 {
@@ -31,7 +31,7 @@ class RSTicketsProFieldHelper
 
 		if (is_null($form))
 		{
-			$form = new JForm('rsticketsprodummyform');
+			$form = new Form('rsticketsprodummyform');
 		}
 
 		return $form;
@@ -93,7 +93,7 @@ class RSTicketsProFieldHelper
 		switch ($field->type)
 		{
 			case 'freetext':
-				$jfield = JFormHelper::loadFieldType('rsticketsprohtml');
+				$jfield = \Joomla\CMS\Form\FormHelper::loadFieldType('rsticketsprohtml');
 				$jfield->setForm($form);
 				$jfield->setup($xml, self::isCode($field->values));
 
@@ -108,7 +108,7 @@ class RSTicketsProFieldHelper
 					$xml->addAttribute('name', $name);
 					$xml->addAttribute('class', 'rst_textbox');
 
-					$jfield = JFormHelper::loadFieldType('text');
+					$jfield = \Joomla\CMS\Form\FormHelper::loadFieldType('text');
 					$jfield->setForm($form);
 					$jfield->setup($xml, $value);
 					$html = $jfield->renderField(array('class' => 'rst_custom_field'));
@@ -134,7 +134,7 @@ class RSTicketsProFieldHelper
 					$xml->addAttribute('name', $name);
 					$xml->addAttribute('class', 'rst_textarea');
 
-					$jfield = JFormHelper::loadFieldType('textarea');
+					$jfield = \Joomla\CMS\Form\FormHelper::loadFieldType('textarea');
 					$jfield->setForm($form);
 					$jfield->setup($xml, $value);
 					$html = $jfield->renderField(array('class' => 'rst_custom_field'));
@@ -160,7 +160,7 @@ class RSTicketsProFieldHelper
 					$xml->addAttribute('name', $name . '[]');
 					$xml->addAttribute('class', 'rst_select');
 
-					$jfield = JFormHelper::loadFieldType('list');
+					$jfield = \Joomla\CMS\Form\FormHelper::loadFieldType('list');
 					$jfield->setForm($form);
 					$jfield->setup($xml, $values);
 					$html = $jfield->renderField(array('class' => 'rst_custom_field'));
@@ -187,7 +187,7 @@ class RSTicketsProFieldHelper
 					$xml->addAttribute('class', 'rst_select');
 					$xml->addAttribute('multiple', 'multiple');
 
-					$jfield = JFormHelper::loadFieldType('list');
+					$jfield = \Joomla\CMS\Form\FormHelper::loadFieldType('list');
 					$jfield->setForm($form);
 					$jfield->setup($xml, $values);
 					$html = $jfield->renderField(array('class' => 'rst_custom_field'));
@@ -212,7 +212,7 @@ class RSTicketsProFieldHelper
 				{
 					$xml->addAttribute('name', $name);
 
-					$jfield = JFormHelper::loadFieldType('checkboxes');
+					$jfield = \Joomla\CMS\Form\FormHelper::loadFieldType('checkboxes');
 					$jfield->setForm($form);
 					$jfield->setup($xml, $values);
 					$html = $jfield->renderField(array('class' => 'rst_custom_field'));
@@ -242,11 +242,11 @@ class RSTicketsProFieldHelper
 
 					if (version_compare(JVERSION, '4.0', '>='))
 					{
-						$jfield = JFormHelper::loadFieldType('radiobasic');
+						$jfield = \Joomla\CMS\Form\FormHelper::loadFieldType('radiobasic');
 					}
 					else
 					{
-						$jfield = JFormHelper::loadFieldType('radio');
+						$jfield = \Joomla\CMS\Form\FormHelper::loadFieldType('radio');
 					}
 					$jfield->setForm($form);
 					$jfield->setup($xml, $value);
@@ -299,7 +299,7 @@ class RSTicketsProFieldHelper
 						}
 					}
 
-					$jfield = JFormHelper::loadFieldType('calendar');
+					$jfield = \Joomla\CMS\Form\FormHelper::loadFieldType('calendar');
 					$jfield->setForm($form);
 					if (is_callable(array($jfield, 'setDatabase')))
 					{

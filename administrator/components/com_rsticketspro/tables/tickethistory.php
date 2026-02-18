@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproTableTickethistory extends JTable
+class RsticketsproTableTickethistory extends \Joomla\CMS\Table\Table
 {
 	public $id;
 	public $ticket_id;

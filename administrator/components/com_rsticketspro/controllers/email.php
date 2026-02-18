@@ -11,7 +11,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 
-class RsticketsproControllerEmail extends JControllerForm
+class RsticketsproControllerEmail extends \Joomla\CMS\MVC\Controller\FormController
 {
 	public function allowEdit($data = array(), $key = 'id')
 	{

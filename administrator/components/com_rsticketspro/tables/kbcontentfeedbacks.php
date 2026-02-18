@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproTableKbcontentfeedbacks extends JTable
+class RsticketsproTableKbcontentfeedbacks extends \Joomla\CMS\Table\Table
 {
 	/**
 	 * Primary Key

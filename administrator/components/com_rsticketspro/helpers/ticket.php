@@ -10,15 +10,16 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\Filesystem\File;
-
 use Joomla\CMS\Uri\Uri;
-
 use Joomla\CMS\HTML\HTMLHelper;
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\Registry\Registry;
 use Joomla\CMS\User\User;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Filter\OutputFilter;
+use Joomla\CMS\User\UserHelper;
+use Joomla\CMS\Component\ComponentHelper;
 
 class RSTicketsProTicketHelper
 {
@@ -37,7 +38,7 @@ class RSTicketsProTicketHelper
 		$showEmailLink = RSTicketsProHelper::getConfig('show_email_link');
 		$userInfo      = RSTicketsProHelper::getConfig('show_user_info');
 
-		$table = JTable::getInstance('Kbcontent', 'RsticketsproTable');
+		$table = Table::getInstance('Kbcontent', 'RsticketsproTable');
 		$db    = Factory::getDbo();
 
 		// Parse ticket message template
@@ -212,7 +213,7 @@ class RSTicketsProTicketHelper
 			else
 			{
 				jimport('joomla.user.helper');
-				$password = JUserHelper::genRandomPassword(8);
+				$password = UserHelper::genRandomPassword(8);
 			}
 
 			if ($user_id = $this->createUser($password))
@@ -321,7 +322,7 @@ class RSTicketsProTicketHelper
 		$this->data['code'] = 'Null';
 
 		// add ticket
-		$ticket = JTable::getInstance('Tickets', 'RsticketsproTable');
+		$ticket = Table::getInstance('Tickets', 'RsticketsproTable');
 		if (!$ticket->save($this->data))
 		{
 			$this->setError($ticket->getError());
@@ -350,7 +351,7 @@ class RSTicketsProTicketHelper
 		{
 			foreach ($this->data['fields'] as $custom_field_id => $value)
 			{
-				$table = JTable::getInstance('Customfieldsvalues', 'RsticketsproTable');
+				$table = Table::getInstance('Customfieldsvalues', 'RsticketsproTable');
 				$table->save(array(
 					'custom_field_id' => $custom_field_id,
 					'ticket_id'       => $ticket->id,
@@ -358,7 +359,7 @@ class RSTicketsProTicketHelper
 				));
 
 				// append fields to email text
-				$field = JTable::getInstance('Customfields', 'RsticketsproTable');
+				$field = Table::getInstance('Customfields', 'RsticketsproTable');
 				$field->load($custom_field_id);
 
 				$label = Text::_($field->label);
@@ -403,10 +404,10 @@ class RSTicketsProTicketHelper
 			$replytoname    = $department->email_address_reply_to_name;
 		}
 
-		$priority = JTable::getInstance('Priorities', 'RsticketsproTable');
+		$priority = Table::getInstance('Priorities', 'RsticketsproTable');
 		$priority->load($ticket->priority_id);
 
-		$status = JTable::getInstance('Statuses', 'RsticketsproTable');
+		$status = Table::getInstance('Statuses', 'RsticketsproTable');
 		$status->load($ticket->status_id);
 
 		// start sending emails
@@ -425,7 +426,7 @@ class RSTicketsProTicketHelper
 
 				$replacements = array(
 					'{live_site}'         => Uri::root(),
-					'{ticket}'            => RSTicketsProHelper::mailRoute('index.php?option=com_rsticketspro&view=ticket&id=' . $ticket->id . ':' . JFilterOutput::stringURLSafe($ticket->subject), true, RSTicketsProHelper::getConfig('customer_itemid')),
+					'{ticket}'            => RSTicketsProHelper::mailRoute('index.php?option=com_rsticketspro&view=ticket&id=' . $ticket->id . ':' . OutputFilter::stringURLSafe($ticket->subject), true, RSTicketsProHelper::getConfig('customer_itemid')),
 					'{customer_name}'     => $customer->name,
 					'{customer_username}' => $customer->username,
 					'{customer_email}'    => $customer->email,
@@ -550,7 +551,7 @@ class RSTicketsProTicketHelper
 
 				$replacements = array(
 					'{live_site}'         => Uri::root(),
-					'{ticket}'            => RSTicketsProHelper::mailRoute('index.php?option=com_rsticketspro&view=ticket&id=' . $ticket->id . ':' . JFilterOutput::stringURLSafe($ticket->subject), true, RSTicketsProHelper::getConfig('customer_itemid')),
+					'{ticket}'            => RSTicketsProHelper::mailRoute('index.php?option=com_rsticketspro&view=ticket&id=' . $ticket->id . ':' . OutputFilter::stringURLSafe($ticket->subject), true, RSTicketsProHelper::getConfig('customer_itemid')),
 					'{customer_name}'     => $customer->name,
 					'{customer_username}' => $customer->username,
 					'{customer_email}'    => $customer->email,
@@ -629,7 +630,7 @@ class RSTicketsProTicketHelper
 
 				$replacements = array(
 					'{live_site}'         => Uri::root(),
-					'{ticket}'            => RSTicketsProHelper::mailRoute('index.php?option=com_rsticketspro&view=ticket&id=' . $ticket->id . ':' . JFilterOutput::stringURLSafe($ticket->subject), true, RSTicketsProHelper::getConfig('customer_itemid')),
+					'{ticket}'            => RSTicketsProHelper::mailRoute('index.php?option=com_rsticketspro&view=ticket&id=' . $ticket->id . ':' . OutputFilter::stringURLSafe($ticket->subject), true, RSTicketsProHelper::getConfig('customer_itemid')),
 					'{customer_name}'     => $customer->name,
 					'{customer_username}' => $customer->username,
 					'{customer_email}'    => $customer->email,
@@ -741,7 +742,7 @@ class RSTicketsProTicketHelper
 
 				if (preg_match("#[<>\"'%;()&]#i", $username) || strlen(utf8_decode($username)) < 2)
 				{
-					$username = JFilterOutput::stringURLSafe($this->data['name']);
+					$username = OutputFilter::stringURLSafe($this->data['name']);
 					if (strlen($username) < 2)
 					{
 						$username = str_pad($username, 2, mt_rand(0, 9));
@@ -771,7 +772,7 @@ class RSTicketsProTicketHelper
 			jimport('joomla.user.helper');
 
 			$data              = array(
-				'name'     => trim($this->data['name']) ? JComponentHelper::filterText($this->data['name']) : $this->data['email'],
+				'name'     => trim($this->data['name']) ? ComponentHelper::filterText($this->data['name']) : $this->data['email'],
 				'email'    => $this->data['email'],
 				'username' => $username,
 				'password' => $password
@@ -784,7 +785,7 @@ class RSTicketsProTicketHelper
 				return false;
 			}
 
-			$params = JComponentHelper::getParams('com_users');
+			$params = ComponentHelper::getParams('com_users');
 			$user->set('groups', array(RSTicketsProHelper::getConfig('user_type')));
 
 			$date = Factory::getDate();
@@ -891,7 +892,7 @@ class RSTicketsProTicketHelper
 			RSTicketsProHelper::trigger('onBeforeStoreTicketReply', array($this->data));
 		}
 
-		$message = JTable::getInstance('Ticketmessages', 'RsticketsproTable');
+		$message = Table::getInstance('Ticketmessages', 'RsticketsproTable');
 		if (!$message->save($this->data))
 		{
 			$this->setError($message->getError());
@@ -921,7 +922,7 @@ class RSTicketsProTicketHelper
 					$filename = $file['filename'];
 				}
 
-				$new_file = JTable::getInstance('Ticketfiles', 'RsticketsproTable');
+				$new_file = Table::getInstance('Ticketfiles', 'RsticketsproTable');
 				$new_file->save(array(
 					'ticket_id'         => $this->data['ticket_id'],
 					'ticket_message_id' => $message->id,
@@ -952,7 +953,7 @@ class RSTicketsProTicketHelper
 			$hasFiles = 1;
 		}
 
-		$original = JTable::getInstance('Tickets', 'RsticketsproTable');
+		$original = Table::getInstance('Tickets', 'RsticketsproTable');
 		$original->load($this->data['ticket_id']);
 
 		// $isStaff is defined at the start of this function.
@@ -981,7 +982,7 @@ class RSTicketsProTicketHelper
 		Factory::getDbo()->updateObject('#__rsticketspro_tickets', $object, array('id'));
 
 		// Reload all ticket fields
-		$ticket = JTable::getInstance('Tickets', 'RsticketsproTable');
+		$ticket = Table::getInstance('Tickets', 'RsticketsproTable');
 		$ticket->load($ticket->id);
 
 		$department =& $original->department;
@@ -1013,10 +1014,10 @@ class RSTicketsProTicketHelper
 			$replytoname    = $department->email_address_reply_to_name;
 		}
 
-		$priority = JTable::getInstance('Priorities', 'RsticketsproTable');
+		$priority = Table::getInstance('Priorities', 'RsticketsproTable');
 		$priority->load($original->priority_id);
 
-		$status = JTable::getInstance('Statuses', 'RsticketsproTable');
+		$status = Table::getInstance('Statuses', 'RsticketsproTable');
 		$status->load($original->status_id);
 
 		$nl2brMessage = $this->data['message'];
@@ -1084,7 +1085,7 @@ class RSTicketsProTicketHelper
 
 					$replacements = array(
 						'{live_site}' => Uri::root(),
-						'{ticket}' => RSTicketsProHelper::mailRoute('index.php?option=com_rsticketspro&view=ticket&id=' . $ticket_id . ':' . JFilterOutput::stringURLSafe($original->subject), true, RSTicketsProHelper::getConfig('staff_itemid')),
+						'{ticket}' => RSTicketsProHelper::mailRoute('index.php?option=com_rsticketspro&view=ticket&id=' . $ticket_id . ':' . OutputFilter::stringURLSafe($original->subject), true, RSTicketsProHelper::getConfig('staff_itemid')),
 						'{customer_name}' => $customer->name,
 						'{customer_username}' => $customer->username,
 						'{customer_email}' => $customer->email,
@@ -1155,7 +1156,7 @@ class RSTicketsProTicketHelper
 
 					$replacements = array(
 						'{live_site}' => Uri::root(),
-						'{ticket}' => RSTicketsProHelper::mailRoute('index.php?option=com_rsticketspro&view=ticket&id=' . $ticket_id . ':' . JFilterOutput::stringURLSafe($original->subject), true, RSTicketsProHelper::getConfig('customer_itemid')),
+						'{ticket}' => RSTicketsProHelper::mailRoute('index.php?option=com_rsticketspro&view=ticket&id=' . $ticket_id . ':' . OutputFilter::stringURLSafe($original->subject), true, RSTicketsProHelper::getConfig('customer_itemid')),
 						'{customer_name}' => $customer->name,
 						'{customer_username}' => $customer->username,
 						'{customer_email}' => $customer->email,
@@ -1254,7 +1255,7 @@ class RSTicketsProTicketHelper
 
 					$replacements = array(
 						'{live_site}' => Uri::root(),
-						'{ticket}' => RSTicketsProHelper::mailRoute('index.php?option=com_rsticketspro&view=ticket&id=' . $ticket_id . ':' . JFilterOutput::stringURLSafe($original->subject), true, RSTicketsProHelper::getConfig('staff_itemid')),
+						'{ticket}' => RSTicketsProHelper::mailRoute('index.php?option=com_rsticketspro&view=ticket&id=' . $ticket_id . ':' . OutputFilter::stringURLSafe($original->subject), true, RSTicketsProHelper::getConfig('staff_itemid')),
 						'{customer_name}' => $customer->name,
 						'{customer_username}' => $customer->username,
 						'{customer_email}' => $customer->email,
@@ -1291,7 +1292,7 @@ class RSTicketsProTicketHelper
 
 					$replacements = array(
 						'{live_site}' => Uri::root(),
-						'{ticket}' => RSTicketsProHelper::mailRoute('index.php?option=com_rsticketspro&view=ticket&id=' . $ticket_id . ':' . JFilterOutput::stringURLSafe($original->subject), true, RSTicketsProHelper::getConfig('staff_itemid')),
+						'{ticket}' => RSTicketsProHelper::mailRoute('index.php?option=com_rsticketspro&view=ticket&id=' . $ticket_id . ':' . OutputFilter::stringURLSafe($original->subject), true, RSTicketsProHelper::getConfig('staff_itemid')),
 						'{customer_name}' => $customer->name,
 						'{customer_username}' => $customer->username,
 						'{customer_email}' => $customer->email,
@@ -1342,7 +1343,7 @@ class RSTicketsProTicketHelper
 					if (preg_match($pattern, $this->data['message'])) {
 						$replacements = array(
 							'{live_site}' => Uri::root(),
-							'{ticket}' => RSTicketsProHelper::mailRoute('index.php?option=com_rsticketspro&view=ticket&id=' . $ticket_id . ':' . JFilterOutput::stringURLSafe($original->subject), true, RSTicketsProHelper::getConfig('staff_itemid')),
+							'{ticket}' => RSTicketsProHelper::mailRoute('index.php?option=com_rsticketspro&view=ticket&id=' . $ticket_id . ':' . OutputFilter::stringURLSafe($original->subject), true, RSTicketsProHelper::getConfig('staff_itemid')),
 							'{customer_name}' => $customer->name,
 							'{customer_username}' => $customer->username,
 							'{customer_email}' => $customer->email,

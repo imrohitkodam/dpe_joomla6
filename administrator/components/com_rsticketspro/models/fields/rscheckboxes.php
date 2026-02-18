@@ -9,10 +9,14 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
-JFormHelper::loadFieldClass('list');
 
-class JFormFieldRSCheckboxes extends JFormFieldList
+\Joomla\CMS\Form\FormHelper::loadFieldClass('list');
+
+class JFormFieldRSCheckboxes extends \Joomla\CMS\Form\Field\ListField
 {
 	protected $type = 'RSCheckboxes';
 

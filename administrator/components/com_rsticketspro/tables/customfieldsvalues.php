@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproTableCustomfieldsvalues extends JTable
+class RsticketsproTableCustomfieldsvalues extends \Joomla\CMS\Table\Table
 {
 	public $id = null;
 	public $custom_field_id = 0;

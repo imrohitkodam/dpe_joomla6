@@ -9,11 +9,11 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\HTML\HTMLHelper;
 
-JFormHelper::loadFieldClass('list');
+\Joomla\CMS\Form\FormHelper::loadFieldClass('list');
 
 use Joomla\CMS\Language\LanguageHelper;
 
-class JFormFieldRsticketsprolang extends JFormFieldList
+class JFormFieldRsticketsprolang extends \Joomla\CMS\Form\Field\ListField
 {
 	protected function getOptions()
 	{

@@ -9,9 +9,13 @@
 
 defined('JPATH_PLATFORM') or die;
 
-JFormHelper::loadFieldClass('text');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
-class JFormFieldTypeahead extends JFormFieldText
+\Joomla\CMS\Form\FormHelper::loadFieldClass('text');
+
+class JFormFieldTypeahead extends \Joomla\CMS\Form\FormFieldText
 {
 	protected function getInput()
 	{

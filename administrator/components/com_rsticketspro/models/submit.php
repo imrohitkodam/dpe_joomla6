@@ -440,7 +440,7 @@ class RsticketsproModelSubmit extends \Joomla\CMS\MVC\Model\AdminModel
 				}
 				
 				// Password strength
-				$rule 	= JFormHelper::loadRuleType('password');
+				$rule 	= \Joomla\CMS\Form\FormHelper::loadRuleType('password');
 				$field 	= new SimpleXMLElement('<field></field>');
 				if (!$rule->test($field, $data['password']))
 				{

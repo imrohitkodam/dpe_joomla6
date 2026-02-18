@@ -10,19 +10,18 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
-
 use Joomla\CMS\Factory;
 
-class JFormFieldKbarticle extends JFormField
+class JFormFieldKbarticle extends \Joomla\CMS\Form\FormField
 {
 	protected function getInput()
 	{
 		$html = array();
 		// Include our JTable
-		JTable::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_rsticketspro/tables');
-		$row = JTable::getInstance('Kbcontent', 'RsticketsproTable');
+		Table::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_rsticketspro/tables');
+		$row = Table::getInstance('Kbcontent', 'RsticketsproTable');
 
 		// Load the title
 		$title = Text::_('RST_KB_SELECT_ARTICLE');

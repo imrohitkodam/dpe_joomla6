@@ -9,6 +9,13 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Filter\OutputFilter;
+use Joomla\CMS\Access\Access;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Mail\MailHelper;
+use Joomla\CMS\User\UserHelper;
+
 use Joomla\Filesystem\File;
 
 use Joomla\CMS\Uri\Uri;
@@ -72,7 +79,7 @@ class RSTicketsProHelper
 		static $result;
 
 		if (is_null($result)) {
-			$result = JPluginHelper::getPlugin('system', 'rsticketsprocron');
+			$result = \Joomla\CMS\Plugin\PluginHelper::getPlugin('system', 'rsticketsprocron');
 		}
 
 		return !empty($result);
@@ -408,7 +415,7 @@ class RSTicketsProHelper
 		}
 
 		$menus     = $app->getMenu('site');
-		$component = JComponentHelper::getComponent($query['option']);
+		        $component = ComponentHelper::getComponent($query['option']);
 		$items     = $menus->getItems('component_id', $component->id);
 
 		if ($items)
@@ -1033,7 +1040,7 @@ class RSTicketsProHelper
 			foreach ($recipient as $i => $r)
 			{
 				$r = trim($r);
-				if (!JMailHelper::isEmailAddress($r))
+				if (!MailHelper::isEmailAddress($r))
 				{
 					unset($recipient[$i]);
 				}
@@ -1070,7 +1077,7 @@ class RSTicketsProHelper
 				foreach ($cc as $i => $r)
 				{
 					$r = trim($r);
-					if (!JMailHelper::isEmailAddress($r))
+					if (!MailHelper::isEmailAddress($r))
 					{
 						continue;
 					}
@@ -1086,7 +1093,7 @@ class RSTicketsProHelper
 				foreach ($bcc as $i => $r)
 				{
 					$r = trim($r);
-					if (!JMailHelper::isEmailAddress($r))
+					if (!MailHelper::isEmailAddress($r))
 					{
 						continue;
 					}
@@ -1158,7 +1165,7 @@ class RSTicketsProHelper
 			$db->setQuery($query);
 			$name = $db->loadResult();
 
-			return $id . ':' . JFilterOutput::stringURLSafe($name);
+			return $id . ':' . OutputFilter::stringURLSafe($name);
 		}
 	}
 
@@ -1197,20 +1204,20 @@ class RSTicketsProHelper
 	public static function filterText($text, $user = null)
 	{
 		// Punyencoding utf8 email addresses
-		$text = JFilterInput::getInstance()->emailToPunycode($text);
+		$text = InputFilter::getInstance()->emailToPunycode($text);
 
 		// Filter settings
-		$config = JComponentHelper::getParams('com_config');
+		        $config = ComponentHelper::getParams('com_config');
 		if ($user && !empty($user->id))
 		{
-			$userGroups = JAccess::getGroupsByUser($user->get('id'));
+			            $userGroups = Access::getGroupsByUser($user->get('id'));
 		}
 		else
 		{
 			static $filter;
 			if (!$filter)
 			{
-				$filter = JFilterInput::getInstance(
+				$filter = InputFilter::getInstance(
 					array('a', 'abbr', 'address', 'b', 'br', 'caption', 'center', 'dd', 'dl', 'dt', 'del', 'em', 'font', 'hr', 'i', 'img', 'ins', 'ul', 'li', 'mark', 'ol', 'p', 'span', 'small', 'strong', 'sub', 'sup', 'table', 'tbody', 'td', 'tr', 'th', 'thead', 'u', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'),
 					array('size', 'src', 'href', 'title', 'rel', 'color', 'face', 'colspan', 'rowspan', 'align', 'bgcolor', 'border', 'cellpadding', 'cellspacing', 'valign', 'alt')
 				);
@@ -1332,7 +1339,7 @@ class RSTicketsProHelper
 			// Custom blacklist precedes Default blacklist
 			if ($customList)
 			{
-				$filter = JFilterInput::getInstance(array(), array(), 1, 1);
+				$filter = InputFilter::getInstance(array(), array(), 1, 1);
 
 				// Override filter's default blacklist tags and attributes
 				if ($customListTags)
@@ -1352,7 +1359,7 @@ class RSTicketsProHelper
 				$blackListTags       = array_diff($blackListTags, $whiteListTags);
 				$blackListAttributes = array_diff($blackListAttributes, $whiteListAttributes);
 
-				$filter = JFilterInput::getInstance($blackListTags, $blackListAttributes, 1, 1);
+				$filter = InputFilter::getInstance($blackListTags, $blackListAttributes, 1, 1);
 
 				// Remove whitelisted tags from filter's default blacklist
 				if ($whiteListTags)
@@ -1369,12 +1376,12 @@ class RSTicketsProHelper
 			elseif ($whiteList)
 			{
 				// Turn off XSS auto clean
-				$filter = JFilterInput::getInstance($whiteListTags, $whiteListAttributes, 0, 0, 0);
+				$filter = InputFilter::getInstance($whiteListTags, $whiteListAttributes, 0, 0, 0);
 			}
 			// No HTML takes last place.
 			else
 			{
-				$filter = JFilterInput::getInstance();
+				$filter = InputFilter::getInstance();
 			}
 
 			$text = $filter->clean($text, 'RAW'); // DPE HACK To show the Html tags
@@ -1415,7 +1422,7 @@ class RSTicketsProHelper
 		{
 			$app = Factory::getApplication();
 
-			JPluginHelper::importPlugin('rsticketspro');
+			\Joomla\CMS\Plugin\PluginHelper::importPlugin('rsticketspro');
 		}
 
 		// Prefix our events with 'onRsticketspro'
@@ -1571,8 +1578,8 @@ class RSTicketsProHelper
 
 		if ($anonymiseJoomlaData) {
             // Let's create a fake email & fake username
-            $fake_email     = JUserHelper::genRandomPassword(mt_rand(10, 16)) . '@' . JUserHelper::genRandomPassword(mt_rand(10, 16));
-            $fake_username  = JUserHelper::genRandomPassword(mt_rand(10, 16));
+            $fake_email     = UserHelper::genRandomPassword(mt_rand(10, 16)) . '@' . UserHelper::genRandomPassword(mt_rand(10, 16));
+            $fake_username  = UserHelper::genRandomPassword(mt_rand(10, 16));
 
             // Make sure this email is free
             $query->clear()
@@ -1581,7 +1588,7 @@ class RSTicketsProHelper
                 ->where($db->qn('email') . ' = ' . $db->q($fake_email));
             while ($db->setQuery($query)->loadResult())
             {
-                $fake_email .= JUserHelper::genRandomPassword(mt_rand(1, 2));
+                $fake_email .= UserHelper::genRandomPassword(mt_rand(1, 2));
                 $query->clear()
                     ->select($db->qn('id'))
                     ->from($db->qn('#__users'))
@@ -1595,7 +1602,7 @@ class RSTicketsProHelper
                 ->where($db->qn('username') . ' = ' . $db->q($fake_username));
             while ($db->setQuery($query)->loadResult())
             {
-                $fake_username .= JUserHelper::genRandomPassword(mt_rand(1, 2));
+                $fake_username .= UserHelper::genRandomPassword(mt_rand(1, 2));
                 $query->clear()
                     ->select($db->qn('id'))
                     ->from($db->qn('#__users'))
@@ -1608,7 +1615,7 @@ class RSTicketsProHelper
                 ->set($db->qn('name') . ' = ' . $db->q($fake_username))
                 ->set($db->qn('username') . ' = ' . $db->q($fake_username))
                 ->set($db->qn('email') . ' = ' . $db->q($fake_email))
-                ->set($db->qn('password') . ' = ' . $db->q(JUserHelper::hashPassword(JUserHelper::genRandomPassword(20))))
+                ->set($db->qn('password') . ' = ' . $db->q(UserHelper::hashPassword(UserHelper::genRandomPassword(20))))
                 ->where($db->qn('id') . ' = ' . $db->q($id));
             $db->setQuery($query)->execute();
         }
@@ -1816,7 +1823,7 @@ class RSTicketsProHelper
 	
 	public static function KbSEF($item) 
 	{
-		$alias = (RSTicketsProHelper::getConfig('kb_advanced_sef') && $item->alias) ? $item->alias : JFilterOutput::stringURLSafe($item->name);
+		$alias = (RSTicketsProHelper::getConfig('kb_advanced_sef') && $item->alias) ? $item->alias : OutputFilter::stringURLSafe($item->name);
 
 		return $item->id . ':' . $alias;
 	}

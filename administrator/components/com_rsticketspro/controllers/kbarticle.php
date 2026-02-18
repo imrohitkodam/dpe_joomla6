@@ -11,7 +11,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 
-class RsticketsproControllerKbarticle extends JControllerForm
+class RsticketsproControllerKbarticle extends \Joomla\CMS\MVC\Controller\FormController
 {
 	public function allowAdd($data = array())
 	{

@@ -8,9 +8,13 @@
  */
 defined('JPATH_PLATFORM') or die;
 
-JFormHelper::loadFieldClass('list');
+\Joomla\CMS\Form\FormHelper::loadFieldClass('list');
 
-class JFormFieldPriorities extends JFormFieldList
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
+class JFormFieldPriorities extends \Joomla\CMS\Form\Field\ListField
 {
 	protected $type = 'Priorities';
 	

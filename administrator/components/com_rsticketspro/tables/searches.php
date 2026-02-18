@@ -11,7 +11,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 
-class RsticketsproTableSearches extends JTable
+class RsticketsproTableSearches extends \Joomla\CMS\Table\Table
 {
 	public $id = null;
 	

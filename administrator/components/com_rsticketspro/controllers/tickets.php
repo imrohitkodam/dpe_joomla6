@@ -13,7 +13,7 @@ use Joomla\CMS\Language\Text;
 
 use Joomla\CMS\Factory;
 
-class RsticketsproControllerTickets extends JControllerAdmin
+class RsticketsproControllerTickets extends \Joomla\CMS\MVC\Controller\AdminController
 {
     public function getModel($name = 'Tickets', $prefix = 'RsticketsproModel', $config = array('ignore_request' => true))
     {

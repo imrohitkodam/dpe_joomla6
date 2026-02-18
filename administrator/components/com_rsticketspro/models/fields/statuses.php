@@ -8,9 +8,13 @@
  */
 defined('JPATH_PLATFORM') or die;
 
-JFormHelper::loadFieldClass('list');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
-class JFormFieldStatuses extends JFormFieldList
+\Joomla\CMS\Form\FormHelper::loadFieldClass('list');
+
+class JFormFieldStatuses extends \Joomla\CMS\Form\Field\ListField
 {
 	protected $type = 'Statuses';
 	

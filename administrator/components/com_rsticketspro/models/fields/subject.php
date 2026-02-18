@@ -9,19 +9,23 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
 require_once JPATH_ADMINISTRATOR.'/components/com_rsticketspro/helpers/rsticketspro.php';
 
 if (!RSTicketsProHelper::getConfig('allow_predefined_subjects')) {
-	JFormHelper::loadFieldClass('text');
+	\Joomla\CMS\Form\FormHelper::loadFieldClass('text');
 
-	class JFormFieldSubject extends JFormFieldText
+	class JFormFieldSubject extends \Joomla\CMS\Form\Field\TextField
 	{
 		protected $type = 'Subject';
 	}
 } else {
-	JFormHelper::loadFieldClass('list');
+	\Joomla\CMS\Form\FormHelper::loadFieldClass('list');
 
-	class JFormFieldSubject extends JFormFieldList
+	class JFormFieldSubject extends \Joomla\CMS\Form\Field\ListField
 	{
 		protected $type = 'Subject';
 

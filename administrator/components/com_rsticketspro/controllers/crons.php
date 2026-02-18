@@ -8,7 +8,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproControllerCrons extends JControllerAdmin
+class RsticketsproControllerCrons extends \Joomla\CMS\MVC\Controller\AdminController
 {
 	public function getModel($name = 'Cron', $prefix = 'RsticketsproModel', $config = array('ignore_request' => true))
 	{

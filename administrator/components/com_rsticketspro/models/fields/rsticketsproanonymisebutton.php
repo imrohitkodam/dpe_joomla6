@@ -9,7 +9,11 @@
 
 defined('JPATH_PLATFORM') or die;
 
-class JFormFieldRSTicketsProAnonymiseButton extends JFormField
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
+class JFormFieldRSTicketsProAnonymiseButton extends \Joomla\CMS\Form\FormField
 {
 	protected $type = 'RSTicketsProAnonymiseButton';
 	

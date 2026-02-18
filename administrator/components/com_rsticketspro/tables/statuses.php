@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproTableStatuses extends JTable
+class RsticketsproTableStatuses extends \Joomla\CMS\Table\Table
 {
 	public $id = null;
 	public $name = '';

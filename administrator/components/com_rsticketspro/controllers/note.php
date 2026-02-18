@@ -11,7 +11,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 
-class RsticketsproControllerNote extends JControllerForm
+class RsticketsproControllerNote extends \Joomla\CMS\MVC\Controller\FormController
 {
 	protected function getRedirectToListAppend()
 	{

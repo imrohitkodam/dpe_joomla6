@@ -11,7 +11,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 
-class RsticketsproTableTicketnotes extends JTable
+class RsticketsproTableTicketnotes extends \Joomla\CMS\Table\Table
 {
 	public $id;
 	public $ticket_id;

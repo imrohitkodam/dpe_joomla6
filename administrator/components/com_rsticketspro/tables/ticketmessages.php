@@ -11,7 +11,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\Filesystem\File;
 
-class RsticketsproTableTicketmessages extends JTable
+class RsticketsproTableTicketmessages extends \Joomla\CMS\Table\Table
 {
 	public $id;
 	public $ticket_id;

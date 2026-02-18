@@ -9,7 +9,7 @@
 
 defined('JPATH_PLATFORM') or die;
 
-class JFormFieldRsticketsprohtml extends JFormField
+class JFormFieldRsticketsprohtml extends \Joomla\CMS\Form\FormField
 {
 	protected function getInput()
 	{

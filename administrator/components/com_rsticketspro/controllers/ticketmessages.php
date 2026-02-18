@@ -15,7 +15,7 @@ use Joomla\CMS\Router\Route;
 
 use Joomla\CMS\Language\Text;
 
-class RsticketsproControllerTicketmessages extends JControllerAdmin
+class RsticketsproControllerTicketmessages extends \Joomla\CMS\MVC\Controller\AdminController
 {
 	protected $view_list = 'ticket';
 

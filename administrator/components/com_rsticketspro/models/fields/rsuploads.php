@@ -8,7 +8,11 @@
  */
 defined('JPATH_PLATFORM') or die;
 
-class JFormFieldRSUploads extends JFormField
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
+class JFormFieldRSUploads extends \Joomla\CMS\Form\FormField
 {
 	protected $type = 'RSUploads';
 	

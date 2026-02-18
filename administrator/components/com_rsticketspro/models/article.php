@@ -10,7 +10,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-
+use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
 
 class RsticketsproModelArticle extends BaseDatabaseModel
@@ -21,7 +21,7 @@ class RsticketsproModelArticle extends BaseDatabaseModel
 	{
 		if ($this->article === null)
 		{
-			$this->article = JTable::getInstance('Kbcontent','RsticketsproTable');
+			$this->article = Table::getInstance('Kbcontent','RsticketsproTable');
 
 			if ($this->article->load(Factory::getApplication()->getInput()->getInt('cid')) && $this->article->id)
 			{

@@ -11,7 +11,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 
-class RsticketsproControllerStaff extends JControllerForm
+class RsticketsproControllerStaff extends \Joomla\CMS\MVC\Controller\FormController
 {
 	protected $view_list = 'staffs';
 

@@ -11,9 +11,14 @@ defined('JPATH_PLATFORM') or die;
 
 require_once JPATH_ADMINISTRATOR.'/components/com_rsticketspro/helpers/rsticketspro.php';
 
-JFormHelper::loadFieldClass('list');
+\Joomla\CMS\Form\FormHelper::loadFieldClass('list');
 
-class JFormFieldDepartments extends JFormFieldList
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Access\Access;
+
+class JFormFieldDepartments extends \Joomla\CMS\Form\Field\ListField
 {
 	protected $type = 'Departments';
 	
@@ -26,7 +31,7 @@ class JFormFieldDepartments extends JFormFieldList
 		$departments		= RSTicketsProHelper::getCurrentDepartments();
 		$view				= Factory::getApplication()->getInput()->get('view');
 		$db 				= Factory::getDbo();
-		$user_groups		= !$is_staff ? JAccess::getGroupsByUser(Factory::getUser()->id, false) : array();
+		$user_groups		= !$is_staff ? Access::getGroupsByUser(Factory::getUser()->id, false) : array();
 
 		if (isset($this->element['please']) && $this->element['please'] == 'true')
 		{

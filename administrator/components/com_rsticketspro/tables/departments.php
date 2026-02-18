@@ -11,7 +11,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
 
-class RsticketsproTableDepartments extends JTable
+class RsticketsproTableDepartments extends \Joomla\CMS\Table\Table
 {
 	public $id = null;
 	

@@ -8,9 +8,14 @@
  */
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Router\Route;
+
 require_once JPATH_ADMINISTRATOR.'/components/com_rsticketspro/helpers/rsticketspro.php';
 
-class JFormFieldRSCaptcha extends JFormField
+class JFormFieldRSCaptcha extends \Joomla\CMS\Form\FormField
 {
 	protected $type = 'RSCaptcha';
 	

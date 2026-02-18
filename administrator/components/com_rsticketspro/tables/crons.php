@@ -8,7 +8,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproTableCrons extends JTable
+class RsticketsproTableCrons extends \Joomla\CMS\Table\Table
 {
 	public $id = null;
 	

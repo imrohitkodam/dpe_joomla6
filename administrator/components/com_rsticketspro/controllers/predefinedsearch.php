@@ -13,7 +13,7 @@ use Joomla\CMS\Router\Route;
 
 use Joomla\CMS\Factory;
 
-class RsticketsproControllerPredefinedsearch extends JControllerForm
+class RsticketsproControllerPredefinedsearch extends \Joomla\CMS\MVC\Controller\FormController
 {
 	protected function allowAdd($data = array())
 	{

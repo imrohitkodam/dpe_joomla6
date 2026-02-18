@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class RsticketsproControllerPredefinedsearches extends JControllerAdmin
+class RsticketsproControllerPredefinedsearches extends \Joomla\CMS\MVC\Controller\AdminController
 {
 	public function getModel($name = 'Predefinedsearch', $prefix = 'RsticketsproModel', $config = array('ignore_request' => true))
 	{

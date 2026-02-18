@@ -8,9 +8,15 @@
  */
 defined('JPATH_PLATFORM') or die;
 
-JFormHelper::loadFieldClass('list');
+\Joomla\CMS\Form\FormHelper::loadFieldClass('list');
 
-class JFormFieldKBCategories extends JFormFieldList
+
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
+class JFormFieldKBCategories extends \Joomla\CMS\Form\Field\ListField
 {
 	protected $type = 'KBCategories';
 	

@@ -13,7 +13,7 @@ use Joomla\CMS\Router\Route;
 
 use Joomla\CMS\Factory;
 
-class RsticketsproControllerNotes extends JControllerAdmin
+class RsticketsproControllerNotes extends \Joomla\CMS\MVC\Controller\AdminController
 {
 	public function getModel($name = 'Note', $prefix = 'RsticketsproModel', $config = array('ignore_request' => true))
 	{

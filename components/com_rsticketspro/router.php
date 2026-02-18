@@ -9,7 +9,12 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-class RsticketsproRouter extends JComponentRouterBase
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+
+require_once JPATH_ADMINISTRATOR . '/components/com_rsticketspro/helpers/rsticketspro.php';
+
+class RsticketsproRouter extends \Joomla\CMS\Component\Router\RouterBase
 {
 	public function preprocess($query)
 	{

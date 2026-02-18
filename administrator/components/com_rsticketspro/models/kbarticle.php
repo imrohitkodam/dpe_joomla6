@@ -9,9 +9,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\Filesystem\File;
-
-use Joomla\CMS\Language\Text;
+use Joomla\CMS\Table\Table;
 use Joomla\CMS\MVC\Model\AdminModel;
 
 use Joomla\CMS\Factory;
@@ -208,7 +206,7 @@ class RsticketsproModelKbarticle extends \Joomla\CMS\MVC\Model\AdminModel
 		$item = $this->getItem();
 		if ($item->from_ticket_id)
 		{
-			$table = JTable::getInstance('Tickets', 'RsticketsproTable');
+			$table = Table::getInstance('Tickets', 'RsticketsproTable');
 			if ($table->load($item->from_ticket_id))
 			{
 				return $table;

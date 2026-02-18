@@ -13,9 +13,9 @@ require_once JPATH_ADMINISTRATOR.'/components/com_rsticketspro/helpers/rstickets
 
 if (RSTicketsProHelper::getConfig('allow_rich_editor'))
 {
-	JFormHelper::loadFieldClass('editor');
+	\Joomla\CMS\Form\FormHelper::loadFieldClass('editor');
 	
-	class JFormFieldRSEditor extends JFormFieldEditor
+	class JFormFieldRSEditor extends \Joomla\CMS\Form\Field\EditorField
 	{
 		public $type = 'RSEditor';
 		
@@ -30,9 +30,9 @@ if (RSTicketsProHelper::getConfig('allow_rich_editor'))
 }
 else
 {
-	JFormHelper::loadFieldClass('textarea');
+	\Joomla\CMS\Form\FormHelper::loadFieldClass('textarea');
 	
-	class JFormFieldRSEditor extends JFormFieldTextarea
+	class JFormFieldRSEditor extends \Joomla\CMS\Form\FormFieldTextarea
 	{
 		protected $type = 'RSEditor';
 	}

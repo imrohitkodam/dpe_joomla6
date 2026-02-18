@@ -13,7 +13,7 @@ use Joomla\Filesystem\File;
 
 use Joomla\CMS\Factory;
 
-class RsticketsproTableTickets extends JTable
+class RsticketsproTableTickets extends \Joomla\CMS\Table\Table
 {
 	public $id;
 	public $department_id;

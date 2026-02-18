@@ -10,9 +10,13 @@ defined('JPATH_PLATFORM') or die;
 
 require_once JPATH_ADMINISTRATOR.'/components/com_rsticketspro/helpers/rsticketspro.php';
 
-JFormHelper::loadFieldClass('list');
+\Joomla\CMS\Form\FormHelper::loadFieldClass('list');
 
-class JFormFieldStaff extends JFormFieldList
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
+class JFormFieldStaff extends \Joomla\CMS\Form\Field\ListField
 {
 	protected $type = 'Staff';
 

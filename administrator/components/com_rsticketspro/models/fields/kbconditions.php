@@ -8,7 +8,11 @@
  */
 defined('JPATH_PLATFORM') or die;
 
-class JFormFieldKBConditions extends JFormField
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
+class JFormFieldKBConditions extends \Joomla\CMS\Form\FormField
 {
 	protected $type = 'KBConditions';
 	
